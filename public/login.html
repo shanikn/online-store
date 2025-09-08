@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- TODO: add an admin user in data folder -->
+<!-- TODO: add an admin user in data folder(saved in filesystem) -->
 <html>
     <head>
+        <!-- TODO: add some styling(look up html form styling, maybe group fields with a legend?) -->
         <meta charset="UTF-8"/>
         <title>login screen</title>
     </head>
@@ -12,8 +13,9 @@
 
             <input type="password" id="password" name="password" required>
             <label for="password">Password: </label><br>
-            <!-- TODO: make "remember me" checkbox visible ONLY if it isnt checked yet-->
-            <!-- (only for when the user hasnt logged in yet in the last 12 days) -->
+            <!-- TODO: make sure the server displays "remember me" checkbox correctly-->
+            <!-- The checkbox is always displayed, i only need the server to know how to display it (checked/not) -->
+             <!-- i need to use js to let the server know -->
             <input type="checkbox" id="rememberMe" name="rememberMe" value="true">
             <label for="rememberMe">remember me</label><br><br>
 
@@ -22,31 +24,40 @@
 
         <!-- display the error -->
         <div id="error" style="color: red; display: none;"></div>
-    <!-- TODO: use javaScript to handle the submission -->
      <script>
             doument.querySelector('form').addEventListener('submit', function(event){
-            // so i can use my own fetch() function to decide what happens on submission
+            // "prevent default" so i can use my own fetch() function to decide what happens on form submission
             event.preventDefault();
-        //    TODO: add final js form handling
             // get form data
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+
+            // checking if the box is checked to tell the server what is the cookie duration (short/long)
             const remember = document.getElementById('rememberMe').checked;
             
             // send POST request to the server
             fetch('/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'applications/json'},
-                body: JSON.stringify({username, password, remember})
+                headers: { 'Content-Type': 'applications/json'}, // tells server im sending JSON formated data (just a label)
+                body: JSON.stringify({username, password, remember}) // the data im sending (i saved it earlier in these elements)
             })
 
+            /** fetch() returns a *promise*, not immidiate results (the network requests take time)
+             *  ".then" is used to set what happens when the request finishes
+             * 
+             *  1)fetch data=> 2)THEN convert to json=> 3)THEN handle the response
+            */ 
+            
             // handle server response
             .then(response=> response.json())
             .then(data=> {
                 if(data.success){
+                    // redirects user to store screen on form submission success
                     window.location.href= '/store.html';
                 }
                 else{
+                    // presents an error message on form submission fail (missing field...)
+                    // TODO: what errors should i check on form submission? and how?
                     document.getElementById('error').textContent = data.message;
                 }
             })
