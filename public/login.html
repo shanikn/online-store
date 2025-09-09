@@ -7,25 +7,25 @@
         <title>login screen</title>
     </head>
     <body>
-        <form id='login' action="/login" method="POST" autocomplete="on">
-            <input type="text" id="username" name="username" required>
-            <label for="username">Username: </label><br>
+        <form action="/login" method="POST" autocomplete="on">
+            <label for="username">Username: </label>
+            <input type="text" id="username" name="username" required><br><br>
 
-            <input type="password" id="password" name="password" required>
-            <label for="password">Password: </label><br>
-            <!-- TODO: make sure the server displays "remember me" checkbox correctly-->
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" required><br><br>
+            <!-- TODO: make sure the server displays "remember me" checkbox correctly(using cookies in server.js)-->
             <!-- The checkbox is always displayed, i only need the server to know how to display it (checked/not) -->
-             <!-- i need to use js to let the server know -->
+            <!-- i need to use js to let the server know -->
             <input type="checkbox" id="rememberMe" name="rememberMe" value="true">
-            <label for="rememberMe">remember me</label><br><br>
+            <label for="rememberMe">remember me</label><br><br><br>
 
             <input type="submit" value="submit">
         </form>
 
         <!-- display the error -->
         <div id="error" style="color: red; display: none;"></div>
-     <script>
-            doument.querySelector('form').addEventListener('submit', function(event){
+    <script>
+            document.querySelector('form').addEventListener('submit', function(event){
             // "prevent default" so i can use my own fetch() function to decide what happens on form submission
             event.preventDefault();
             // get form data
@@ -38,7 +38,7 @@
             // send POST request to the server
             fetch('/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'applications/json'}, // tells server im sending JSON formated data (just a label)
+                headers: { 'Content-Type': 'application/json'}, // tells server im sending JSON formated data (just a label)
                 body: JSON.stringify({username, password, remember}) // the data im sending (i saved it earlier in these elements)
             })
 
@@ -57,14 +57,15 @@
                 }
                 else{
                     // presents an error message on form submission fail (missing field...)
-                    // TODO: what errors should i check on form submission? and how?
+                    document.getElementById('error').style.display = 'block';
                     document.getElementById('error').textContent = data.message;
                 }
             })
 
             // handle errors
             .catch(error=> {
-                console.error('Error: ', error);
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Connection error. Please try again.';
             });
         });
     </script>
