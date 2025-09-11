@@ -13,9 +13,7 @@
 
             <label for="password">Password: </label>
             <input type="password" id="password" name="password" required><br><br>
-            <!-- TODO: make sure the server displays "remember me" checkbox correctly(using cookies in server.js)-->
-            <!-- The checkbox is always displayed, i only need the server to know how to display it (checked/not) -->
-            <!-- i need to use js to let the server know -->
+
             <input type="checkbox" id="rememberMe" name="rememberMe" value="true">
             <label for="rememberMe">remember me</label><br><br><br>
 
@@ -39,7 +37,7 @@
             fetch('/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'}, // tells server im sending JSON formated data (just a label)
-                body: JSON.stringify({username, password, remember}) // the data im sending (i saved it earlier in these elements)
+                body: JSON.stringify({ username, password, remember }) // the data im sending (i saved it earlier in these elements)
             })
 
             /** fetch() returns a *promise*, not immidiate results (the network requests take time)
