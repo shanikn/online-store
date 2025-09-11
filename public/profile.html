@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile</title>
+        <!-- adding a search bar icon (with Font Awesome library) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            .search-container{
+                position: relative;
+                display: inline-block;
+            }
+
+            .search-container input[type=text]{
+                padding: 10px, 40px, 10px, 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+
+            .search-container .fa-search{
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #aaa;
+                font-size: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- search bar with unclickable icon :( -->
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search..">
+            <i class="fa fa-search"></i>
+            <!-- <button id="searchButton">Search</button>
+            <ul id="searchResults"></ul> -->
+        </div>
+        <script>
+
+        </script>
+    </body>
+</html>

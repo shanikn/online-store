@@ -3,43 +3,84 @@
     <head>
         <!-- TODO: customize the styling(look up html form styling, maybe group fields with a legend?) -->
         <meta charset="UTF-8"/>
-        <title>Login Screen</title>
+        <title>ShaniknJewls Store</title>
         <style>
             body{
                 font-family: Arial, sans-serif;
-                max-width: 400px;
-                margin: 50px auto;
+                margin: 0;
                 padding: 20px;
+                background-color: #f9f9f9;
             }
 
-            form{
+            .header{
+                background: #4CAF50;
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .nav-menu{
+                display: flex;
+                gap: 15px;
+            }
+
+
+            .nav-menu a {
+                color: white;
+                text-decoration: none;
+                padding: 8px 15px;
+                border-radius: 4px;
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            /* menu hover color */
+            .nav-menu a:hover{
+                background: light pink;
+            }
+
+            .search-bar{
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .search-bar input{
+                width: 25%;
+                font-size: 18px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 16px;
+            }
+
+            /* form{
                 background: #f4f4f4;
                 padding: 20px;
                 border-radius: 8px;
-            }
+            } */
 
-            input[type="text"], input[type="password"]{
-                width: 100%;
-                padding: 8px;
-                margin: 5px 0;
-                box-sizing: border-box;
-            }
+            /* input[type="text"], input[type="password"]{ */
+                /* width: 100%; */
+                /* padding: 8px; */
+                /* margin: 5px 0; */
+                /* box-sizing: border-box; */
+            /* } */
 
             input[type="text"]:focus, input[type="password"]:focus{
-                /* light pink */
-                background-color: #FFD1DC ;
-                border: 3px solid #555;
+                border: 1px solid #555;
             }
 
 
-            input[type="submit"]{
+            /* input[type="submit"]{
                 background: #4CAF50;
                 color: white;
                 padding: 10px 20px;
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
-            }
+            } */
 
             p{
                 font-size: small;
@@ -47,23 +88,35 @@
         </style>
     </head>
     <body>
-        <form action="/login" method="POST" autocomplete="on">
-            <label for="username">Username: </label>
-            <input type="text" id="username" name="username" required><br><br>
-
-            <label for="password">Password: </label>
-            <input type="password" id="password" name="password" required><br><br>
-
-            <input type="checkbox" id="rememberMe" name="rememberMe" value="true">
-            <label for="rememberMe">remember me</label><br><br><br>
-
-            <input type="submit" value="submit">
+        <!-- TODO: create a *basic* menu for easy nev between screens -->
+        <!-- choose where it will be: always on top? 3 lines on the side that open when clicked? -->
+        <div id="sideNav" class="sideNav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times</a>
+            <a href="#">Store</a>
+            <a href="#">Wishlist</a>
+            <a href="#">Cart</a>
+            <a href="#">Store</a>
+        </div>
+        
+        <span style="font-size: 20px; cursor: pointer;" onclick="openNav()">&#9776;</span>
+        
+        <!-- TODO: add a search bar -->
+        <form action="/store" method="POST" autocomplete="on">
+            <!-- TODO: create an onkeyup function to have prefix search -->
+            <input type="text" id="search" onkeyup="" placeholder="Search..">
+            <button type="submit"><i class="fa fa-search"></i></button>
         </form><br>
 
         <p>New to ShaniknJewls? <a href="/register.html">Register here</a></p>
         <!-- display the error (after the form, right before the script)-->
         <div id="error" style="color: red; display: none;"></div>
     <script>
+        // open nav function(animation, not pushing)
+        function openNav(){
+            document.getElementById("")
+        }
+
+
             document.querySelector('form').addEventListener('submit', function(event){
             // "prevent default" so i can use my own fetch() function to decide what happens on form submission
             event.preventDefault();
