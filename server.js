@@ -28,7 +28,7 @@ app.use(express.static('public'));
 
 // authentication
 function requireAuth(req, res, next){
-    if(req.cookies.userToken) {
+    if(getCurrentUser(req)) {
         // the user is logged in=> continue
         next();
     }
@@ -38,17 +38,41 @@ function requireAuth(req, res, next){
     }
 }
 
-// IMPLEMENT: (implement later) 
 // get user from cookies
-function getCurrentUser(){
-
+function getCurrentUser(req){
+    return req.cookies.userToken || null;
 }
 
 
-// IMPLEMENT: more helper functions- rate limiting functions
+// more helper functions- rate limiting functions
+const requestCounts= {};
+const RATE_LIMIT= 100; //max requests
+const TIME_WINDOW= 60000;
 
+function rateLimiter(req, res, next){
+    const ip= req.ip;
+    const now= Date.now();
 
+    //init/clear old entries
+    if(!requestCounts[ip]){
+        requestCounts[ip]= [];
+    }
 
+    // remove requests which are older than TIME_WINDOW
+    requestCounts[ip]= requestCounts[ip].filter(time=> now-time<TIME_WINDOW);
+
+    // check rate limit (429=too many)
+    if(requestCounts[ip].length>=RATE_LIMIT){
+        return res.status(429).json({ error: 'Too many requests' });
+    }
+
+    // add the current request & continue
+    requestCounts[ip].push(now);
+    next();
+}
+
+// more middleware
+app.use(rateLimiter);
 
 
 // routes
@@ -96,7 +120,7 @@ app.post('/login', async(req, res)=> {
 
 app.post('/logout', async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
 
         // clear the cookie on logout
         res.clearCookie('userToken');
@@ -180,7 +204,7 @@ app.get('/api/products', requireAuth, async(req, res)=> {
 
 app.post('/api/cart/add', requireAuth, async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         const { productId }= req.body;
 
         // get the user cart
@@ -211,7 +235,7 @@ app.post('/api/cart/add', requireAuth, async(req, res)=> {
 // get user cart
 app.get('/api/cart', requireAuth, async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         const cart= await persist.loadCart(username);
         res.json(cart);
     }
@@ -223,7 +247,7 @@ app.get('/api/cart', requireAuth, async(req, res)=> {
 
 app.delete('/api/cart/remove/:productId', requireAuth, async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         const productId= parseInt(req.params.productId);
 
         let cart= await persist.loadCart(username);
@@ -240,9 +264,26 @@ app.delete('/api/cart/remove/:productId', requireAuth, async(req, res)=> {
 });
 
 
-// IMPLEMENT: update cart quantity (also for when clearing cart after purchase- resetting quanitity to 0)
+// update cart quantity (also for when clearing cart after purchase- resetting quanitity to 0)
 app.put('/api/cart/update', requireAuth, async(req, res)=> {
     try{
+        const username= getCurrentUser(req);
+        const { productId, quantity }= req.body;
+
+        let cart= await persist.loadCart(username);
+        const item= cart.find(item=> item.productId===productId);
+
+        if(item){
+            if(quantity===0){
+                cart= cart.filter(item=> item.productId!==productId);
+            }
+            else{
+                item.quantity= quantity;
+            }
+        }
+
+        await persist.saveCart(username, cart);
+        res.json({ success: true});
 
     }
     catch(error){
@@ -251,10 +292,12 @@ app.put('/api/cart/update', requireAuth, async(req, res)=> {
 });
 
 
-// IMPLEMENT: clear whole cart (after purchase)
+// clear whole cart (like after purchase)
 app.delete('/api/cart/clear', requireAuth, async(req, res)=> {
     try{
-
+        const username= getCurrentUser(req);
+        await persist.saveCart(username, []);
+        res.json({ success: true });
     }
     catch(error){
         res.status(500).json({ error: 'Failed to clear cart' });
@@ -262,10 +305,19 @@ app.delete('/api/cart/clear', requireAuth, async(req, res)=> {
 });
 
 
-// IMPLEMENT: search product in store
+// search a product in store
 app.get('/api/products/search', requireAuth, async(req, res)=> {
     try{
         // filter products by name/description
+        const { q }= req.query;
+        const products= await persist.loadProducts();
+
+        const filtered= products.filter(p=> 
+            p.name.toLowerCase().includes(q.toLowerCase()) || 
+            p.description.toLowerCase().includes(q.toLocaleLowerCase())
+        );
+        
+        res.json(filtered);
     }
     catch(error){
         res.status(500).json({ error: 'Failed to search product in store' });
@@ -296,7 +348,7 @@ app.post('/api/admin/products', requireAuth, async(req, res)=> {
             customizable: customizable || false
         });
 
-        await persist.logActivity(req.cookies.userToken, 'add-product', { productId: newProduct.id });
+        await persist.logActivity(getCurrentUser(req), 'add-product', { productId: newProduct.id });
         res.json({ success: true, product: newProduct });
     }
     catch(error){
@@ -310,7 +362,7 @@ app.delete('/api/admin/products/:id', requireAuth, async(req, res)=> {
         const productId= parseInt(req.params.id);
         await persist.removeProduct(productId);
 
-        await persist.logActivity(req.cookies.userToken, 'remove-product', { productId });
+        await persist.logActivity(getCurrentUser(req), 'remove-product', { productId });
         res.json({ success: true });
     }
     catch(error){
@@ -322,7 +374,7 @@ app.delete('/api/admin/products/:id', requireAuth, async(req, res)=> {
 
 app.post('/api/checkout', requireAuth, async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         // (fake payment)
         const { paymentDetails }= req.body;
 
@@ -373,7 +425,7 @@ app.post('/api/checkout', requireAuth, async(req, res)=> {
 
 app.get('/api/purchases', requireAuth, async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         const purchases= await persist.getPurchases(username);
         res.json(purchases);
     }
@@ -396,7 +448,7 @@ app.post('/api/contact', requireAuth, async(req, res)=> {
             email,
             message,
             timestamp: new Date().toISOString(),
-            from: req.cookies.userToken
+            from: getCurrentUser(req)
         });
 
         await persist.saveData('contacts.json', contacts);
@@ -410,7 +462,7 @@ app.post('/api/contact', requireAuth, async(req, res)=> {
 
 app.put('/api/profile', requireAuth, async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         const { newUsername, email }= req.body;
 
         const users= await persist.loadUsers();
@@ -431,7 +483,7 @@ app.put('/api/profile', requireAuth, async(req, res)=> {
 
 app.get('/api/wishlist', requireAuth, async(req, res)=> {
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         const wishlists= await persist.loadData('wishlists.json', {});
         res.json(wishlists[username] || []);
     }
@@ -441,10 +493,9 @@ app.get('/api/wishlist', requireAuth, async(req, res)=> {
 });
 
 
-// IMPLEMENT: add to wishlist
 app.post('/api/wishlist/add', requireAuth, async(req, res)=>{
     try{
-        const username= req.cookies.userToken;
+        const username= getCurrentUser(req);
         const { productId }= req.body;
 
         const wishlists= await persist.loadData('wishlists.json', {});

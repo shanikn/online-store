@@ -1,25 +1,66 @@
 <!DOCTYPE html>
-<!-- TODO: add an admin user in data folder(saved in filesystem) -->
 <html>
     <head>
-        <!-- TODO: add some styling(look up html form styling, maybe group fields with a legend?) -->
+        <!-- TODO: customize the styling(look up html form styling, maybe group fields with a legend?) -->
         <meta charset="UTF-8"/>
-        <title>login screen</title>
+        <title>Login Screen</title>
+        <style>
+            body{
+                font-family: Arial, sans-serif;
+                max-width: 400px;
+                margin: 50px auto;
+                padding: 20px;
+            }
+
+            form{
+                background: #f4f4f4;
+                padding: 20px;
+                border-radius: 8px;
+            }
+
+            input[type="text"], input[type="password"]{
+                width: 100%;
+                padding: 8px;
+                margin: 5px 0;
+                box-sizing: border-box;
+            }
+
+            input[type="text"]:focus, input[type="password"]:focus{
+                /* light pink */
+                background-color: #FFD1DC ;
+                border: 3px solid #555;
+            }
+
+
+            input[type="submit"]{
+                background: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            p{
+                font-size: small;
+            }
+        </style>
     </head>
     <body>
         <form action="/login" method="POST" autocomplete="on">
             <label for="username">Username: </label>
-            <input type="text" id="username" name="username" required><br><br>
+            <input type="text" id="username" name="username" placeholder="Your username" required><br><br>
 
             <label for="password">Password: </label>
-            <input type="password" id="password" name="password" required><br><br>
+            <input type="password" id="password" name="password" placeholder="Your password" required><br><br>
 
             <input type="checkbox" id="rememberMe" name="rememberMe" value="true">
             <label for="rememberMe">remember me</label><br><br><br>
 
             <input type="submit" value="submit">
-        </form>
+        </form><br>
 
+        <p>New to ShaniknJewls? <a href="/register.html">Register here</a></p>
         <!-- display the error (after the form, right before the script)-->
         <div id="error" style="color: red; display: none;"></div>
     <script>
@@ -51,7 +92,7 @@
             .then(data=> {
                 if(data.success){
                     // redirects user to store screen on form submission success
-                    window.location.href= '/store.html';
+                    window.location.href= data.redirect || '/store.html';
                 }
                 else{
                     // presents an error message on form submission fail (missing field...)
