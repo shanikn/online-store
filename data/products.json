@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Gold Hoop Earrings",
+    "description": "18k gold 3.2 cm diameter hoop earrings",
+    "price": 199.99,
+    "customizable": false,
+    "image": "https://via.placeholder.com/300x200?text=Gold+Hoop+Earrings"
+  },
+  {
+    "id": 2,
+    "name": "Silver Pendant Necklace",
+    "description": "Sterling silver pendant with 18 inch chain",
+    "price": 89.99,
+    "customizable": true,
+    "image": "https://via.placeholder.com/300x200?text=Silver+Pendant"
+  },
+  {
+    "id": 3,
+    "name": "Diamond Stud Earrings",
+    "description": "1/4 carat diamond studs in white gold setting",
+    "price": 499.99,
+    "customizable": false,
+    "image": "https://via.placeholder.com/300x200?text=Diamond+Studs"
+  },
+  {
+    "id": 4,
+    "name": "Pearl Bracelet",
+    "description": "Freshwater pearl bracelet with silver clasp",
+    "price": 149.99,
+    "customizable": true,
+    "image": "https://via.placeholder.com/300x200?text=Pearl+Bracelet"
+  },
+  {
+    "id": 5,
+    "name": "Rose Gold Ring",
+    "description": "14k rose gold band, available in multiple sizes",
+    "price": 299.99,
+    "customizable": true,
+    "image": "https://via.placeholder.com/300x200?text=Rose+Gold+Ring"
+  }
+]

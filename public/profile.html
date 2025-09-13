@@ -29,13 +29,23 @@
     </head>
     <body>
         <!-- search bar with unclickable icon :( -->
-        <div class="search-container">
+        <div class="search-bar">
             <input type="text" id="search" placeholder="Search..">
-            <i class="fa fa-search"></i>
+            <button onclick="searchProducts()">Search</button>
+            <button onclick="showAllProducts()">Show all</button>
+            <!-- <i class="fa fa-search"></i> -->
             <!-- <button id="searchButton">Search</button>
             <ul id="searchResults"></ul> -->
         </div>
+
+        <div id="successMessage" class="success"></div>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+
+        <div id="loading" class="loading">Loading products..</div>
+        <div id="productsContainer" class="products-grid"></div>
+        
         <script>
+
 
         </script>
     </body>
