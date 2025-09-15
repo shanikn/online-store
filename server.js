@@ -43,6 +43,18 @@ function requireAuth(req, res, next){
     }
 }
 
+// API authentication - for AJAX requests, return JSON instead of redirect
+function requireAuthAPI(req, res, next){
+    if(getCurrentUser(req)) {
+        // the user is logged in=> continue
+        next();
+    }
+    else{
+        // the user isn't logged in=> return 401 for API calls
+        res.status(401).json({ error: 'Authentication required', redirect: '/login.html' });
+    }
+}
+
 // get user from cookies
 function getCurrentUser(req){
     return req.cookies.userToken || null;
@@ -82,10 +94,10 @@ app.use(rateLimiter);
 
 // routes
 
-// basic routes (later i'll move some of them to modules) 
+// basic routes (later i'll move some of them to modules)
 app.get('/', (req, res)=> {
-    // (home page is /login.html)
-    res.redirect('/login.html');
+    // (home page is /store.html - users can browse without login)
+    res.redirect('/store.html');
 });
 
 
@@ -127,15 +139,17 @@ app.post('/logout', async(req, res)=> {
     try{
         const username= getCurrentUser(req);
 
-        // clear the cookie on logout
+        // clear the cookie on logout (multiple ways to ensure it's cleared)
         res.clearCookie('userToken');
+        res.clearCookie('userToken', { path: '/' });
+        res.clearCookie('userToken', { path: '/', domain: 'localhost' });
 
         // and log the logout itself in activity.json
         if(username){
             await persist.logActivity(username, 'logout');
         }
 
-        res.json({ success: true, redirect: '/login.html' });
+        res.json({ success: true, redirect: '/store.html' });
     }
     catch(error){
         console.error('Logout error: ', error);
@@ -176,9 +190,14 @@ app.post('/register', async(req, res)=> {
 
 
 
-// protected html pages (store, cart, admin)
-app.get('/store.html', requireAuth, (req, res)=> {
+// public pages (no auth required)
+app.get('/store.html', (req, res)=> {
     res.sendFile(path.join(__dirname, 'public', 'store.html'));
+});
+
+// protected html pages (cart, admin, profile)
+app.get('/products.html', (req, res)=> {
+    res.sendFile(path.join(__dirname, 'public', 'store.html')); // products and store are the same page
 });
 
 
@@ -192,10 +211,16 @@ app.get('/admin.html', requireAuth, (req, res)=> {
 });
 
 
+app.get('/profile.html', requireAuth, (req, res)=> {
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
+
+
 
 
 // API routes (AJAX)
-app.get('/api/products', requireAuth, async(req, res)=> {
+// Public API - no auth required for browsing products
+app.get('/api/products', async(req, res)=> {
     try{
         const products= await persist.loadProducts();
         res.json(products);
@@ -207,7 +232,7 @@ app.get('/api/products', requireAuth, async(req, res)=> {
 });
 
 
-app.post('/api/cart/add', requireAuth, async(req, res)=> {
+app.post('/api/cart/add', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const { productId }= req.body;
@@ -238,7 +263,7 @@ app.post('/api/cart/add', requireAuth, async(req, res)=> {
 });
 
 // get user cart
-app.get('/api/cart', requireAuth, async(req, res)=> {
+app.get('/api/cart', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const cart= await persist.loadCart(username);
@@ -250,7 +275,7 @@ app.get('/api/cart', requireAuth, async(req, res)=> {
 });
 
 
-app.delete('/api/cart/remove/:productId', requireAuth, async(req, res)=> {
+app.delete('/api/cart/remove/:productId', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const productId= parseInt(req.params.productId);
@@ -270,7 +295,7 @@ app.delete('/api/cart/remove/:productId', requireAuth, async(req, res)=> {
 
 
 // update cart quantity (also for when clearing cart after purchase- resetting quanitity to 0)
-app.put('/api/cart/update', requireAuth, async(req, res)=> {
+app.put('/api/cart/update', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const { productId, quantity }= req.body;
@@ -298,7 +323,7 @@ app.put('/api/cart/update', requireAuth, async(req, res)=> {
 
 
 // clear whole cart (like after purchase)
-app.delete('/api/cart/clear', requireAuth, async(req, res)=> {
+app.delete('/api/cart/clear', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         await persist.saveCart(username, []);
@@ -310,18 +335,18 @@ app.delete('/api/cart/clear', requireAuth, async(req, res)=> {
 });
 
 
-// search a product in store
-app.get('/api/products/search', requireAuth, async(req, res)=> {
+// search a product in store - public API
+app.get('/api/products/search', async(req, res)=> {
     try{
         // filter products by name/description
         const { q }= req.query;
         const products= await persist.loadProducts();
 
-        const filtered= products.filter(p=> 
-            p.name.toLowerCase().includes(q.toLowerCase()) || 
+        const filtered= products.filter(p=>
+            p.name.toLowerCase().includes(q.toLowerCase()) ||
             p.description.toLowerCase().includes(q.toLocaleLowerCase())
         );
-        
+
         res.json(filtered);
     }
     catch(error){
@@ -330,7 +355,7 @@ app.get('/api/products/search', requireAuth, async(req, res)=> {
 });
 
 
-app.get('/api/admin/activities', requireAuth, async(req, res)=> {
+app.get('/api/admin/activities', requireAuthAPI, async(req, res)=> {
     try{
         // username filter from admin panel
         const { filter }= req.query;
@@ -343,7 +368,7 @@ app.get('/api/admin/activities', requireAuth, async(req, res)=> {
 });
 
 
-app.post('/api/admin/products', requireAuth, async(req, res)=> {
+app.post('/api/admin/products', requireAuthAPI, async(req, res)=> {
     try{
         const { name, description, price, customizable }= req.body;
         const newProduct= await persist.addProduct({
@@ -362,7 +387,7 @@ app.post('/api/admin/products', requireAuth, async(req, res)=> {
 });
 
 
-app.delete('/api/admin/products/:id', requireAuth, async(req, res)=> {
+app.delete('/api/admin/products/:id', requireAuthAPI, async(req, res)=> {
     try{
         const productId= parseInt(req.params.id);
         await persist.removeProduct(productId);
@@ -377,7 +402,7 @@ app.delete('/api/admin/products/:id', requireAuth, async(req, res)=> {
 
 
 
-app.post('/api/checkout', requireAuth, async(req, res)=> {
+app.post('/api/checkout', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         // (fake payment)
@@ -428,7 +453,7 @@ app.post('/api/checkout', requireAuth, async(req, res)=> {
 
 
 
-app.get('/api/purchases', requireAuth, async(req, res)=> {
+app.get('/api/purchases', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const purchases= await persist.getPurchases(username);
@@ -440,9 +465,30 @@ app.get('/api/purchases', requireAuth, async(req, res)=> {
 });
 
 
+// get current user info for profile page
+app.get('/api/users/current', requireAuthAPI, async(req, res)=> {
+    try{
+        const username= getCurrentUser(req);
+        const users= await persist.loadUsers();
+        const user= users.find(u=> u.username === username);
+
+        if(user){
+            // don't send password in response
+            const { password, ...userInfo } = user;
+            res.json(userInfo);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    }
+    catch(error){
+        res.status(500).json({ error: 'Failed to load user info' });
+    }
+});
+
+
 // extra pages
 
-app.post('/api/contact', requireAuth, async(req, res)=> {
+app.post('/api/contact', requireAuthAPI, async(req, res)=> {
     try{
         const { name, email, message }= req.body;
         const contacts= await persist.loadData('contacts.json', []);
@@ -465,7 +511,7 @@ app.post('/api/contact', requireAuth, async(req, res)=> {
 })
 
 
-app.put('/api/profile', requireAuth, async(req, res)=> {
+app.put('/api/profile', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const { newUsername, email }= req.body;
@@ -486,7 +532,7 @@ app.put('/api/profile', requireAuth, async(req, res)=> {
 });
 
 
-app.get('/api/wishlist', requireAuth, async(req, res)=> {
+app.get('/api/wishlist', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const wishlists= await persist.loadData('wishlists.json', {});
@@ -498,7 +544,7 @@ app.get('/api/wishlist', requireAuth, async(req, res)=> {
 });
 
 
-app.post('/api/wishlist/add', requireAuth, async(req, res)=>{
+app.post('/api/wishlist/add', requireAuthAPI, async(req, res)=>{
     try{
         const username= getCurrentUser(req);
         const { productId }= req.body;

@@ -117,7 +117,7 @@ Server URL: http://127.0.0.1:5000/
 - **Admin dashboard** with activity logs, product management, and user filtering
 - **Activity logging** for login/logout/add-to-cart events with timestamps
 - **DOS protection** with rate limiting middleware
-- **Navigation system** with consistent hamburger menu across all pages
+- **Navigation system** with dynamic authentication-aware menus across all pages
 - **Comprehensive testing** with 18 automated tests using node-fetch
 - **Project documentation** with individual work report and setup instructions
 
@@ -146,31 +146,57 @@ All PDF requirements have been successfully implemented and tested. The applicat
 - Comprehensive test suite passing
 - All documentation complete
 
+## Authentication Flow
+
+### User Experience
+- **Home page**: Users land on `/store.html` and can browse products without login
+- **Product browsing**: Search and view products works without authentication
+- **Cart actions**: Clicking "Add to Cart" redirects to login if not authenticated
+- **Navigation**: Menu dynamically shows different options based on login status:
+  - **Not logged in**: Store, About, Contact, Login, Register
+  - **Logged in**: Store, Cart, Wishlist, About, Contact, Profile, Admin, Logout
+- **Auto-redirect**: After login, users return to their intended action
+
+### Authentication Implementation
+- Cookie-based authentication using `userToken` cookie
+- Admin user automatically created on first server run
+- Session duration: 30 minutes (default) or 12 days (remember me)
+
 ## Route Structure
 
 ### Public Routes (No Auth Required)
-- GET `/` - Redirects to login
+- GET `/` - Redirects to store (users can browse without login)
+- GET `/store.html` - Product catalog (public browsing)
+- GET `/products.html` - Same as store (alias)
 - GET `/login.html` - Login page
 - GET `/register.html` - Registration page
 - GET `/readme.html` - Project documentation
 - GET `/llm.html` - LLM code documentation
+- GET `/api/products` - Get all products (public API)
+- GET `/api/products/search` - Product search (public API)
 - POST `/login` - Authentication endpoint
 - POST `/register` - User registration endpoint
 
 ### Protected Routes (Auth Required)
-- GET `/store.html` - Product catalog
 - GET `/cart.html` - Shopping cart
 - GET `/checkout.html` - Payment page
 - GET `/admin.html` - Admin panel
-- GET `/api/products` - Get all products
-- POST `/api/cart/add` - Add to cart
+- GET `/profile.html` - User profile
+- POST `/api/cart/add` - Add to cart (redirects to login if not authenticated)
 - DELETE `/api/cart/remove` - Remove from cart
-- GET `/api/products/search` - Product search with query parameter
+- PUT `/api/cart/update` - Update cart quantities
+- DELETE `/api/cart/clear` - Clear entire cart
+- GET `/api/cart` - Get user's cart contents
 - POST `/api/checkout` - Process payment
-- GET `/api/admin/activity` - Get activity logs (with optional username filter)
+- GET `/api/admin/activities` - Get activity logs (with optional username filter)
 - POST `/api/admin/products` - Add product
 - DELETE `/api/admin/products/:id` - Remove product
-- GET `/api/user/purchases` - Get user's purchase history ("My Items")
+- GET `/api/purchases` - Get user's purchase history
+- GET `/api/users/current` - Get current user info
+- PUT `/api/profile` - Update user profile
+- POST `/api/contact` - Submit contact form
+- GET `/api/wishlist` - Get user wishlist
+- POST `/api/wishlist/add` - Add to wishlist
 
 ## Security Considerations
 - Never store passwords in plain text
@@ -179,3 +205,44 @@ All PDF requirements have been successfully implemented and tested. The applicat
 - Sanitize data before storing in JSON files
 - Use secure cookie settings
 - Validate file paths to prevent directory traversal
+
+## Project Submission
+
+### Files to Include in Submission Zip
+```
+/online_store
+  /public           - All HTML pages (required)
+    - login.html
+    - register.html
+    - store.html
+    - cart.html
+    - checkout.html
+    - admin.html
+    - about.html
+    - contact.html
+    - wishlist.html
+    - profile.html
+    - readme.html
+  server.js         - Main server file (required)
+  persist_module.js - Data handling module (required)
+  test.js          - Test suite (required)
+  package.json     - Dependencies and scripts (required)
+  CLAUDE.md        - Project documentation (required)
+  PROJECT_QA.md    - Q&A documentation (optional)
+```
+
+### Files to EXCLUDE from Submission
+- `/node_modules` - Teacher will run `npm install`
+- `/client` - React leftovers not part of vanilla project
+- `/data` - Admin user auto-creates, not needed
+- IDE files (.vscode, .idea, etc.)
+- Cache files
+
+### Teacher Setup Instructions
+1. Extract the submission zip file
+2. Run `npm install` to install dependencies
+3. Run `node server.js` to start the server
+4. Visit `http://127.0.0.1:5000/`
+5. Login with username: `admin`, password: `admin`
+
+**Note:** Admin account is automatically created on first server run - no pre-existing data files needed.

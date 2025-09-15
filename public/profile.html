@@ -1,52 +1,568 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8"/>
         <title>Profile</title>
-        <!-- adding a search bar icon (with Font Awesome library) -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Font Awesome for icons <3 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
-            .search-container{
-                position: relative;
-                display: inline-block;
+            body{
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                background-color: #f9f9f9;
             }
 
-            .search-container input[type=text]{
-                padding: 10px, 40px, 10px, 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
+            .header{
+                background: none;
+                color: black;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+
+            .header h1{
+                margin: 0;
+            }
+
+            /* menu button */
+            .menu{
+                position: fixed;
+                top: 35px;
+                left: 20px;
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                background: none;
+                border: none;
+                padding: 5px;
+                z-index: 1002;
+            }
+
+            .menu span{
+                display: block;
+                width: 25px;
+                height: 3px;
+                background: black;
+                margin: 3px 0;
+            }
+
+            /* side menu */
+            .side-menu{
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 280px;
+                height: 100vh;
+                background: green;
+                transition: left 0.3s ease;
+                z-index: 1000;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+                overflow-y: auto;
+                padding-top: 80px;
+            }
+
+            .side-menu.active{
+                left: 0;
+            }
+
+            .side-menu a{
+                display: block;
+                color: white;
+                text-decoration: none;
+                padding: 15px 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                transition: background 0.3s;
+            }
+
+            .side-menu a:hover{
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            .side-menu button{
+                width: calc(100% - 40px);
+                margin: 15px 20px;
+                background: gray;
+                color: white;
+                border: none;
+                padding: 12px;
+                border-radius: 4px;
+                cursor: pointer;
                 font-size: 16px;
             }
 
-            .search-container .fa-search{
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #aaa;
+            /* overlay */
+            .menu-overlay{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                z-index: 999;
+            }
+
+            .menu-overlay.active{
+                display: block;
+            }
+
+            .container{
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .profile-section{
+                background: white;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 30px;
+            }
+
+            .profile-section h2{
+                color: #333;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #4CAF50;
+                padding-bottom: 10px;
+            }
+
+            .profile-info{
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+            .info-item{
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 6px;
+                border-left: 4px solid #4CAF50;
+            }
+
+            .info-item label{
+                font-weight: bold;
+                color: #666;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .info-item span{
+                color: #333;
+                font-size: 16px;
+            }
+
+            .edit-form{
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+
+            .form-group{
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-group label{
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 8px;
+            }
+
+            .form-group input{
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+
+            .form-group input:focus{
+                border-color: #4CAF50;
+                outline: none;
+            }
+
+            .btn{
+                background: #4CAF50;
+                color: white;
+                padding: 12px 30px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background 0.3s;
+            }
+
+            .btn:hover{
+                background: #45a049;
+            }
+
+            .btn-secondary{
+                background: #6c757d;
+                margin-left: 10px;
+            }
+
+            .btn-secondary:hover{
+                background: #5a6268;
+            }
+
+            .purchase-item{
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 6px;
+                margin-bottom: 15px;
+                border-left: 4px solid #17a2b8;
+            }
+
+            .purchase-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+
+            .purchase-id{
+                font-weight: bold;
+                color: #333;
+            }
+
+            .purchase-date{
+                color: #666;
+                font-size: 14px;
+            }
+
+            .purchase-total{
+                font-weight: bold;
+                color: #28a745;
                 font-size: 18px;
+            }
+
+            .purchase-items{
+                margin-top: 10px;
+            }
+
+            .item{
+                padding: 8px 0;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .item:last-child{
+                border-bottom: none;
+            }
+
+            .success{
+                background: #d4edda;
+                color: #155724;
+                padding: 12px;
+                border-radius: 4px;
+                margin-bottom: 20px;
+                border: 1px solid #c3e6cb;
+                display: none;
+            }
+
+            .error{
+                background: #f8d7da;
+                color: #721c24;
+                padding: 12px;
+                border-radius: 4px;
+                margin-bottom: 20px;
+                border: 1px solid #f5c6cb;
+                display: none;
+            }
+
+            .loading{
+                text-align: center;
+                padding: 50px;
+                color: #666;
+            }
+
+            @media (max-width: 768px) {
+                .profile-info, .edit-form{
+                    grid-template-columns: 1fr;
+                }
             }
         </style>
     </head>
     <body>
-        <!-- search bar with unclickable icon :( -->
-        <div class="search-bar">
-            <input type="text" id="search" placeholder="Search..">
-            <button onclick="searchProducts()">Search</button>
-            <button onclick="showAllProducts()">Show all</button>
-            <!-- <i class="fa fa-search"></i> -->
-            <!-- <button id="searchButton">Search</button>
-            <ul id="searchResults"></ul> -->
+        <!-- header with menu -->
+        <div class="header">
+            <button class="menu" id="menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1>ShanikJewls - Profile</h1>
         </div>
 
-        <div id="successMessage" class="success"></div>
-        <div id="errorMessage" class="error" style="display: none;"></div>
+        <!-- side menu -->
+        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        <div class="side-menu" id="sideMenu">
+            <!-- Dynamic navigation will be populated by JavaScript -->
+        </div>
 
-        <div id="loading" class="loading">Loading products..</div>
-        <div id="productsContainer" class="products-grid"></div>
-        
+        <div class="container">
+            <div id="successMessage" class="success"></div>
+            <div id="errorMessage" class="error"></div>
+
+            <!-- Profile Information Section -->
+            <div class="profile-section">
+                <h2>Account Information</h2>
+                <div class="profile-info">
+                    <div class="info-item">
+                        <label>Username:</label>
+                        <span id="currentUsername">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Email:</label>
+                        <span id="currentEmail">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Role:</label>
+                        <span id="currentRole">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Member Since:</label>
+                        <span id="memberSince">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Profile Section -->
+            <div class="profile-section">
+                <h2>Edit Profile</h2>
+                <form id="profileForm">
+                    <div class="edit-form">
+                        <div class="form-group">
+                            <label for="newUsername">New Username:</label>
+                            <input type="text" id="newUsername" name="newUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newEmail">Email Address:</label>
+                            <input type="email" id="newEmail" name="newEmail" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Update Profile</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+                </form>
+            </div>
+
+            <!-- Purchase History Section -->
+            <div class="profile-section">
+                <h2>Order History</h2>
+                <div id="purchaseHistory">
+                    <div class="loading">Loading purchase history...</div>
+                </div>
+            </div>
+        </div>
+
         <script>
+            let currentUser = null;
+            let isAuthenticated = false;
 
+            document.addEventListener('DOMContentLoaded', function() {
+                checkAuthStatus();
+                loadUserProfile();
+                loadPurchaseHistory();
+            });
 
+            function toggleMenu(){
+                const menu = document.getElementById('menu');
+                const sideMenu = document.getElementById('sideMenu');
+                const overlay = document.getElementById('menuOverlay');
+
+                menu.classList.toggle('active');
+                sideMenu.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            async function checkAuthStatus(){
+                try{
+                    const response = await fetch('/api/users/current');
+                    isAuthenticated = response.ok;
+                    updateNavigation();
+                } catch(error){
+                    isAuthenticated = false;
+                    updateNavigation();
+                }
+            }
+
+            function updateNavigation(){
+                const sideMenu = document.getElementById('sideMenu');
+
+                if(isAuthenticated){
+                    sideMenu.innerHTML = `
+                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                        <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                        <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                        <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+                        <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
+                        <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+                    `;
+                } else {
+                    sideMenu.innerHTML = `
+                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                        <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                        <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
+                        <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
+                        <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
+                    `;
+                }
+            }
+
+            async function loadUserProfile(){
+                try{
+                    // TODO: what do you mean 'for now'? do i need to change it before submitting the project?
+                    // get current user info from cookie (we'll need to add an endpoint for this)
+                    // for now, we'll get it from the username in cookie
+                    const users = await fetch('/api/users/current');
+                    if(!users.ok) throw new Error('Failed to get user info');
+
+                    const userData = await users.json();
+                    currentUser = userData;
+
+                    document.getElementById('currentUsername').textContent = userData.username;
+                    document.getElementById('currentEmail').textContent = userData.email || 'Not set';
+                    document.getElementById('currentRole').textContent = userData.role || 'user';
+                    document.getElementById('memberSince').textContent = new Date(userData.createdAt).toLocaleDateString();
+
+                    // pre-fill the edit form
+                    document.getElementById('newUsername').value = userData.username;
+                    document.getElementById('newEmail').value = userData.email || '';
+                }
+                catch(error){
+                    console.error('Error loading profile:', error);
+                    showError('Failed to load profile information');
+                }
+            }
+
+            async function loadPurchaseHistory(){
+                try{
+                    const response = await fetch('/api/purchases');
+                    if(!response.ok) throw new Error('Failed to load purchases');
+
+                    const purchases = await response.json();
+                    displayPurchases(purchases);
+                }
+                catch(error){
+                    console.error('Error loading purchases:', error);
+                    document.getElementById('purchaseHistory').innerHTML =
+                        '<div class="error">Failed to load purchase history</div>';
+                }
+            }
+
+            function displayPurchases(purchases){
+                const container = document.getElementById('purchaseHistory');
+
+                if(purchases.length === 0){
+                    container.innerHTML = '<p>No purchases yet. <a href="/store.html">Start shopping!</a></p>';
+                    return;
+                }
+
+                container.innerHTML = purchases.map(purchase => `
+                    <div class="purchase-item">
+                        <div class="purchase-header">
+                            <div class="purchase-id">Order #${purchase.id}</div>
+                            <div class="purchase-date">${new Date(purchase.timeStamp).toLocaleDateString()}</div>
+                            <div class="purchase-total">₪${purchase.total.toFixed(2)}</div>
+                        </div>
+                        <div class="purchase-items">
+                            ${purchase.items.map(item => `
+                                <div class="item">
+                                    <span>${item.name} x${item.quantity}</span>
+                                    <span>₪${item.itemTotal.toFixed(2)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('profileForm').addEventListener('submit', async function(e){
+                e.preventDefault();
+
+                const newUsername = document.getElementById('newUsername').value;
+                const newEmail = document.getElementById('newEmail').value;
+
+                try{
+                    const response = await fetch('/api/profile', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            newUsername: newUsername,
+                            email: newEmail
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if(data.success){
+                        showSuccess('Profile updated successfully!');
+                        // reload profile info
+                        loadUserProfile();
+                    } else {
+                        showError(data.message || 'Failed to update profile');
+                    }
+                }
+                catch(error){
+                    console.error('Error updating profile:', error);
+                    showError('Connection error. Please try again.');
+                }
+            });
+
+            function resetForm(){
+                if(currentUser){
+                    document.getElementById('newUsername').value = currentUser.username;
+                    document.getElementById('newEmail').value = currentUser.email || '';
+                }
+            }
+
+            async function logout(){
+                try{
+                    const response = await fetch('/logout', {
+                        method: 'POST'
+                    });
+
+                    const data = await response.json();
+                    if(data.success){
+                        window.location.reload();
+                    }
+                }
+                catch(error){
+                    console.error('Logout error:', error);
+                }
+            }
+
+            function showSuccess(message){
+                const successDiv = document.getElementById('successMessage');
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+                setTimeout(() => {
+                    successDiv.style.display = 'none';
+                }, 3000);
+            }
+
+            function showError(message){
+                const errorDiv = document.getElementById('errorMessage');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
         </script>
     </body>
 </html>

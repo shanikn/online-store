@@ -1,44 +1,19 @@
 # Project Q&A Documentation - ShaniknJewls Online Store
 
 ## 1. Why are there 2 different node_modules directories?
+Root node_modules is for my express.js backend- it has dependencies for it (cookie-parser, express, cors, node-fetch)
 
-**Answer:** You have two node_modules because:
-- **Root node_modules** (`/node_modules/`) - Contains server-side dependencies for your Express.js backend (cookie-parser, express, cors, node-fetch)
-- **Client node_modules** (`/client/node_modules/`) - Was created when we started (but then abandoned) the React conversion. This is NOT needed for your project.
-
-**Action:** You can safely delete the entire `/client` directory - it's leftover from the React attempt we didn't complete.
+If you don't use React in your project- you can delete `/client` directory.
+(Deleted)
 
 ## 2. Is the cookie name 'userToken' standard? Should I personalize it?
-
-**Answer:**
-- `userToken` is a generic but acceptable name
-- Common alternatives: `sessionId`, `authToken`, `sid`, `auth`
-- You CAN personalize it to `shaniknjewls_session` or `snj_auth` if you want
-- **Important:** If you change it, update it everywhere in server.js (currently appears in ~5 places)
+I can change it but it's ok like this.
 
 ## 3. What's the user-accessible UI customization in my project?
+// TODO: add user customizable feature
+I need to add UI customization option- like a dark mode toggle, image resizing...
 
-**Answer:** Currently, your project has minimal UI customization:
-- **What's implemented:** Remember username feature (localStorage)
-- **What's missing:** Theme customization (like dark mode)
-- **PDF Requirement:** "User-configurable theme stored in localStorage"
-
-To fully meet requirements, you could add a simple dark mode toggle that saves preference in localStorage. This would satisfy the "UI customization" requirement your teacher mentioned.
-
-## 4. Why was the client directory created with React files?
-
-**Answer:**
-- We started converting your project to React (modern framework) midway through
-- You decided to stick with vanilla HTML/JS to meet your deadline
-- The `/client` directory contains an incomplete React setup:
-  - `node_modules` - React dependencies
-  - `public` - React's public assets folder
-  - `src` - React source code
-  - `package.json` - React project configuration
-
-**Action:** DELETE the entire `/client` folder - it's not part of your working project.
-
-## 5. What node_modules are actually used in your project?
+## 4. What node_modules are actually used in your project?
 
 **Your project uses these npm packages:**
 
@@ -51,15 +26,7 @@ To fully meet requirements, you could add a simple dark mode toggle that saves p
 
 These are installed in your root `/node_modules` directory and listed in `/package.json`.
 
-## 6. Should we rename one of the 'public' directories?
-
-**Answer:**
-- **Root `/public`** - Your ACTUAL project files (all HTML pages)
-- **Client `/client/public`** - React's public folder (NOT USED)
-
-**Solution:** Delete the entire `/client` directory. This removes the confusion entirely. You only need the root `/public` folder.
-
-## 7. What are the files in client/public/?
+## 5. What are the files in client/public/?
 
 The `/client/public/` contains React boilerplate files:
 - `index.html` - React's root HTML file
@@ -67,9 +34,9 @@ The `/client/public/` contains React boilerplate files:
 - `robots.txt` - Search engine instructions
 - `favicon.ico` - React's default icon
 
-**These are NOT used in your project.** They're React-specific files that can be deleted.
+**These are NOT used in your current version of the project.**
 
-## 8. What is DOS and what attacks do you protect against?
+## 6. What is DOS and what attacks do you protect against?
 
 **DOS = Denial of Service** - Attacks that try to make your website unavailable by overwhelming it.
 
@@ -92,6 +59,96 @@ const TIME_WINDOW = 60000;  // Per 60 seconds
 ```
 
 This prevents attackers from overwhelming your server with automated requests.
+
+## 7. How do I save my admin user in the filesystem so it exists from the start?
+
+**Your admin user is automatically created!** It's built into your code in `persist_module.js` lines 57-65:
+
+```javascript
+// In loadUsers() function
+if(!users.find(u=> u.username==='admin')){
+    users.push({
+        username: 'admin',
+        password: 'admin',
+        role: 'admin',
+        createdAt: new Date().toISOString()
+    });
+    await saveUsers(users);
+}
+```
+
+**This means:** Even if you submit a completely clean project with no `/data` folder, your teacher can still login with username: `admin`, password: `admin`. The admin account will be automatically created the first time the server runs and someone tries to login.
+
+## 8. What error types can occur on form submission?
+
+**Client-side validation errors (before server):**
+- Missing required fields (username, password, email)
+- Passwords don't match (register page)
+- Invalid email format (missing @ or domain)
+
+**Server-side errors (from server response):**
+- Username already exists (registration)
+- Invalid credentials (login)
+- Server error (500 - database issues)
+- Rate limiting (429 - too many requests)
+- Session expired (401 - unauthorized)
+
+**Network errors:**
+- Connection timeout
+- Server unreachable
+- CORS errors (if misconfigured)
+
+## 9. What does package.json consist of and why?
+
+**Your package.json contains:**
+
+```json
+{
+  "name": "online-store",           // Project name
+  "version": "1.0.0",               // Version number
+  "description": "RUNI 2025...",    // Project description
+  "main": "server.js",              // Entry point file
+  "scripts": {                      // Command shortcuts
+    "start": "node server.js",      // npm start runs server
+    "test": "node test.js"          // npm test runs tests
+  },
+  "dependencies": {                 // Required packages
+    "cookie-parser": "^1.4.6",     // For parsing cookies
+    "cors": "^2.8.5",               // For cross-origin requests
+    "express": "^4.21.1",           // Web framework
+    "node-fetch": "^2.7.0"          // For HTTP requests in tests
+  }
+}
+```
+
+**Why each part matters:**
+- **name/version**: Identifies your project
+- **main**: Tells Node.js which file to run
+- **scripts**: Shortcuts for common commands
+- **dependencies**: Lists packages to install with `npm install`
+
+## 10. What other node_modules could improve my project?
+
+**Security & Validation:**
+- `helmet` - Adds security headers to protect against attacks
+- `express-validator` - Better input validation
+- `bcrypt` - Password hashing (instead of plain text)
+- `express-rate-limit` - Better rate limiting
+
+**Development:**
+- `nodemon` - Auto-restarts server when you edit files
+- `dotenv` - Manages environment variables
+- `morgan` - HTTP request logging
+
+**Database (if upgrading from JSON):**
+- `mongoose` - MongoDB integration
+- `sequelize` - SQL database ORM
+
+**Example to add bcrypt for password security:**
+```bash
+npm install bcrypt
+```
+Then hash passwords before storing and compare hashes on login.
 
 ---
 

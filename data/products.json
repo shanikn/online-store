@@ -1,42 +1,19 @@
 [
-  {
-    "id": 1,
-    "name": "Gold Hoop Earrings",
-    "description": "18k gold 3.2 cm diameter hoop earrings",
-    "price": 199.99,
-    "customizable": false,
-    "image": "https://via.placeholder.com/300x200?text=Gold+Hoop+Earrings"
-  },
-  {
-    "id": 2,
-    "name": "Silver Pendant Necklace",
-    "description": "Sterling silver pendant with 18 inch chain",
-    "price": 89.99,
-    "customizable": true,
-    "image": "https://via.placeholder.com/300x200?text=Silver+Pendant"
-  },
-  {
-    "id": 3,
-    "name": "Diamond Stud Earrings",
-    "description": "1/4 carat diamond studs in white gold setting",
-    "price": 499.99,
-    "customizable": false,
-    "image": "https://via.placeholder.com/300x200?text=Diamond+Studs"
-  },
-  {
-    "id": 4,
-    "name": "Pearl Bracelet",
-    "description": "Freshwater pearl bracelet with silver clasp",
-    "price": 149.99,
-    "customizable": true,
-    "image": "https://via.placeholder.com/300x200?text=Pearl+Bracelet"
-  },
-  {
-    "id": 5,
-    "name": "Rose Gold Ring",
-    "description": "14k rose gold band, available in multiple sizes",
-    "price": 299.99,
-    "customizable": true,
-    "image": "https://via.placeholder.com/300x200?text=Rose+Gold+Ring"
-  }
+  { "id": 1, "name": "Gold Hoop Earrings", "description":"18k gold 3.2cm diameter classic hoop earrings", "price": 199.99, "customizable": false, "image": "https://images.unsplash.com/photo-1685969936251-f8dd7a0c03d1?w=400&h=400&fit=crop"},
+  { "id": 2, "name": "Silver Chain Necklace", "description":"Sterling silver 45cm delicate chain necklace", "price": 89.99, "customizable": true, "image": "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=400&h=400&fit=crop"},
+  { "id": 3, "name": "Gold Diamond Ring", "description":"14k gold solitaire ring with 0.5ct diamond", "price": 899.99, "customizable": true, "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop"},
+  { "id": 4, "name": "Silver Stud Earrings", "description":"Sterling silver cubic zirconia stud earrings", "price": 45.99, "customizable": false, "image": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=400&h=400&fit=crop"},
+  { "id": 5, "name": "Gold Tennis Bracelet", "description":"18k gold tennis bracelet with crystal stones", "price": 299.99, "customizable": false, "image": "https://images.unsplash.com/photo-1626460117609-e5b8a8212c8b?w=400&h=400&fit=crop"},
+  { "id": 6, "name": "Silver Pendant Necklace", "description":"Sterling silver heart pendant with chain", "price": 69.99, "customizable": true, "image": "https://images.unsplash.com/photo-1596944946571-13716a06b18c?w=400&h=400&fit=crop"},
+  { "id": 7, "name": "Gold Stackable Rings", "description":"14k gold thin stackable rings set of 3", "price": 149.99, "customizable": true, "image": "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400&h=400&fit=crop"},
+  { "id": 8, "name": "Silver Cuff Bracelet", "description":"Sterling silver adjustable cuff bracelet", "price": 79.99, "customizable": false, "image": "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=400&fit=crop"},
+  { "id": 9, "name": "Gold Drop Earrings", "description":"18k gold elegant drop earrings with pearls", "price": 249.99, "customizable": false, "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop"},
+  { "id": 10, "name": "Silver Charm Bracelet", "description":"Sterling silver charm bracelet with 5 charms", "price": 119.99, "customizable": true, "image": "https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?w=400&h=400&fit=crop"},
+  { "id": 11, "name": "Gold Infinity Necklace", "description":"14k gold infinity symbol pendant necklace", "price": 179.99, "customizable": true, "image": "https://images.unsplash.com/photo-1588444837613-c5c3c9a47f08?w=400&h=400&fit=crop"},
+  { "id": 12, "name": "Silver Statement Ring", "description":"Sterling silver large statement ring with stones", "price": 95.99, "customizable": false, "image": "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=400&fit=crop"},
+  { "id": 13, "name": "Gold Ankle Bracelet", "description":"18k gold delicate ankle chain bracelet", "price": 129.99, "customizable": false, "image": "https://images.unsplash.com/photo-1626460117609-e5b8a8212c8b?w=400&h=400&fit=crop"},
+  { "id": 14, "name": "Silver Pearl Earrings", "description":"Sterling silver freshwater pearl drop earrings", "price": 85.99, "customizable": false, "image": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=400&h=400&fit=crop"},
+  { "id": 15, "name": "Gold Vintage Ring", "description":"14k gold vintage-style engagement ring", "price": 699.99, "customizable": true, "image": "https://images.unsplash.com/photo-1603561596112-6a132309c8ea?w=400&h=400&fit=crop"},
+  { "id": 16, "name": "Silver Choker Necklace", "description":"Sterling silver adjustable choker necklace", "price": 55.99, "customizable": false, "image": "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=400&h=400&fit=crop"},
+  { "id": 17, "name": "Gold Bangle Set", "description":"18k gold thin bangle bracelets set of 4", "price": 329.99, "customizable": false, "image": "https://images.unsplash.com/photo-1626460117609-e5b8a8212c8b?w=400&h=400&fit=crop"}
 ]

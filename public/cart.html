@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Shopping Cart - ShaniknJewls</title>
+    <title>Shopping Cart</title>
+    <!-- Font Awesome for icons <3 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -317,14 +319,7 @@
 
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="sideMenu">
-        <a href="/store.html">Store</a>
-        <a href="/cart.html">Cart</a>
-        <a href="/wishlist.html">Wishlist</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/profile.html">Profile</a>
-        <a href="/admin.html">Admin</a>
-        <button onclick="logout()">Logout</button>
+        <!-- Dynamic navigation will be populated by JavaScript -->
     </div>
 
     <div id="successMessage" class="success"></div>
@@ -338,8 +333,10 @@
     <script>
         let cartItems = [];
         let products = [];
+        let isAuthenticated = false;
 
         document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
             loadCart();
             loadProducts();
         });
@@ -352,6 +349,45 @@
             menu.classList.toggle('active');
             sideMenu.classList.toggle('active');
             overlay.classList.toggle('active');
+        }
+
+        async function checkAuthStatus(){
+            try{
+                const response = await fetch('/api/users/current');
+                isAuthenticated = response.ok;
+                updateNavigation();
+            } catch(error){
+                isAuthenticated = false;
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation(){
+            const sideMenu = document.getElementById('sideMenu');
+
+            if(isAuthenticated){
+                sideMenu.innerHTML = `
+                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                    <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                    <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
+                    <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+                `;
+            } else {
+                sideMenu.innerHTML = `
+                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                    <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                    <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
+                    <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
+                    <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
+                `;
+            }
         }
 
         async function loadProducts() {
@@ -522,7 +558,7 @@
                 });
                 const data = await response.json();
                 if (data.success) {
-                    window.location.href = data.redirect;
+                    window.location.reload();
                 }
             } catch (error) {
                 console.error('Logout error:', error);

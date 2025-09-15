@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Admin Panel - ShaniknJewls</title>
+    <title>Admin Panel</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -72,6 +74,7 @@
             text-decoration: none;
             padding: 15px 20px 15px 40px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            /* TODO: why is this red? */
             transition: background 0.3s;
         }
 
@@ -80,6 +83,7 @@
         }
 
         .side-menu button {
+            /* TODO: why is the width calculated like that? too complicated */
             width: calc(100% - 40px);
             margin: 15px 20px 15px 40px;
             background: gray;
@@ -99,6 +103,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             display: none;
+            /* TODO: what is 'z-index'? */
             z-index: 999;
         }
 
@@ -145,7 +150,7 @@
             display: block;
         }
 
-        /* Activity Log Styles */
+        /* activity Log Styles */
         .filter-section {
             margin-bottom: 20px;
             display: flex;
@@ -217,7 +222,8 @@
             color: white;
         }
 
-        /* Product Management Styles */
+        /* TODO: what is this meant for? what is product managemnt? */
+        /* product Management Styles */
         .product-form {
             max-width: 600px;
             margin-bottom: 30px;
@@ -382,14 +388,7 @@
 
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="sideMenu">
-        <a href="/store.html">Store</a>
-        <a href="/cart.html">Cart</a>
-        <a href="/wishlist.html">Wishlist</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/profile.html">Profile</a>
-        <a href="/admin.html">Admin</a>
-        <button onclick="logout()">Logout</button>
+        <!-- Dynamic navigation will be populated by JavaScript -->
     </div>
 
     <div id="successMessage" class="success"></div>
@@ -485,8 +484,10 @@
         let products = [];
         let users = [];
         let currentUser = null;
+        let isAuthenticated = false;
 
         document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
             checkAdminAccess();
             loadDashboard();
             loadActivities();
@@ -515,24 +516,63 @@
             overlay.classList.toggle('active');
         }
 
+        async function checkAuthStatus(){
+            try{
+                const response = await fetch('/api/users/current');
+                isAuthenticated = response.ok;
+                updateNavigation();
+            } catch(error){
+                isAuthenticated = false;
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation(){
+            const sideMenu = document.getElementById('sideMenu');
+
+            if(isAuthenticated){
+                sideMenu.innerHTML = `
+                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                    <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                    <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
+                    <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+                `;
+            } else {
+                sideMenu.innerHTML = `
+                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                    <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                    <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
+                    <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
+                    <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
+                `;
+            }
+        }
+
         function switchTab(tabName) {
-            // Hide all tabs
+            // hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
 
-            // Remove active from all buttons
+            // remove active from all buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
 
-            // Show selected tab
+            // show selected tab
             document.getElementById(`${tabName}-tab`).classList.add('active');
 
-            // Mark button as active
+            // mark button as active
             event.target.classList.add('active');
 
-            // Reload data for the selected tab
+            // reload data for the selected tab
             if (tabName === 'activities') {
                 loadActivities();
             } else if (tabName === 'products') {
@@ -544,7 +584,7 @@
 
         async function loadDashboard() {
             try {
-                // Load statistics
+                // load statistics
                 const [activitiesRes, productsRes, usersRes] = await Promise.all([
                     fetch('/api/admin/activities'),
                     fetch('/api/products'),
@@ -555,21 +595,21 @@
                 products = await productsRes.json();
                 users = await usersRes.json().catch(() => []);
 
-                // Update stats
+                // update stats
                 document.getElementById('totalUsers').textContent = users.length || '3';
                 document.getElementById('totalProducts').textContent = products.length;
 
-                // Count today's activities
+                // count today's activities
                 const today = new Date().toDateString();
                 const todayActivities = activities.filter(a =>
                     new Date(a.timestamp).toDateString() === today
                 ).length;
                 document.getElementById('todayActivities').textContent = todayActivities;
 
-                // Calculate total sales (fake data for now)
+                // calculate total sales (fake data for now)
                 document.getElementById('totalSales').textContent = '�12,345';
 
-                // Show recent activities
+                // show recent activities
                 displayRecentActivities(activities.slice(0, 5));
 
             } catch (error) {
@@ -773,7 +813,7 @@
                 });
                 const data = await response.json();
                 if (data.success) {
-                    window.location.href = data.redirect;
+                    window.location.reload();
                 }
             } catch (error) {
                 console.error('Logout error:', error);

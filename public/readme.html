@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Project Documentation - ShaniknJewls</title>
+    <title>Project Documentation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,9 +95,17 @@
             font-weight: bold;
         }
 
-        .status-complete { background: #d4edda; color: #155724; }
-        .status-partial { background: #fff3cd; color: #856404; }
-        .status-missing { background: #f8d7da; color: #721c24; }
+        .status-complete { 
+            background: #d4edda; color: #155724; 
+        }
+        
+        .status-partial {
+            background: #fff3cd; color: #856404; 
+        }
+
+        .status-missing {
+            background: #f8d7da; color: #721c24; 
+        }
 
         .code-snippet {
             background: #f8f9fa;
@@ -159,16 +167,17 @@
     </style>
 </head>
 <body>
+    <!-- TODO: style better: change color from green, change the language to be more my own style instead of robotic -->
     <div class="container">
         <div class="project-info">
             <h2>ShaniknJewls - Online Jewelry Store</h2>
             <p><strong>Course:</strong> RUNI 2025 FullStack Development</p>
-            <p><strong>Student:</strong> [Your Name]</p>
-            <p><strong>Date:</strong> December 2024</p>
+            <p><strong>Student:</strong> Shani Knobel</p>
+            <p><strong>Date:</strong> September 25</p>
             <p><strong>Technology Stack:</strong> Node.js, Express, HTML5, CSS3, JavaScript ES6+</p>
         </div>
 
-        <h1>Project Documentation & Individual Work Report</h1>
+        <h1>Project Documentation & Work Report</h1>
 
         <h2>Project Overview</h2>
         <p>ShaniknJewls is a comprehensive e-commerce platform for jewelry sales, built as a full-stack web application. The project demonstrates modern web development practices including server-side rendering, RESTful API design, user authentication, and comprehensive testing.</p>
@@ -221,6 +230,44 @@
             <li><strong>Search Functionality:</strong> Prefix-based product search with real-time results</li>
             <li><strong>Admin Features:</strong> User activity filtering, product CRUD operations</li>
             <li><strong>Testing Suite:</strong> 18 automated tests covering all API endpoints using node-fetch</li>
+        </ul>
+
+        <h2>Additional Pages Implementation</h2>
+        <p>Beyond the core required pages, I implemented 4+ additional functional pages as required:</p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>About Page (/about.html)</h4>
+                <p><strong>Purpose:</strong> Company information and story</p>
+                <p><strong>Features:</strong> Static content with company history, values, and contact information</p>
+                <p><strong>Operation:</strong> Accessible to all users, provides business context</p>
+            </div>
+            <div class="feature-card">
+                <h4>Contact Page (/contact.html)</h4>
+                <p><strong>Purpose:</strong> Customer communication portal</p>
+                <p><strong>Features:</strong> Contact form with validation, business hours, location info</p>
+                <p><strong>Operation:</strong> Users fill form → data sent to /api/contact → stored in contacts.json</p>
+            </div>
+            <div class="feature-card">
+                <h4>Wishlist Page (/wishlist.html)</h4>
+                <p><strong>Purpose:</strong> Save items for future purchase</p>
+                <p><strong>Features:</strong> Add/remove products, view saved items, move to cart</p>
+                <p><strong>Operation:</strong> Authenticated users can save products using /api/wishlist/add</p>
+            </div>
+            <div class="feature-card">
+                <h4>Profile Page (/profile.html)</h4>
+                <p><strong>Purpose:</strong> User account management</p>
+                <p><strong>Features:</strong> View/edit profile, purchase history, account settings</p>
+                <p><strong>Operation:</strong> Users update info via /api/profile, view orders from /api/purchases</p>
+            </div>
+        </div>
+
+        <h3>How Additional Pages Operate</h3>
+        <ul>
+            <li><strong>Navigation:</strong> All pages accessible via hamburger menu with authentication-aware display</li>
+            <li><strong>Authentication:</strong> Contact & About are public; Wishlist & Profile require login</li>
+            <li><strong>Data Integration:</strong> Each page communicates with server via dedicated API endpoints</li>
+            <li><strong>User Experience:</strong> Consistent styling and behavior across all pages</li>
         </ul>
 
         <h2>Technical Implementation Details</h2>
@@ -297,23 +344,37 @@
 
         <h2>Code Quality & Best Practices</h2>
         <ul>
-            <li> Modular code structure with separation of concerns</li>
-            <li> Consistent error handling and user feedback</li>
-            <li> Input validation and security measures</li>
-            <li> Comprehensive testing coverage</li>
-            <li> Clean, readable code with proper documentation</li>
-            <li> RESTful API design principles</li>
+            <li> Modular code structure with separation of concerns</li>
+            <li> Consistent error handling and user feedback</li>
+            <li> Input validation and security measures</li>
+            <li> Comprehensive testing coverage</li>
+            <li> Clean, readable code with proper documentation</li>
+            <li> RESTful API design principles</li>
         </ul>
 
         <h2>Future Enhancements</h2>
         <p>While the current implementation meets all requirements, potential improvements include:</p>
         <ul>
             <li>Database integration (MongoDB/PostgreSQL)</li>
-            <li>Real payment processing integration</li>
             <li>Advanced user roles and permissions</li>
             <li>Image upload functionality</li>
-            <li>Email notifications</li>
-            <li>Mobile app development</li>
+            <li>Email notifications(store subscription)</li>
+            <li>Mobile screen adjustments</li>
+        </ul>
+
+        <h2>Partnership & Work Distribution</h2>
+        <div class="highlight">
+            <strong>Individual Project:</strong> This project was completed individually by Shani Knobel (Student ID: [Student ID]).
+            No partner was involved in this project - all design, development, testing, and documentation was completed independently.
+        </div>
+        <h3>Individual Contributions (100%)</h3>
+        <ul>
+            <li><strong>Server Development:</strong> Complete Express.js server implementation with all routes and middleware</li>
+            <li><strong>Database Design:</strong> JSON-based data persistence layer with async operations</li>
+            <li><strong>Frontend Development:</strong> All 12 HTML pages with responsive CSS and interactive JavaScript</li>
+            <li><strong>Authentication System:</strong> Cookie-based login system with session management</li>
+            <li><strong>Testing Suite:</strong> 18 automated tests covering all API endpoints</li>
+            <li><strong>Documentation:</strong> Complete project documentation and code comments</li>
         </ul>
 
         <h2>Learning Outcomes</h2>
@@ -325,6 +386,119 @@
             <li><strong>Testing:</strong> Automated testing strategies and implementation</li>
             <li><strong>Project Management:</strong> Breaking down complex requirements into manageable tasks</li>
         </ul>
+
+        <h2>Complete Route Documentation</h2>
+        <p>The application supports the following routes, organized by category:</p>
+
+        <h3>Public Routes (No Authentication Required)</h3>
+        <table class="stats-table">
+            <thead>
+                <tr><th>Method</th><th>Route</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>GET</td><td>/</td><td>Redirects to store.html</td></tr>
+                <tr><td>GET</td><td>/store.html</td><td>Main product catalog page</td></tr>
+                <tr><td>GET</td><td>/products.html</td><td>Alias for store.html</td></tr>
+                <tr><td>GET</td><td>/login.html</td><td>User login page</td></tr>
+                <tr><td>GET</td><td>/register.html</td><td>User registration page</td></tr>
+                <tr><td>GET</td><td>/about.html</td><td>Company information page</td></tr>
+                <tr><td>GET</td><td>/contact.html</td><td>Contact form page</td></tr>
+                <tr><td>GET</td><td>/readme.html</td><td>Project documentation</td></tr>
+                <tr><td>GET</td><td>/llm.html</td><td>LLM-generated code documentation</td></tr>
+                <tr><td>GET</td><td>/api/products</td><td>Get all products (JSON)</td></tr>
+                <tr><td>GET</td><td>/api/products/search</td><td>Search products by name/description</td></tr>
+                <tr><td>POST</td><td>/login</td><td>User authentication endpoint</td></tr>
+                <tr><td>POST</td><td>/register</td><td>User registration endpoint</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Protected Routes (Authentication Required)</h3>
+        <table class="stats-table">
+            <thead>
+                <tr><th>Method</th><th>Route</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>GET</td><td>/cart.html</td><td>Shopping cart page</td></tr>
+                <tr><td>GET</td><td>/checkout.html</td><td>Payment and checkout page</td></tr>
+                <tr><td>GET</td><td>/admin.html</td><td>Administrative dashboard</td></tr>
+                <tr><td>GET</td><td>/profile.html</td><td>User profile management</td></tr>
+                <tr><td>GET</td><td>/wishlist.html</td><td>User wishlist page</td></tr>
+                <tr><td>POST</td><td>/logout</td><td>User logout endpoint</td></tr>
+                <tr><td>GET</td><td>/api/cart</td><td>Get user's cart contents</td></tr>
+                <tr><td>POST</td><td>/api/cart/add</td><td>Add product to cart</td></tr>
+                <tr><td>PUT</td><td>/api/cart/update</td><td>Update cart item quantity</td></tr>
+                <tr><td>DELETE</td><td>/api/cart/remove/:productId</td><td>Remove item from cart</td></tr>
+                <tr><td>DELETE</td><td>/api/cart/clear</td><td>Clear entire cart</td></tr>
+                <tr><td>POST</td><td>/api/checkout</td><td>Process payment and create order</td></tr>
+                <tr><td>GET</td><td>/api/purchases</td><td>Get user's purchase history</td></tr>
+                <tr><td>GET</td><td>/api/users/current</td><td>Get current user information</td></tr>
+                <tr><td>PUT</td><td>/api/profile</td><td>Update user profile</td></tr>
+                <tr><td>POST</td><td>/api/contact</td><td>Submit contact form</td></tr>
+                <tr><td>GET</td><td>/api/wishlist</td><td>Get user's wishlist</td></tr>
+                <tr><td>POST</td><td>/api/wishlist/add</td><td>Add product to wishlist</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Admin Routes (Admin Authentication Required)</h3>
+        <table class="stats-table">
+            <thead>
+                <tr><th>Method</th><th>Route</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>GET</td><td>/api/admin/activities</td><td>Get user activity logs with optional filtering</td></tr>
+                <tr><td>POST</td><td>/api/admin/products</td><td>Add new product to catalog</td></tr>
+                <tr><td>DELETE</td><td>/api/admin/products/:id</td><td>Remove product from catalog</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Testing Methodology</h2>
+        <h3>Automated Testing with Node-Fetch</h3>
+        <p>The project includes a comprehensive testing suite (test.js) that validates all server functionality:</p>
+
+        <h4>Testing Approach</h4>
+        <ul>
+            <li><strong>Tool Used:</strong> Node-fetch for HTTP requests as required by specifications</li>
+            <li><strong>Test Coverage:</strong> 18 automated tests covering all dynamic routes</li>
+            <li><strong>Test Categories:</strong> Authentication, API endpoints, data persistence, error handling</li>
+            <li><strong>Output Format:</strong> Clear pass/fail status printed to stdout as required</li>
+        </ul>
+
+        <h4>Test Suite Structure</h4>
+        <div class="code-snippet">
+// Example test structure from test.js
+async function testLogin() {
+    const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: 'admin', password: 'admin' })
+    });
+    const data = await response.json();
+    return data.success === true;
+}
+        </div>
+
+        <h4>Testing Categories</h4>
+        <ul>
+            <li><strong>Authentication Tests:</strong> Login, logout, registration, session management</li>
+            <li><strong>Product API Tests:</strong> Product retrieval, search functionality</li>
+            <li><strong>Cart API Tests:</strong> Add/remove items, quantity updates, persistence</li>
+            <li><strong>Admin API Tests:</strong> Activity logs, product management, filtering</li>
+            <li><strong>Error Handling Tests:</strong> Invalid requests, authentication failures</li>
+        </ul>
+
+        <h4>How to Run Tests</h4>
+        <div class="code-snippet">
+# Start server in one terminal
+node server.js
+
+# Run tests in another terminal
+node test.js
+
+# Expected output shows each test result:
+✓ Test Login - PASSED
+✓ Test Product Retrieval - PASSED
+✓ Test Cart Operations - PASSED
+        </div>
 
         <div class="highlight">
             <strong>Project Completion:</strong> All required features have been successfully implemented and tested. The application is fully functional and ready for deployment.
@@ -348,7 +522,7 @@ http://localhost:5000
         <p><strong>Default Admin Credentials:</strong> username: admin, password: admin</p>
 
         <div class="back-link">
-            <a href="/store.html">� Back to Store</a>
+            <a href="/store.html"> Back to Store</a>
         </div>
     </div>
 </body>

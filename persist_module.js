@@ -53,7 +53,7 @@ async function saveUsers(users){
 async function loadUsers(){
     const users= await loadData('users.json', []);
 
-    // ensure my admin user exists (with find function of JS)
+    // ensure my admin user exists and create it if it doesn't!!! (with find() function of JS)
     if(!users.find(u=> u.username==='admin')){
         users.push({
                 username: 'admin',
@@ -129,7 +129,23 @@ async function loadProducts(){
     // add default products (in case there are none, like at first time running)
     if(products.length==0){
         const defaultProducts= [
-            { id: 1, name: "gold hoop earning", description:"18k gold 3.2 cm diameter hoop earrings", price: 199.99, customizable: false}
+            { id: 1, name: "Gold Hoop Earrings", description:"18k gold 3.2cm diameter classic hoop earrings", price: 199.99, customizable: false},
+            { id: 2, name: "Silver Chain Necklace", description:"Sterling silver 45cm delicate chain necklace", price: 89.99, customizable: true},
+            { id: 3, name: "Gold Diamond Ring", description:"14k gold solitaire ring with 0.5ct diamond", price: 899.99, customizable: true},
+            { id: 4, name: "Silver Stud Earrings", description:"Sterling silver cubic zirconia stud earrings", price: 45.99, customizable: false},
+            { id: 5, name: "Gold Tennis Bracelet", description:"18k gold tennis bracelet with crystal stones", price: 299.99, customizable: false},
+            { id: 6, name: "Silver Pendant Necklace", description:"Sterling silver heart pendant with chain", price: 69.99, customizable: true},
+            { id: 7, name: "Gold Stackable Rings", description:"14k gold thin stackable rings set of 3", price: 149.99, customizable: true},
+            { id: 8, name: "Silver Cuff Bracelet", description:"Sterling silver adjustable cuff bracelet", price: 79.99, customizable: false},
+            { id: 9, name: "Gold Drop Earrings", description:"18k gold elegant drop earrings with pearls", price: 249.99, customizable: false},
+            { id: 10, name: "Silver Charm Bracelet", description:"Sterling silver charm bracelet with 5 charms", price: 119.99, customizable: true},
+            { id: 11, name: "Gold Infinity Necklace", description:"14k gold infinity symbol pendant necklace", price: 179.99, customizable: true},
+            { id: 12, name: "Silver Statement Ring", description:"Sterling silver large statement ring with stones", price: 95.99, customizable: false},
+            { id: 13, name: "Gold Ankle Bracelet", description:"18k gold delicate ankle chain bracelet", price: 129.99, customizable: false},
+            { id: 14, name: "Silver Pearl Earrings", description:"Sterling silver freshwater pearl drop earrings", price: 85.99, customizable: false},
+            { id: 15, name: "Gold Vintage Ring", description:"14k gold vintage-style engagement ring", price: 699.99, customizable: true},
+            { id: 16, name: "Silver Choker Necklace", description:"Sterling silver adjustable choker necklace", price: 55.99, customizable: false},
+            { id: 17, name: "Gold Bangle Set", description:"18k gold thin bangle bracelets set of 4", price: 329.99, customizable: false}
         ];
         await saveProducts(defaultProducts);
         return defaultProducts;

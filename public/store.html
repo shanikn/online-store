@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- TODO: customize the styling(look up html form styling, maybe group fields with a legend?) -->
         <meta charset="UTF-8"/>
         <title>ShaniknJewls Store</title>
+        <!-- Font Awesome for icons <3 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             body{
                 font-family: Arial, sans-serif;
@@ -28,6 +29,37 @@
                 margin: 0;
             }
 
+            /* theme toggle button */
+            .theme-toggle{
+                position: fixed;
+                top: 35px;
+                right: 20px;
+                background: #f0f0f0;
+                border: 2px solid #ddd;
+                border-radius: 20px;
+                width: 100px;
+                height: 40px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                font-size: 14px;
+                font-weight: bold;
+                transition: all 0.3s ease;
+                z-index: 1002;
+                color: #333;
+            }
+
+            .theme-toggle:hover{
+                background: #e0e0e0;
+                transform: scale(1.05);
+            }
+
+            .theme-toggle #themeIcon{
+                font-size: 16px;
+            }
+
             /* menu button */
             .menu{
                 position: fixed;
@@ -50,7 +82,7 @@
                 margin: 3px 0;
             }
 
-            /* Side menu */
+            /* side menu */
             .side-menu{
                 position: fixed;
                 top: 0;
@@ -82,6 +114,12 @@
                 background: rgba(255, 255, 255, 0.2);
             }
 
+            .side-menu a i, .side-menu button i{
+                margin-right: 10px;
+                width: 16px;
+                text-align: center;
+            }
+
             .side-menu button{
                 width: calc(100% - 40px);
                 margin: 15px 20px;
@@ -94,7 +132,8 @@
                 font-size: 16px;
             }
 
-            /* Overlay */
+            /* TODO: what's overlay? */
+            /* overlay */
             .menu-overlay{
                 position: fixed;
                 top: 0;
@@ -224,7 +263,7 @@
 
             /* add to cart hover color */
             .add-to-cart-btn:hover{
-                background: lightpink;
+                background: darkgreen;
             }
 
             .loading{
@@ -252,6 +291,88 @@
                 display: none;
             }
 
+            /* Dark mode styles */
+            body.dark-mode{
+                background-color: #1a1a1a;
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .header{
+                background: #2d2d2d;
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .side-menu{
+                background: #2d2d2d;
+            }
+
+            body.dark-mode .menu span{
+                background: #e0e0e0;
+            }
+
+            body.dark-mode .theme-toggle{
+                background: #2d2d2d;
+                border-color: #555;
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .theme-toggle:hover{
+                background: #3d3d3d;
+            }
+
+            body.dark-mode .search-bar input{
+                background: #2d2d2d;
+                border-color: #555;
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .search-bar button{
+                background: #4d4d4d;
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .products-card{
+                background: #2d2d2d;
+                color: #e0e0e0;
+                box-shadow: 0 2px 4px rgba(255,255,255,0.1);
+            }
+
+            body.dark-mode .product-image{
+                background: #1a1a1a;
+                color: #888;
+            }
+
+            body.dark-mode .product-name{
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .product-description{
+                color: #bbb;
+            }
+
+            body.dark-mode .product-price{
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .add-to-cart-btn{
+                background: #4d4d4d;
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .add-to-cart-btn:hover{
+                background: #555;
+            }
+
+            body.dark-mode .error{
+                background: #5d2d2d;
+                color: #ffcccc;
+            }
+
+            body.dark-mode .success{
+                background: #2d5d2d;
+                color: #ccffcc;
+            }
+
         </style>
     </head>
     <body>
@@ -263,6 +384,10 @@
                 <span></span>
             </button>
             <h1>ShanikJewls</h1>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">OFF</span>
+            </button>
             <div class="nav-menu">
                 <a href="/store.html">Store</a>
                 <a href="/cart.html">Cart</a>
@@ -307,10 +432,56 @@
         <script>
             // TODO: edit to have only used parts
             let allProducts= [];
+            let isAuthenticated = false;
 
             document.addEventListener('DOMContentLoaded', function() {
+                checkAuthStatus();
                 loadProducts();
+                initializeTheme();
             });
+
+            async function checkAuthStatus(){
+                try{
+                    // Try to make an authenticated request to see if user is logged in
+                    const response = await fetch('/api/users/current');
+                    isAuthenticated = response.ok;
+                    updateNavigation();
+                }
+                catch(error){
+                    isAuthenticated = false;
+                    updateNavigation();
+                }
+            }
+
+            function updateNavigation(){
+                const sideMenu = document.getElementById('sideMenu');
+
+                if(isAuthenticated){
+                    // Show full navigation for authenticated users
+                    sideMenu.innerHTML = `
+                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                        <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                        <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                        <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+                        <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
+                        <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+                    `;
+                } else {
+                    // Show navigation for non-authenticated users with login redirects
+                    sideMenu.innerHTML = `
+                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                        <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                        <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
+                        <a href="/login.html"><i class="fa-solid fa-sign-in-alt"></i> Login</a>
+                        <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
+                    `;
+                }
+            }
 
             function toggleMenu(){
                 const menu = document.getElementById('menu');
@@ -375,6 +546,13 @@
                         body: JSON.stringify({ productId: productId })
                     });
 
+                    // If user is not authenticated, redirect to login
+                    if(response.status === 401 || response.redirected && response.url.includes('login')){
+                        alert('Please login to add items to cart');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
                     const data= await response.json();
 
                     if(data.success){
@@ -431,7 +609,8 @@
 
                     const data= await response.json()
                     if(data.success){
-                        window.location.href= data.redirect;
+                        // Force page reload to clear authentication state
+                        window.location.reload();
                     }
                 }
                 catch(error){
@@ -457,6 +636,40 @@
                 setTimeout(()=> {
                     errorDiv.style.display= 'none';
                 }, 5000);
+            }
+
+            // Dark mode functionality
+            function initializeTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                const themeIcon = document.getElementById('themeIcon');
+                const themeText = document.getElementById('themeText');
+
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'ON';
+                } else {
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'OFF';
+                }
+            }
+
+            function toggleTheme() {
+                const body = document.body;
+                const themeIcon = document.getElementById('themeIcon');
+                const themeText = document.getElementById('themeText');
+
+                body.classList.toggle('dark-mode');
+
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'ON';
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'OFF';
+                }
             }
 
     </script>
