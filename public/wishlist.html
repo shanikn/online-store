@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>My Wishlist - ShaniknJewls</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            background: none;
+            color: black;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .menu {
+            position: fixed;
+            top: 35px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+            z-index: 1002;
+        }
+
+        .menu span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: black;
+            margin: 3px 0;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: green;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            overflow-y: auto;
+            padding-top: 80px;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .side-menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px 15px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .side-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .side-menu button {
+            width: calc(100% - 40px);
+            margin: 15px 20px 15px 40px;
+            background: gray;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        .wishlist-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wishlist-header {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wishlist-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .wishlist-stats {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .wishlist-item {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .item-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .item-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 15px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-to-cart-btn {
+            background: green;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .add-to-cart-btn:hover {
+            background: darkgreen;
+        }
+
+        .remove-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .remove-btn:hover {
+            background: #d32f2f;
+        }
+
+        .heart-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4757;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .empty-wishlist {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .empty-wishlist h2 {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .empty-wishlist p {
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .browse-btn {
+            background: green;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .browse-btn:hover {
+            background: darkgreen;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="menu" id="menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1>My Wishlist</h1>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <a href="/store.html">Store</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/wishlist.html">Wishlist</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/profile.html">Profile</a>
+        <a href="/admin.html">Admin</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="successMessage" class="success"></div>
+    <div id="errorMessage" class="error"></div>
+
+    <div class="wishlist-container">
+        <div id="loading" class="loading">Loading your wishlist...</div>
+
+        <div id="wishlistContent" style="display: none;">
+            <div class="wishlist-header">
+                <h2>My Favorites</h2>
+                <div class="wishlist-stats">
+                    <span id="wishlistCount">0</span> items saved
+                </div>
+            </div>
+
+            <div id="wishlistItems" class="wishlist-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        let wishlistItems = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWishlist();
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+
+            menu.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        async function loadWishlist() {
+            try {
+                const response = await fetch('/api/wishlist');
+                if (!response.ok) {
+                    throw new Error('Failed to load wishlist');
+                }
+
+                wishlistItems = await response.json();
+                displayWishlist();
+            } catch (error) {
+                console.error('Error loading wishlist:', error);
+                showError('Failed to load wishlist');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('wishlistContent').style.display = 'block';
+            }
+        }
+
+        function displayWishlist() {
+            const container = document.getElementById('wishlistItems');
+            const countElement = document.getElementById('wishlistCount');
+
+            countElement.textContent = wishlistItems.length;
+
+            if (!wishlistItems || wishlistItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-wishlist" style="grid-column: 1 / -1;">
+                        <h2>Your wishlist is empty</h2>
+                        <p>Save items you love to your wishlist and come back to them later!</p>
+                        <a href="/store.html" class="browse-btn">Browse Store</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = wishlistItems.map(item => `
+                <div class="wishlist-item">
+                    <div class="heart-icon">e</div>
+                    <div class="item-image">
+                        ${item.image ? `<img src="${item.image}" style="max-width: 100%; max-height: 100%; object-fit: cover;">` : 'No image available'}
+                    </div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description || ''}</div>
+                    <div class="item-price">�${item.price.toFixed(2)}</div>
+                    <div class="item-actions">
+                        <button class="add-to-cart-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                        <button class="remove-btn" onclick="removeFromWishlist(${item.id})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function addToCart(productId) {
+            try {
+                const response = await fetch('/api/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId: productId })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess('Item added to cart!');
+                } else {
+                    showError('Failed to add item to cart');
+                }
+            } catch (error) {
+                console.error('Error adding item to cart:', error);
+                showError('Connection error. Please try again.');
+            }
+        }
+
+        async function removeFromWishlist(productId) {
+            if (!confirm('Remove this item from your wishlist?')) {
+                return;
+            }
+
+            try {
+                // For demo purposes, we'll simulate the API call
+                // In a real app, you'd have an API endpoint for this
+                wishlistItems = wishlistItems.filter(item => item.id !== productId);
+                displayWishlist();
+                showSuccess('Item removed from wishlist');
+
+                // Uncomment when you implement the actual API
+                /*
+                const response = await fetch(`/api/wishlist/remove/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    await loadWishlist();
+                    showSuccess('Item removed from wishlist');
+                } else {
+                    showError('Failed to remove item');
+                }
+                */
+            } catch (error) {
+                console.error('Error removing item from wishlist:', error);
+                showError('Failed to remove item');
+            }
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch('/logout', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

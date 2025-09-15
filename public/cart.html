@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Shopping Cart - ShaniknJewls</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            background: none;
+            color: black;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .menu {
+            position: fixed;
+            top: 35px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+            z-index: 1002;
+        }
+
+        .menu span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: black;
+            margin: 3px 0;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: green;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            overflow-y: auto;
+            padding-top: 80px;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .side-menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px 15px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .side-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .side-menu button {
+            width: calc(100% - 40px);
+            margin: 15px 20px 15px 40px;
+            background: gray;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cart-items {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .item-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .quantity-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .quantity {
+            width: 40px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .remove-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #d32f2f;
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .summary-total {
+            font-size: 20px;
+            font-weight: bold;
+            border-top: 2px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: green;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            background: darkgreen;
+        }
+
+        .clear-cart-btn {
+            width: 100%;
+            background: #666;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .empty-cart h2 {
+            color: #666;
+        }
+
+        .shop-btn {
+            background: green;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .success {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="menu" id="menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1>Shopping Cart</h1>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <a href="/store.html">Store</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/wishlist.html">Wishlist</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/profile.html">Profile</a>
+        <a href="/admin.html">Admin</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="successMessage" class="success"></div>
+    <div id="errorMessage" class="error" style="display: none;"></div>
+
+    <div class="cart-container">
+        <div id="loading" class="loading">Loading cart...</div>
+        <div id="cartContent" style="display: none;"></div>
+    </div>
+
+    <script>
+        let cartItems = [];
+        let products = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCart();
+            loadProducts();
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+
+            menu.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products');
+                products = await response.json();
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        async function loadCart() {
+            try {
+                const response = await fetch('/api/cart');
+                if (!response.ok) {
+                    throw new Error('Failed to load cart');
+                }
+
+                cartItems = await response.json();
+                displayCart();
+            } catch (error) {
+                console.error('Error loading cart:', error);
+                showError('Failed to load cart');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('cartContent').style.display = 'block';
+            }
+        }
+
+        function displayCart() {
+            const container = document.getElementById('cartContent');
+
+            if (!cartItems || cartItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your cart is empty</h2>
+                        <p>Add some beautiful jewelry to your cart!</p>
+                        <button class="shop-btn" onclick="window.location.href='/store.html'">Continue Shopping</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                    <div class="cart-items">
+                        <h2>Cart Items (${itemCount})</h2>
+                        ${cartItems.map(item => `
+                            <div class="cart-item">
+                                <div class="item-image">
+                                    ${item.image ? `<img src="${item.image}" style="max-width: 100%; max-height: 100%;">` : 'No image'}
+                                </div>
+                                <div class="item-details">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-description">${item.description || ''}</div>
+                                    <div class="item-price">�${item.price.toFixed(2)}</div>
+                                </div>
+                                <div class="item-controls">
+                                    <div class="quantity-controls">
+                                        <button class="quantity-btn" onclick="updateQuantity(${item.productId}, ${item.quantity - 1})">-</button>
+                                        <span class="quantity">${item.quantity}</span>
+                                        <button class="quantity-btn" onclick="updateQuantity(${item.productId}, ${item.quantity + 1})">+</button>
+                                    </div>
+                                    <button class="remove-btn" onclick="removeFromCart(${item.productId})">Remove</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="cart-summary">
+                        <h2>Order Summary</h2>
+                        <div class="summary-row">
+                            <span>Items (${itemCount}):</span>
+                            <span>�${total.toFixed(2)}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span>�0.00</span>
+                        </div>
+                        <div class="summary-row summary-total">
+                            <span>Total:</span>
+                            <span>�${total.toFixed(2)}</span>
+                        </div>
+                        <button class="checkout-btn" onclick="window.location.href='/checkout.html'">Proceed to Checkout</button>
+                        <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function updateQuantity(productId, newQuantity) {
+            if (newQuantity < 1) {
+                removeFromCart(productId);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/cart/update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId, quantity: newQuantity })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    await loadCart();
+                    showSuccess('Cart updated');
+                } else {
+                    showError('Failed to update cart');
+                }
+            } catch (error) {
+                console.error('Error updating cart:', error);
+                showError('Failed to update cart');
+            }
+        }
+
+        async function removeFromCart(productId) {
+            try {
+                const response = await fetch(`/api/cart/remove/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    await loadCart();
+                    showSuccess('Item removed from cart');
+                } else {
+                    showError('Failed to remove item');
+                }
+            } catch (error) {
+                console.error('Error removing item:', error);
+                showError('Failed to remove item');
+            }
+        }
+
+        async function clearCart() {
+            if (!confirm('Are you sure you want to clear your cart?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/cart/clear', {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    await loadCart();
+                    showSuccess('Cart cleared');
+                } else {
+                    showError('Failed to clear cart');
+                }
+            } catch (error) {
+                console.error('Error clearing cart:', error);
+                showError('Failed to clear cart');
+            }
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch('/logout', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -13,8 +13,8 @@
             }
 
             .header{
-                background: green;
-                color: white;
+                background: none;
+                color: black;
                 padding: 15px;
                 border-radius: 8px;
                 margin-bottom: 20px;
@@ -28,13 +28,11 @@
                 margin: 0;
             }
 
-            .header .menu{
-                position: absolute;
-                left: 15px;
-            }
-
-            /* menu menu button */
+            /* menu button */
             .menu{
+                position: fixed;
+                top: 35px;
+                left: 20px;
                 display: flex;
                 flex-direction: column;
                 cursor: pointer;
@@ -48,7 +46,7 @@
                 display: block;
                 width: 25px;
                 height: 3px;
-                background: white;
+                background: black;
                 margin: 3px 0;
             }
 
@@ -64,7 +62,7 @@
                 z-index: 1000;
                 box-shadow: 2px 0 10px rgba(0,0,0,0.3);
                 overflow-y: auto;
-                padding-top: 60px;
+                padding-top: 80px;
             }
 
             .side-menu.active{
@@ -196,7 +194,7 @@
             .product-price{
                 font-size: 20px;
                 font-weight: bold;
-                color: #4CAF50;
+                color: black;
                 margin-bottom: 15px;
             }
 
@@ -218,7 +216,10 @@
                 border-radius: 4px;
                 cursor: pointer;
                 font-size: 16px;
-                width: 100%;
+                width: 40%;
+                margin: 0 auto;
+                display: block;
+                text-align: center;
             }
 
             /* add to cart hover color */
@@ -254,9 +255,7 @@
         </style>
     </head>
     <body>
-        <!-- TODO: create a *basic* menu for easy nev between screens -->
-        <!-- choose where it will be: always on top? 3 lines on the side that open when clicked? -->
-        
+        <!-- basic nav menu between screens -->
         <div class="header">
             <button class="menu" id="menu" onclick="toggleMenu()">
                 <span></span>
@@ -281,16 +280,22 @@
             <a href="/store.html">Store</a>
             <a href="/cart.html">Cart</a>
             <a href="/wishlist.html">Wishlist</a>
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
             <a href="/profile.html">Profile</a>
             <a href="/admin.html">Admin</a>
             <button onclick="logout()">Logout</button>
         </div>
 
-
+        <!-- TODO: make the search suppost prefix of actuall items -->
         <div class="search-bar">
             <input type="text" id="search" placeholder="Search..">
-            <button onclick="searchProducts()">Search</button>
-            <button onclick="showAllProducts()">Show all</button>
+            <button onclick="searchProducts()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r=" 8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </button>
         </div>
         
         <div id="successMessage" class="success"></div>
@@ -300,6 +305,7 @@
         <div id="productsContainer" class="products-grid"></div>
 
         <script>
+            // TODO: edit to have only used parts
             let allProducts= [];
 
             document.addEventListener('DOMContentLoaded', function() {
@@ -335,7 +341,6 @@
                 }
             }
 
-
             function displayProducts(products){
                 const container= document.getElementById('productsContainer');
 
@@ -353,8 +358,8 @@
                         <div class="product-description">${product.description}</div>
 
                         ${product.customizable ? '<div class="customizable-badge">Customizable</div>' : ''}
-                        
-                        <div class="product-price">${product.price.toFixed(2)}</div>
+                    
+                        <div class="product-price">₪${product.price.toFixed(2)}</div>
                         <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to cart</button>
                     </div>
                 `).join('');
@@ -403,7 +408,7 @@
                 }
             }
 
-
+            // TODO: delete? i dont think i need this function
             function showAllProducts(){
                 document.getElementById('search').value= '';
                 displayProducts(allProducts);

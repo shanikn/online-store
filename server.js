@@ -2,7 +2,8 @@
 const express= require('express');
 const cookieParser= require('cookie-parser');
 const path= require('path');
-const persist= require('./persist_module'); 
+const persist= require('./persist_module');
+// const cors = require('cors'); // For React conversion later 
 
 // screen modules imports 
 // TODO:(uncomment after implementing them)
@@ -18,6 +19,10 @@ const persist= require('./persist_module');
 const app= express();
 
 // middleware
+// app.use(cors({
+//     origin: 'http://localhost:3000',
+//     credentials: true
+// })); // For React conversion later
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

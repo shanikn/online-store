@@ -64,6 +64,15 @@
         <!-- display the error (after the form, right before the script)-->
         <div id="error" style="color: red; display: none;"></div>
     <script>
+            // On page load - check if username was saved
+            window.onload = function() {
+                const savedUsername = localStorage.getItem('rememberedUsername');
+                if (savedUsername) {
+                    document.getElementById('username').value = savedUsername;
+                    document.getElementById('rememberMe').checked = true;
+                }
+            };
+
             document.querySelector('form').addEventListener('submit', function(event){
             // "prevent default" so i can use my own fetch() function to decide what happens on form submission
             event.preventDefault();
@@ -73,7 +82,14 @@
 
             // checking if the box is checked to tell the server what is the cookie duration (short/long)
             const remember = document.getElementById('rememberMe').checked;
-            
+
+            // Save or remove username based on remember me checkbox
+            if (remember) {
+                localStorage.setItem('rememberedUsername', username);
+            } else {
+                localStorage.removeItem('rememberedUsername');
+            }
+
             // send POST request to the server
             fetch('/login', {
                 method: 'POST',
@@ -83,10 +99,10 @@
 
             /** fetch() returns a *promise*, not immidiate results (the network requests take time)
              *  ".then" is used to set what happens when the request finishes
-             * 
+             *
              *  1)fetch data=> 2)THEN convert to json=> 3)THEN handle the response
-            */ 
-            
+            */
+
             // handle server response
             .then(response=> response.json())
             .then(data=> {
