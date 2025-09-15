@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Project Documentation</title>
+    <!-- Font Awesome for icons <3 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -164,13 +166,293 @@
             border: none;
             color: white;
         }
+
+        /* navigation menu styles */
+        .menu {
+            position: fixed;
+            top: 35px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+            z-index: 1002;
+        }
+
+        .menu span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: black;
+            margin: 3px 0;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: green;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            overflow-y: auto;
+            padding-top: 80px;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .side-menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px 15px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .side-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .side-menu button {
+            width: calc(100% - 40px);
+            margin: 15px 20px 15px 40px;
+            background: gray;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        /* theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 35px;
+            right: 20px;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 1002;
+            color: #333;
+        }
+
+        .theme-toggle:hover {
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .theme-toggle #themeIcon {
+            font-size: 16px;
+        }
+
+        /* dark mode styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .container {
+            background: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode h1 {
+            color: #4CAF50;
+            border-bottom-color: #4CAF50;
+        }
+
+        body.dark-mode h2 {
+            color: #e0e0e0;
+            border-bottom-color: #4CAF50;
+        }
+
+        body.dark-mode h3 {
+            color: #cccccc;
+        }
+
+        body.dark-mode h4 {
+            color: #4CAF50;
+        }
+
+        body.dark-mode p {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode li {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .menu span {
+            background: #e0e0e0;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: #2d2d2d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background: #3d3d3d;
+        }
+
+        body.dark-mode .side-menu {
+            background: #2d2d2d;
+        }
+
+        body.dark-mode .feature-card {
+            background: #3d3d3d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .feature-card h4 {
+            color: #4CAF50;
+        }
+
+        body.dark-mode .feature-card p {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .tech-stack {
+            background: #2d2d2d;
+            border-left-color: #4CAF50;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .tech-stack ul {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .tech-stack li {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .stats-table {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .stats-table th {
+            background: #3d3d3d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .stats-table td {
+            color: #e0e0e0;
+            border-bottom-color: #555;
+        }
+
+        body.dark-mode .code-snippet {
+            background: #3d3d3d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .highlight {
+            background: #4d4d2d;
+            border-left-color: #ffc107;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .highlight strong {
+            color: #ffc107;
+        }
+
+        body.dark-mode .project-info {
+            background: linear-gradient(135deg, #3d4d6a 0%, #4d3d5a 100%);
+            color: white;
+        }
+
+        body.dark-mode .project-info h2 {
+            color: white;
+        }
+
+        body.dark-mode .project-info p {
+            color: white;
+        }
+
+        body.dark-mode .implementation-status {
+            color: inherit;
+        }
+
+        body.dark-mode .status-complete {
+            background: #2d5d2d;
+            color: #90ee90;
+        }
+
+        body.dark-mode .status-partial {
+            background: #5d5d2d;
+            color: #ffff90;
+        }
+
+        body.dark-mode .status-missing {
+            background: #5d2d2d;
+            color: #ff9090;
+        }
+
+        body.dark-mode .back-link a {
+            background: #4CAF50;
+            color: white;
+        }
+
+        body.dark-mode .back-link a:hover {
+            background: #45a049;
+        }
     </style>
 </head>
 <body>
+    <!-- navigation menu -->
+    <button class="menu" id="menu" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- theme toggle button -->
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">OFF</span>
+    </button>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <!-- Dynamic navigation will be populated by JavaScript -->
+    </div>
+
     <!-- TODO: style better: change color from green, change the language to be more my own style instead of robotic -->
     <div class="container">
         <div class="project-info">
-            <h2>ShaniknJewls - Online Jewelry Store</h2>
+            <h2>ShaniknJewls - Online Gold Jewelry Store</h2>
             <p><strong>Course:</strong> RUNI 2025 FullStack Development</p>
             <p><strong>Student:</strong> Shani Knobel</p>
             <p><strong>Date:</strong> September 25</p>
@@ -180,7 +462,7 @@
         <h1>Project Documentation & Work Report</h1>
 
         <h2>Project Overview</h2>
-        <p>ShaniknJewls is a comprehensive e-commerce platform for jewelry sales, built as a full-stack web application. The project demonstrates modern web development practices including server-side rendering, RESTful API design, user authentication, and comprehensive testing.</p>
+        <p>ShaniknJewls is a comprehensive e-commerce platform specializing in fine gold jewelry sales, built as a full-stack web application. The project demonstrates modern web development practices including server-side rendering, RESTful API design, user authentication, and comprehensive testing. Our store exclusively features premium 14k and 18k gold jewelry pieces.</p>
 
         <div class="highlight">
             <strong>Key Achievement:</strong> Successfully implemented all core requirements including authentication, shopping cart functionality, admin panel, and comprehensive testing suite.
@@ -203,8 +485,8 @@
                 <p>Login/Register system with session management and persistent login option</p>
             </div>
             <div class="feature-card">
-                <h4>Product Catalog</h4>
-                <p>Dynamic product display with search functionality and categorization</p>
+                <h4>Gold Jewelry Catalog</h4>
+                <p>Dynamic gold jewelry display with search functionality and categorization</p>
             </div>
             <div class="feature-card">
                 <h4>Shopping Cart</h4>
@@ -227,7 +509,7 @@
         <h3>Phase 3: Advanced Features & Testing</h3>
         <ul>
             <li><strong>Activity Logging:</strong> Comprehensive user action tracking with timestamps</li>
-            <li><strong>Search Functionality:</strong> Prefix-based product search with real-time results</li>
+            <li><strong>Search Functionality:</strong> Prefix-based gold jewelry search with real-time results</li>
             <li><strong>Admin Features:</strong> User activity filtering, product CRUD operations</li>
             <li><strong>Testing Suite:</strong> 18 automated tests covering all API endpoints using node-fetch</li>
         </ul>
@@ -405,8 +687,8 @@
                 <tr><td>GET</td><td>/contact.html</td><td>Contact form page</td></tr>
                 <tr><td>GET</td><td>/readme.html</td><td>Project documentation</td></tr>
                 <tr><td>GET</td><td>/llm.html</td><td>LLM-generated code documentation</td></tr>
-                <tr><td>GET</td><td>/api/products</td><td>Get all products (JSON)</td></tr>
-                <tr><td>GET</td><td>/api/products/search</td><td>Search products by name/description</td></tr>
+                <tr><td>GET</td><td>/api/products</td><td>Get all gold jewelry products (JSON)</td></tr>
+                <tr><td>GET</td><td>/api/products/search</td><td>Search gold jewelry by name/description</td></tr>
                 <tr><td>POST</td><td>/login</td><td>User authentication endpoint</td></tr>
                 <tr><td>POST</td><td>/register</td><td>User registration endpoint</td></tr>
             </tbody>
@@ -446,8 +728,8 @@
             </thead>
             <tbody>
                 <tr><td>GET</td><td>/api/admin/activities</td><td>Get user activity logs with optional filtering</td></tr>
-                <tr><td>POST</td><td>/api/admin/products</td><td>Add new product to catalog</td></tr>
-                <tr><td>DELETE</td><td>/api/admin/products/:id</td><td>Remove product from catalog</td></tr>
+                <tr><td>POST</td><td>/api/admin/products</td><td>Add new gold jewelry to catalog</td></tr>
+                <tr><td>DELETE</td><td>/api/admin/products/:id</td><td>Remove gold jewelry from catalog</td></tr>
             </tbody>
         </table>
 
@@ -480,7 +762,7 @@ async function testLogin() {
         <h4>Testing Categories</h4>
         <ul>
             <li><strong>Authentication Tests:</strong> Login, logout, registration, session management</li>
-            <li><strong>Product API Tests:</strong> Product retrieval, search functionality</li>
+            <li><strong>Gold Jewelry API Tests:</strong> Product retrieval, search functionality</li>
             <li><strong>Cart API Tests:</strong> Add/remove items, quantity updates, persistence</li>
             <li><strong>Admin API Tests:</strong> Activity logs, product management, filtering</li>
             <li><strong>Error Handling Tests:</strong> Invalid requests, authentication failures</li>
@@ -525,5 +807,111 @@ http://localhost:5000
             <a href="/store.html"> Back to Store</a>
         </div>
     </div>
+
+    <script>
+        let isAuthenticated = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            initializeTheme();
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+
+            menu.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        async function checkAuthStatus(){
+            try{
+                const response = await fetch('/api/users/current');
+                isAuthenticated = response.ok;
+                updateNavigation();
+            } catch(error){
+                isAuthenticated = false;
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation(){
+            const sideMenu = document.getElementById('sideMenu');
+
+            if(isAuthenticated){
+                sideMenu.innerHTML = `
+                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                    <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                    <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
+                    <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+                `;
+            } else {
+                sideMenu.innerHTML = `
+                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                    <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                    <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
+                    <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
+                    <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
+                `;
+            }
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch('/logout', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        // dark mode functionality
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'ON';
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'OFF';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'ON';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'OFF';
+            }
+        }
+    </script>
 </body>
 </html>

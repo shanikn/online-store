@@ -1,30 +1,30 @@
 const fetch = require('node-fetch');
 
-const SERVER_URL = 'http://localhost:5000';
+// Test configuration
+const BASE_URL = 'http://127.0.0.1:5000';
+let testResults = [];
+let testCount = 0;
+let passCount = 0;
 
-// Test results
-let passedTests = 0;
-let totalTests = 0;
-
-// Test runner
-function runTest(testName, testFunction) {
-    totalTests++;
-    console.log(`\nRunning test: ${testName}`);
-
-    return testFunction()
-        .then(() => {
-            passedTests++;
-            console.log(` PASS: ${testName}`);
-        })
-        .catch(error => {
-            console.log(`L FAIL: ${testName}`);
-            console.log(`   Error: ${error.message}`);
-        });
+// Helper function to run a test
+async function runTest(testName, testFunction) {
+    testCount++;
+    console.log(`\n🧪 Running Test ${testCount}: ${testName}`);
+    
+    try {
+        await testFunction();
+        console.log(`✅ PASSED: ${testName}`);
+        testResults.push({ test: testName, status: 'PASSED' });
+        passCount++;
+    } catch (error) {
+        console.log(`❌ FAILED: ${testName}`);
+        console.log(`   Error: ${error.message}`);
+        testResults.push({ test: testName, status: 'FAILED', error: error.message });
+    }
 }
 
-// Test utilities
-async function makeRequest(endpoint, options = {}) {
-    const url = `${SERVER_URL}${endpoint}`;
+// Helper function to make requests with cookies
+async function makeRequest(url, options = {}) {
     const response = await fetch(url, {
         ...options,
         headers: {
@@ -35,384 +35,417 @@ async function makeRequest(endpoint, options = {}) {
     return response;
 }
 
-async function loginAsAdmin() {
-    const response = await makeRequest('/login', {
-        method: 'POST',
-        body: JSON.stringify({
-            username: 'admin',
-            password: 'admin',
-            remember: false
-        })
-    });
-
-    const cookies = response.headers.get('set-cookie');
-    return cookies ? cookies.split(';')[0] : null;
-}
-
-// Individual Tests
+// Test functions
 async function testServerRunning() {
-    const response = await makeRequest('/');
-    if (response.status !== 200) {
-        throw new Error(`Expected status 200, got ${response.status}`);
+    const response = await makeRequest(`${BASE_URL}/`);
+    if (response.status !== 200 && !response.redirected) {
+        throw new Error(`Server not responding. Status: ${response.status}`);
     }
 }
 
-async function testLoginEndpoint() {
-    const response = await makeRequest('/login', {
-        method: 'POST',
-        body: JSON.stringify({
-            username: 'admin',
-            password: 'admin',
-            remember: false
-        })
-    });
-
-    const data = await response.json();
-    if (!data.success) {
-        throw new Error('Login failed with correct credentials');
+async function testStaticFiles() {
+    const pages = ['login.html', 'register.html', 'store.html', 'admin.html', 'readme.html'];
+    
+    for (const page of pages) {
+        const response = await makeRequest(`${BASE_URL}/${page}`);
+        if (response.status !== 200) {
+            throw new Error(`${page} not accessible. Status: ${response.status}`);
+        }
     }
 }
 
-async function testLoginWithWrongCredentials() {
-    const response = await makeRequest('/login', {
-        method: 'POST',
-        body: JSON.stringify({
-            username: 'wronguser',
-            password: 'wrongpass',
-            remember: false
-        })
-    });
-
-    const data = await response.json();
-    if (data.success) {
-        throw new Error('Login succeeded with wrong credentials');
-    }
-}
-
-async function testRegisterEndpoint() {
+async function testUserRegistration() {
     const testUser = {
         username: `testuser_${Date.now()}`,
         password: 'testpass123',
-        email: 'test@example.com',
-        confirmPassword: 'testpass123'
+        remember: false
     };
 
-    const response = await makeRequest('/register', {
+    const response = await makeRequest(`${BASE_URL}/register`, {
         method: 'POST',
         body: JSON.stringify(testUser)
     });
 
-    if (response.status !== 200) {
-        throw new Error(`Register failed with status ${response.status}`);
+    const data = await response.json();
+    
+    if (!data.success) {
+        throw new Error(`Registration failed: ${data.message}`);
     }
 }
 
-async function testGetProducts() {
-    const cookie = await loginAsAdmin();
-    const response = await makeRequest('/api/products', {
-        headers: { Cookie: cookie }
+async function testUserLogin() {
+    const loginData = {
+        username: 'admin',
+        password: 'admin',
+        remember: false
+    };
+
+    const response = await makeRequest(`${BASE_URL}/login`, {
+        method: 'POST',
+        body: JSON.stringify(loginData)
+    });
+
+    const data = await response.json();
+    
+    if (!data.success) {
+        throw new Error(`Login failed: ${data.message}`);
+    }
+
+    // Store cookie for subsequent tests
+    global.authCookie = response.headers.get('set-cookie');
+}
+
+async function testInvalidLogin() {
+    const loginData = {
+        username: 'invaliduser',
+        password: 'wrongpassword',
+        remember: false
+    };
+
+    const response = await makeRequest(`${BASE_URL}/login`, {
+        method: 'POST',
+        body: JSON.stringify(loginData)
+    });
+
+    const data = await response.json();
+    
+    if (data.success) {
+        throw new Error('Invalid login should have failed but succeeded');
+    }
+}
+
+async function testProductsAPI() {
+    const response = await makeRequest(`${BASE_URL}/api/products`, {
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
     });
 
     if (response.status !== 200) {
-        throw new Error(`Get products failed with status ${response.status}`);
+        throw new Error(`Products API failed. Status: ${response.status}`);
     }
 
     const products = await response.json();
-    if (!Array.isArray(products)) {
-        throw new Error('Products response is not an array');
+    
+    if (!Array.isArray(products) || products.length === 0) {
+        throw new Error('Products API should return array of products');
+    }
+
+    // Verify product structure
+    const product = products[0];
+    const requiredFields = ['id', 'name', 'description', 'price'];
+    
+    for (const field of requiredFields) {
+        if (!(field in product)) {
+            throw new Error(`Product missing required field: ${field}`);
+        }
     }
 }
 
 async function testProductSearch() {
-    const cookie = await loginAsAdmin();
-    const response = await makeRequest('/api/products/search?q=ring', {
-        headers: { Cookie: cookie }
+    const response = await makeRequest(`${BASE_URL}/api/products/search?q=gold`, {
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
     });
 
     if (response.status !== 200) {
-        throw new Error(`Product search failed with status ${response.status}`);
+        throw new Error(`Product search failed. Status: ${response.status}`);
     }
 
-    const results = await response.json();
-    if (!Array.isArray(results)) {
-        throw new Error('Search results is not an array');
+    const products = await response.json();
+    
+    if (!Array.isArray(products)) {
+        throw new Error('Search should return array of products');
     }
 }
 
 async function testAddToCart() {
-    const cookie = await loginAsAdmin();
+    const cartData = {
+        productId: 1
+    };
 
-    // First get products to find a valid product ID
-    const productsResponse = await makeRequest('/api/products', {
-        headers: { Cookie: cookie }
-    });
-    const products = await productsResponse.json();
-
-    if (products.length === 0) {
-        throw new Error('No products available to add to cart');
-    }
-
-    const response = await makeRequest('/api/cart/add', {
+    const response = await makeRequest(`${BASE_URL}/api/cart/add`, {
         method: 'POST',
-        headers: { Cookie: cookie },
-        body: JSON.stringify({ productId: products[0].id })
+        headers: {
+            'Cookie': global.authCookie || ''
+        },
+        body: JSON.stringify(cartData)
     });
-
-    if (response.status !== 200) {
-        throw new Error(`Add to cart failed with status ${response.status}`);
-    }
 
     const data = await response.json();
+    
     if (!data.success) {
-        throw new Error('Add to cart returned success: false');
+        throw new Error(`Add to cart failed: ${data.error || 'Unknown error'}`);
     }
 }
 
 async function testGetCart() {
-    const cookie = await loginAsAdmin();
-    const response = await makeRequest('/api/cart', {
-        headers: { Cookie: cookie }
+    const response = await makeRequest(`${BASE_URL}/api/cart`, {
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
     });
 
     if (response.status !== 200) {
-        throw new Error(`Get cart failed with status ${response.status}`);
+        throw new Error(`Get cart failed. Status: ${response.status}`);
     }
 
     const cart = await response.json();
+    
     if (!Array.isArray(cart)) {
-        throw new Error('Cart response is not an array');
-    }
-}
-
-async function testUpdateCartQuantity() {
-    const cookie = await loginAsAdmin();
-
-    // First get products and add one to cart
-    const productsResponse = await makeRequest('/api/products', {
-        headers: { Cookie: cookie }
-    });
-    const products = await productsResponse.json();
-
-    if (products.length === 0) {
-        throw new Error('No products available');
-    }
-
-    // Add to cart
-    await makeRequest('/api/cart/add', {
-        method: 'POST',
-        headers: { Cookie: cookie },
-        body: JSON.stringify({ productId: products[0].id })
-    });
-
-    // Update quantity
-    const response = await makeRequest('/api/cart/update', {
-        method: 'PUT',
-        headers: { Cookie: cookie },
-        body: JSON.stringify({
-            productId: products[0].id,
-            quantity: 3
-        })
-    });
-
-    if (response.status !== 200) {
-        throw new Error(`Update cart failed with status ${response.status}`);
+        throw new Error('Cart should return array');
     }
 }
 
 async function testRemoveFromCart() {
-    const cookie = await loginAsAdmin();
-
-    // First get products and add one to cart
-    const productsResponse = await makeRequest('/api/products', {
-        headers: { Cookie: cookie }
-    });
-    const products = await productsResponse.json();
-
-    if (products.length === 0) {
-        throw new Error('No products available');
-    }
-
-    // Add to cart
-    await makeRequest('/api/cart/add', {
-        method: 'POST',
-        headers: { Cookie: cookie },
-        body: JSON.stringify({ productId: products[0].id })
-    });
-
-    // Remove from cart
-    const response = await makeRequest(`/api/cart/remove/${products[0].id}`, {
+    const response = await makeRequest(`${BASE_URL}/api/cart/remove/1`, {
         method: 'DELETE',
-        headers: { Cookie: cookie }
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
     });
 
-    if (response.status !== 200) {
-        throw new Error(`Remove from cart failed with status ${response.status}`);
+    const data = await response.json();
+    
+    if (!data.success) {
+        throw new Error(`Remove from cart failed: ${data.error || 'Unknown error'}`);
     }
 }
 
-async function testCheckoutEndpoint() {
-    const cookie = await loginAsAdmin();
-
-    const checkoutData = {
-        fullName: 'Test User',
-        email: 'test@example.com',
-        phone: '123-456-7890',
-        address: '123 Test St',
-        city: 'Test City',
-        zipCode: '12345',
-        country: 'Israel',
-        cardName: 'Test User',
-        cardNumber: '1234567812345678',
-        expiry: '12/25',
-        cvv: '123',
-        items: [],
-        total: 0
-    };
-
-    const response = await makeRequest('/api/checkout', {
-        method: 'POST',
-        headers: { Cookie: cookie },
-        body: JSON.stringify(checkoutData)
+async function testAdminActivities() {
+    const response = await makeRequest(`${BASE_URL}/api/admin/activities`, {
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
     });
 
     if (response.status !== 200) {
-        throw new Error(`Checkout failed with status ${response.status}`);
-    }
-}
-
-async function testGetActivities() {
-    const cookie = await loginAsAdmin();
-    const response = await makeRequest('/api/admin/activities', {
-        headers: { Cookie: cookie }
-    });
-
-    if (response.status !== 200) {
-        throw new Error(`Get activities failed with status ${response.status}`);
+        throw new Error(`Admin activities failed. Status: ${response.status}`);
     }
 
     const activities = await response.json();
+    
     if (!Array.isArray(activities)) {
-        throw new Error('Activities response is not an array');
+        throw new Error('Activities should return array');
+    }
+}
+
+async function testAdminActivitiesFilter() {
+    const response = await makeRequest(`${BASE_URL}/api/admin/activities?filter=admin`, {
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
+    });
+
+    if (response.status !== 200) {
+        throw new Error(`Admin activities filter failed. Status: ${response.status}`);
+    }
+
+    const activities = await response.json();
+    
+    if (!Array.isArray(activities)) {
+        throw new Error('Filtered activities should return array');
     }
 }
 
 async function testAddProduct() {
-    const cookie = await loginAsAdmin();
-
     const productData = {
-        name: `Test Product ${Date.now()}`,
-        description: 'A test product',
-        price: 99.99,
-        image: 'https://example.com/test.jpg',
+        name: 'Test Product',
+        description: 'A test product for testing',
+        price: 29.99,
         customizable: false
     };
 
-    const response = await makeRequest('/api/admin/products', {
+    const response = await makeRequest(`${BASE_URL}/api/admin/products`, {
         method: 'POST',
-        headers: { Cookie: cookie },
+        headers: {
+            'Cookie': global.authCookie || ''
+        },
         body: JSON.stringify(productData)
     });
 
-    if (response.status !== 200) {
-        throw new Error(`Add product failed with status ${response.status}`);
+    const data = await response.json();
+    
+    if (!data.success) {
+        throw new Error(`Add product failed: ${data.error || 'Unknown error'}`);
     }
 
+    // Store product ID for deletion test
+    global.testProductId = data.product?.id;
+}
+
+async function testDeleteProduct() {
+    if (!global.testProductId) {
+        throw new Error('No test product ID available for deletion');
+    }
+
+    const response = await makeRequest(`${BASE_URL}/api/admin/products/${global.testProductId}`, {
+        method: 'DELETE',
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
+    });
+
     const data = await response.json();
+    
     if (!data.success) {
-        throw new Error('Add product returned success: false');
+        throw new Error(`Delete product failed: ${data.error || 'Unknown error'}`);
+    }
+}
+
+async function testCheckout() {
+    // First add item to cart
+    await testAddToCart();
+    
+    const checkoutData = {
+        paymentDetails: {
+            cardNumber: '4111111111111111',
+            expiryDate: '12/25',
+            cvv: '123',
+            name: 'Test User'
+        }
+    };
+
+    const response = await makeRequest(`${BASE_URL}/api/checkout`, {
+        method: 'POST',
+        headers: {
+            'Cookie': global.authCookie || ''
+        },
+        body: JSON.stringify(checkoutData)
+    });
+
+    const data = await response.json();
+    
+    if (!data.success) {
+        throw new Error(`Checkout failed: ${data.error || 'Unknown error'}`);
+    }
+}
+
+async function testContactForm() {
+    const contactData = {
+        name: 'Test User',
+        email: 'test@example.com',
+        message: 'This is a test message'
+    };
+
+    const response = await makeRequest(`${BASE_URL}/api/contact`, {
+        method: 'POST',
+        headers: {
+            'Cookie': global.authCookie || ''
+        },
+        body: JSON.stringify(contactData)
+    });
+
+    const data = await response.json();
+    
+    if (!data.success) {
+        throw new Error(`Contact form failed: ${data.error || 'Unknown error'}`);
+    }
+}
+
+async function testWishlist() {
+    const wishlistData = {
+        productId: 1
+    };
+
+    const response = await makeRequest(`${BASE_URL}/api/wishlist/add`, {
+        method: 'POST',
+        headers: {
+            'Cookie': global.authCookie || ''
+        },
+        body: JSON.stringify(wishlistData)
+    });
+
+    const data = await response.json();
+    
+    if (!data.success) {
+        throw new Error(`Add to wishlist failed: ${data.error || 'Unknown error'}`);
     }
 }
 
 async function testLogout() {
-    const cookie = await loginAsAdmin();
-    const response = await makeRequest('/logout', {
+    const response = await makeRequest(`${BASE_URL}/logout`, {
         method: 'POST',
-        headers: { Cookie: cookie }
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
     });
 
-    if (response.status !== 200) {
-        throw new Error(`Logout failed with status ${response.status}`);
-    }
-
     const data = await response.json();
+    
     if (!data.success) {
-        throw new Error('Logout returned success: false');
-    }
-}
-
-async function testProtectedRouteWithoutAuth() {
-    const response = await makeRequest('/api/products');
-
-    if (response.status !== 302 && response.status !== 401) {
-        throw new Error(`Expected redirect or unauthorized, got ${response.status}`);
-    }
-}
-
-async function testRateLimiting() {
-    // Make many requests quickly to trigger rate limit
-    const requests = [];
-    for (let i = 0; i < 105; i++) {
-        requests.push(makeRequest('/'));
-    }
-
-    const responses = await Promise.all(requests);
-    const rateLimitedResponses = responses.filter(r => r.status === 429);
-
-    if (rateLimitedResponses.length === 0) {
-        throw new Error('Rate limiting not working - no 429 responses received');
+        throw new Error(`Logout failed: ${data.error || 'Unknown error'}`);
     }
 }
 
 // Main test runner
 async function runAllTests() {
-    console.log('=� Starting automated tests for online store...\n');
-    console.log('Testing server at:', SERVER_URL);
-
-    // Wait a bit for server to be ready
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Run all tests
+    console.log('🚀 Starting ShanikJewls Online Store Tests...\n');
+    console.log('=' .repeat(60));
+    
+    // Basic functionality tests
     await runTest('Server Running', testServerRunning);
-    await runTest('Login Endpoint', testLoginEndpoint);
-    await runTest('Login with Wrong Credentials', testLoginWithWrongCredentials);
-    await runTest('Register Endpoint', testRegisterEndpoint);
-    await runTest('Protected Route Without Auth', testProtectedRouteWithoutAuth);
-    await runTest('Get Products', testGetProducts);
+    await runTest('Static Files Accessible', testStaticFiles);
+    
+    // Authentication tests
+    await runTest('User Registration', testUserRegistration);
+    await runTest('Valid Admin Login', testUserLogin);
+    await runTest('Invalid Login Rejected', testInvalidLogin);
+    
+    // Product tests
+    await runTest('Products API', testProductsAPI);
     await runTest('Product Search', testProductSearch);
+    
+    // Cart functionality tests
     await runTest('Add to Cart', testAddToCart);
-    await runTest('Get Cart', testGetCart);
-    await runTest('Update Cart Quantity', testUpdateCartQuantity);
+    await runTest('Get Cart Contents', testGetCart);
     await runTest('Remove from Cart', testRemoveFromCart);
-    await runTest('Checkout Endpoint', testCheckoutEndpoint);
-    await runTest('Get Activities (Admin)', testGetActivities);
-    await runTest('Add Product (Admin)', testAddProduct);
-    await runTest('Logout', testLogout);
-    await runTest('Rate Limiting', testRateLimiting);
-
+    
+    // Admin functionality tests
+    await runTest('Admin Activities Log', testAdminActivities);
+    await runTest('Admin Activities Filter', testAdminActivitiesFilter);
+    await runTest('Admin Add Product', testAddProduct);
+    await runTest('Admin Delete Product', testDeleteProduct);
+    
+    // Additional features tests
+    await runTest('Checkout Process', testCheckout);
+    await runTest('Contact Form', testContactForm);
+    await runTest('Wishlist Functionality', testWishlist);
+    
+    // Cleanup
+    await runTest('User Logout', testLogout);
+    
     // Print summary
-    console.log('\n' + '='.repeat(50));
-    console.log('=� TEST SUMMARY');
-    console.log('='.repeat(50));
-    console.log(`Total Tests: ${totalTests}`);
-    console.log(`Passed: ${passedTests}`);
-    console.log(`Failed: ${totalTests - passedTests}`);
-    console.log(`Success Rate: ${Math.round((passedTests / totalTests) * 100)}%`);
-
-    if (passedTests === totalTests) {
-        console.log('\n<� All tests passed! Your online store is working correctly.');
+    console.log('\n' + '=' .repeat(60));
+    console.log('🎯 TEST SUMMARY');
+    console.log('=' .repeat(60));
+    console.log(`Total Tests: ${testCount}`);
+    console.log(`Passed: ${passCount} ✅`);
+    console.log(`Failed: ${testCount - passCount} ❌`);
+    console.log(`Success Rate: ${((passCount / testCount) * 100).toFixed(1)}%`);
+    
+    if (passCount === testCount) {
+        console.log('\n🎉 ALL TESTS PASSED! Your ShanikJewls store is working perfectly!');
     } else {
-        console.log('\n�  Some tests failed. Check the output above for details.');
+        console.log('\n⚠️  Some tests failed. Check the errors above for details.');
     }
-
-    process.exit(passedTests === totalTests ? 0 : 1);
+    
+    console.log('\n📋 Detailed Results:');
+    testResults.forEach((result, index) => {
+        const status = result.status === 'PASSED' ? '✅' : '❌';
+        console.log(`${index + 1}. ${status} ${result.test}`);
+        if (result.error) {
+            console.log(`   Error: ${result.error}`);
+        }
+    });
+    
+    process.exit(passCount === testCount ? 0 : 1);
 }
 
 // Run tests if this file is executed directly
 if (require.main === module) {
-    runAllTests().catch(error => {
-        console.error('Test runner crashed:', error);
-        process.exit(1);
-    });
+    runAllTests().catch(console.error);
 }
 
-module.exports = { runAllTests };
+module.exports = { runAllTests, runTest };

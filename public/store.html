@@ -206,7 +206,7 @@
 
             .product-image{
                 width: 100%;
-                height: 200px;
+                height: 250px;
                 background: #f0f0f0;
                 border-radius: 4px;
                 display: flex;
@@ -214,6 +214,15 @@
                 justify-content: center;
                 margin-bottom: 15px;
                 color: #666;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .product-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
             }
 
             .product-name{
@@ -520,20 +529,35 @@
                     return;
                 }
 
-                container.innerHTML= products.map(product=> `
-                    <div class="product-card">
-                        <div class="product-image">
-                            ${product.image ? `<img src="${product.image}" alt="${product.name}" style="max-width: 100%; max-height: 100%; object-fit: cover;">` : 'No image available'}
-                        </div>
-                        <div class="product-name">${product.name}</div>
-                        <div class="product-description">${product.description}</div>
-
-                        ${product.customizable ? '<div class="customizable-badge">Customizable</div>' : ''}
+                container.innerHTML= products.map(product=> {
+                    // Products that need better positioning (no cropping of jewelry)
+                    const customPositions = {
+                        1: 'object-position: center 20%;', // Delicate Gold Chain Necklace - show more of top
+                        2: 'object-position: center center;', // Minimalist Gold Hoop Earrings  
+                        5: 'object-position: center 15%;', // Layered Chain Necklace Set - show necklaces
+                        9: 'object-position: center 60%;', // Minimalist Gold Ring Set - focus on rings
+                        12: 'object-position: center 40%;', // Gold Chain Bracelet - show bracelet better
+                        13: 'object-position: center center;' // Twisted Gold Ring
+                    };
                     
-                        <div class="product-price">₪${product.price.toFixed(2)}</div>
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to cart</button>
-                    </div>
-                `).join('');
+                    const imageStyle = customPositions[product.id] ? 
+                        `style="${customPositions[product.id]}"` : '';
+                    
+                    return `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.image ? `<img src="${product.image}" alt="${product.name}" ${imageStyle}>` : 'No image available'}
+                            </div>
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-description">${product.description}</div>
+
+                            ${product.customizable ? '<div class="customizable-badge">Customizable</div>' : ''}
+                        
+                            <div class="product-price">₪${product.price.toFixed(2)}</div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to cart</button>
+                        </div>
+                    `;
+                }).join('');
             }
 
             async function addToCart(productId){

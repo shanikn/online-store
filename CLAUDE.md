@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a RUNI 2025 FullStack course final project - an online store web application built with Node.js/Express.
+This is a RUNI 2025 FullStack course final project - an online gold jewelry store web application built with Node.js/Express.
 
 ### Project Requirements Summary
 - **Authentication**: Cookie-based with "remember me" functionality
