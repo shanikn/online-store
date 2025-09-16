@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 // Test configuration
 const BASE_URL = 'http://127.0.0.1:5000';
@@ -295,8 +295,30 @@ async function testDeleteProduct() {
 }
 
 async function testCheckout() {
-    // First add item to cart
-    await testAddToCart();
+    // First ensure we have a product in cart for checkout
+    const addResponse = await makeRequest(`${BASE_URL}/api/cart/add`, {
+        method: 'POST',
+        headers: {
+            'Cookie': global.authCookie || '',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId: 1 })
+    });
+    const addData = await addResponse.json();
+    if (!addData.success) {
+        console.log('   Debug - Add to cart failed:', JSON.stringify(addData));
+        throw new Error('Failed to add item to cart for checkout test');
+    }
+    console.log('   Debug - Add to cart succeeded:', JSON.stringify(addData));
+
+    // Verify the cart has the item we just added
+    const cartCheckResponse = await makeRequest(`${BASE_URL}/api/cart`, {
+        headers: {
+            'Cookie': global.authCookie || ''
+        }
+    });
+    const cartData = await cartCheckResponse.json();
+    console.log('   Debug - Cart contents before checkout:', JSON.stringify(cartData));
     
     const checkoutData = {
         paymentDetails: {
@@ -316,9 +338,10 @@ async function testCheckout() {
     });
 
     const data = await response.json();
-    
+
     if (!data.success) {
-        throw new Error(`Checkout failed: ${data.error || 'Unknown error'}`);
+        console.log('   Debug - Checkout response:', JSON.stringify(data));
+        throw new Error(`Checkout failed: ${data.error || data.message || 'Unknown error'}`);
     }
 }
 
@@ -364,6 +387,32 @@ async function testWishlist() {
     }
 }
 
+async function cleanupTestData() {
+    const fs = require('fs').promises;
+    const path = require('path');
+
+    try {
+        // Reset wishlists to empty
+        await fs.writeFile(path.join(__dirname, 'data', 'wishlists.json'), '{}');
+
+        // Reset carts to empty (but keep structure if needed)
+        await fs.writeFile(path.join(__dirname, 'data', 'carts.json'), '{}');
+
+        // Reset contacts to empty
+        const contactsPath = path.join(__dirname, 'data', 'contacts.json');
+        try {
+            await fs.writeFile(contactsPath, '[]');
+        } catch (e) {
+            // File might not exist, that's okay
+        }
+
+        console.log('   ✨ Test data cleaned up successfully');
+    } catch (error) {
+        console.log(`   ⚠️  Warning: Could not clean up some test data: ${error.message}`);
+        // Don't throw error - cleanup is best effort
+    }
+}
+
 async function testLogout() {
     const response = await makeRequest(`${BASE_URL}/logout`, {
         method: 'POST',
@@ -373,7 +422,7 @@ async function testLogout() {
     });
 
     const data = await response.json();
-    
+
     if (!data.success) {
         throw new Error(`Logout failed: ${data.error || 'Unknown error'}`);
     }
@@ -415,6 +464,7 @@ async function runAllTests() {
     
     // Cleanup
     await runTest('User Logout', testLogout);
+    await runTest('Cleanup Test Data', cleanupTestData);
     
     // Print summary
     console.log('\n' + '=' .repeat(60));

@@ -214,6 +214,81 @@
             text-align: center;
             display: none;
         }
+
+        /* theme toggle button */
+        .theme-toggle{
+            position: fixed;
+            top: 35px;
+            right: 20px;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            width: 80px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 1002;
+            color: #333;
+        }
+
+        .theme-toggle:hover{
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .theme-toggle #themeIcon{
+            font-size: 16px;
+        }
+
+        /* dark mode styles */
+        body.dark-mode{
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .contact-container,
+        body.dark-mode .contact-form{
+            background: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea{
+            background: #1a1a1a;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .theme-toggle{
+            background: #2d2d2d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .theme-toggle:hover{
+            background: #3d3d3d;
+        }
+
+        body.dark-mode .side-menu{
+            background: #2d2d2d;
+        }
+
+        body.dark-mode label{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode p{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
+            color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -224,6 +299,10 @@
             <span></span>
         </button>
         <h1>Contact Us</h1>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+            <span id="themeIcon">🌙</span>
+            <span id="themeText">OFF</span>
+        </button>
     </div>
 
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
@@ -409,7 +488,41 @@
         }
 
         // check authentication status (when page loads)
-        window.addEventListener('DOMContentLoaded', checkAuthStatus);
+        window.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            initializeTheme();
+        });
+
+        // Dark mode functionality
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'ON';
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'OFF';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'ON';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'OFF';
+            }
+        }
 
         function showSuccess(message) {
             const successDiv = document.getElementById('successMessage');

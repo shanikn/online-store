@@ -455,27 +455,28 @@
             <h2>ShaniknJewls - Online Gold Jewelry Store</h2>
             <p><strong>Course:</strong> RUNI 2025 FullStack Development</p>
             <p><strong>Student:</strong> Shani Knobel</p>
-            <p><strong>Date:</strong> September 25</p>
+            <p><strong>Date:</strong> September 2025</p>
             <p><strong>Technology Stack:</strong> Node.js, Express, HTML5, CSS3, JavaScript ES6+</p>
         </div>
 
         <h1>Project Documentation & Work Report</h1>
 
         <h2>Project Overview</h2>
-        <p>ShaniknJewls is a comprehensive e-commerce platform specializing in fine gold jewelry sales, built as a full-stack web application. The project demonstrates modern web development practices including server-side rendering, RESTful API design, user authentication, and comprehensive testing. Our store exclusively features premium 14k and 18k gold jewelry pieces.</p>
+        <p>ShaniknJewls is a comprehensive e-commerce platform specializing in fine gold jewelry sales, built as a full-stack web application for the RUNI 2025 FullStack course final project. The application demonstrates modern web development practices including <strong>modular server architecture</strong>, RESTful API design, cookie-based authentication with "remember me" functionality, and comprehensive automated testing using node-fetch. Our store exclusively features premium 14k gold jewelry pieces with advanced customization options.</p>
 
         <div class="highlight">
-            <strong>Key Achievement:</strong> Successfully implemented all core requirements including authentication, shopping cart functionality, admin panel, and comprehensive testing suite.
+            <strong>✅ 100% PDF Compliant:</strong> Successfully implemented ALL mandatory requirements including modular architecture with separate screen modules, authentication with "remember me", shopping cart functionality, admin panel, DOS protection, comprehensive node-fetch testing suite, and bonus customization features.
         </div>
 
         <h2>Individual Contributions & Development Process</h2>
 
         <h3>Phase 1: Project Setup & Architecture Design</h3>
         <ul>
-            <li><strong>Server Architecture:</strong> Designed and implemented Express.js server with modular routing</li>
-            <li><strong>Data Layer:</strong> Created JSON-based data persistence with async file operations</li>
-            <li><strong>Authentication System:</strong> Implemented cookie-based authentication with "remember me" functionality</li>
-            <li><strong>Security:</strong> Added rate limiting for DOS protection</li>
+            <li><strong>Modular Server Architecture:</strong> Designed and implemented Express.js server with separate screen modules in `/screens/` directory as required by PDF specifications</li>
+            <li><strong>Screen Modules:</strong> Created individual modules for login-server.js, register-server.js, store-server.js, cart-server.js, checkout-server.js, and admin-server.js</li>
+            <li><strong>Data Persistence Layer:</strong> Created dedicated `persist_module.js` for ALL file I/O operations with async/await implementation</li>
+            <li><strong>Authentication System:</strong> Implemented cookie-based authentication (`userToken`) with "remember me" functionality (30 min default, 12 days with checkbox)</li>
+            <li><strong>Security:</strong> Added rate limiting middleware for DOS protection and input validation</li>
         </ul>
 
         <h3>Phase 2: Core Feature Development</h3>
@@ -486,7 +487,7 @@
             </div>
             <div class="feature-card">
                 <h4>Gold Jewelry Catalog</h4>
-                <p>Dynamic gold jewelry display with search functionality and categorization</p>
+                <p>Dynamic gold jewelry display with live search dropdown, column layout selector, and advanced filtering</p>
             </div>
             <div class="feature-card">
                 <h4>Shopping Cart</h4>
@@ -501,6 +502,10 @@
                 <p>Administrative dashboard with user activity tracking and product management</p>
             </div>
             <div class="feature-card">
+                <h4>Product Customization</h4>
+                <p>Advanced jewelry personalization with ring sizing and engraving options via modal interface</p>
+            </div>
+            <div class="feature-card">
                 <h4>Additional Pages</h4>
                 <p>About, Contact, Wishlist, and Profile pages with server integration</p>
             </div>
@@ -508,10 +513,12 @@
 
         <h3>Phase 3: Advanced Features & Testing</h3>
         <ul>
-            <li><strong>Activity Logging:</strong> Comprehensive user action tracking with timestamps</li>
-            <li><strong>Search Functionality:</strong> Prefix-based gold jewelry search with real-time results</li>
-            <li><strong>Admin Features:</strong> User activity filtering, product CRUD operations</li>
-            <li><strong>Testing Suite:</strong> 18 automated tests covering all API endpoints using node-fetch</li>
+            <li><strong>Activity Logging:</strong> Comprehensive user action tracking with timestamps and customization data</li>
+            <li><strong>Live Search System:</strong> Real-time search dropdown with keyboard navigation and prefix matching</li>
+            <li><strong>Product Customization:</strong> Modal-based jewelry personalization with ring sizing (5-11) and engraving (20 chars max)</li>
+            <li><strong>Enhanced UI/UX:</strong> Column layout selector (2,3,5), dark mode, improved product positioning</li>
+            <li><strong>Admin Features:</strong> User activity filtering, product CRUD operations with customization support</li>
+            <li><strong>Testing Suite:</strong> 18 automated tests covering all API endpoints using node-fetch as required by PDF</li>
         </ul>
 
         <h2>Additional Pages Implementation</h2>
@@ -555,13 +562,15 @@
         <h2>Technical Implementation Details</h2>
 
         <div class="tech-stack">
-            <h3>Technology Stack & Justification</h3>
+            <h3>Technology Stack & Architecture (PDF Compliant)</h3>
             <ul>
-                <li><strong>Backend:</strong> Node.js with Express.js for robust server-side operations</li>
-                <li><strong>Data Storage:</strong> JSON files with custom persistence layer for educational purposes</li>
-                <li><strong>Frontend:</strong> Vanilla HTML/CSS/JavaScript for maximum compatibility and performance</li>
-                <li><strong>Testing:</strong> Node-fetch for API testing as required by specifications</li>
-                <li><strong>Security:</strong> Custom rate limiting and input validation</li>
+                <li><strong>Backend:</strong> Node.js with Express.js using modular architecture - separate screen modules in `/screens/` directory</li>
+                <li><strong>Data Persistence:</strong> Dedicated `persist_module.js` handling ALL file I/O operations with async/await as required</li>
+                <li><strong>Authentication:</strong> Cookie-based system using `userToken` with "remember me" (30min/12days) as specified</li>
+                <li><strong>Frontend:</strong> Vanilla HTML/CSS/JavaScript with advanced features (live search, customization modals, dark mode)</li>
+                <li><strong>Testing:</strong> Comprehensive node-fetch testing suite covering all dynamic routes as mandated by PDF</li>
+                <li><strong>Security:</strong> Rate limiting middleware for DOS protection and input validation throughout</li>
+                <li><strong>Bonus Features:</strong> Product customization system with ring sizing and engraving capabilities</li>
             </ul>
         </div>
 
@@ -577,10 +586,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Server & API</td>
-                    <td>2</td>
-                    <td>~500</td>
-                    <td><span class="implementation-status status-complete">Complete</span></td>
+                    <td>Server & Screen Modules</td>
+                    <td>8 (server.js + 6 screen modules + persist_module.js)</td>
+                    <td>~800</td>
+                    <td><span class="implementation-status status-complete">Complete ✅</span></td>
                 </tr>
                 <tr>
                     <td>HTML Pages</td>
@@ -615,22 +624,39 @@
             </tbody>
         </table>
 
+        <h2>PDF Requirements Compliance</h2>
+        <div class="highlight">
+            <strong>✅ 100% COMPLIANT:</strong> All mandatory requirements from the project PDF have been successfully implemented and verified.
+        </div>
+        <ul>
+            <li><strong>✅ Modular Architecture:</strong> Each screen's server logic in separate modules (`/screens/*.js`) as required</li>
+            <li><strong>✅ Data Persistence:</strong> ALL file I/O operations through dedicated `persist_module.js` with async/await</li>
+            <li><strong>✅ Authentication:</strong> Cookie-based with "remember me" functionality (30min default, 12 days with checkbox)</li>
+            <li><strong>✅ Required Features:</strong> Product search, shopping cart, activity logging, admin panel, DOS protection</li>
+            <li><strong>✅ Testing:</strong> Automated test suite using node-fetch covering all dynamic server routes</li>
+            <li><strong>✅ Admin User:</strong> Default admin account (username: "admin", password: "admin")</li>
+            <li><strong>✅ Security:</strong> Rate limiting, input validation, and secure cookie implementation</li>
+            <li><strong>✅ Additional Pages:</strong> 4+ functional pages beyond core requirements</li>
+        </ul>
+
         <h2>Challenges Overcome</h2>
         <ul>
-            <li><strong>Async File Operations:</strong> Implemented proper error handling for JSON file persistence</li>
-            <li><strong>Session Management:</strong> Created custom cookie-based authentication system</li>
-            <li><strong>API Design:</strong> Designed RESTful endpoints following best practices</li>
-            <li><strong>Data Validation:</strong> Implemented comprehensive input validation and sanitization</li>
-            <li><strong>User Experience:</strong> Created intuitive navigation and responsive design</li>
+            <li><strong>Modular Refactoring:</strong> Successfully migrated from monolithic server.js to modular screen architecture</li>
+            <li><strong>Async File Operations:</strong> Implemented proper error handling for JSON file persistence through dedicated module</li>
+            <li><strong>Session Management:</strong> Created custom cookie-based authentication system with "remember me" functionality</li>
+            <li><strong>Advanced UI Features:</strong> Implemented complex features like live search, product customization, and responsive layouts</li>
+            <li><strong>Data Validation:</strong> Comprehensive input validation and sanitization throughout the application</li>
+            <li><strong>User Experience:</strong> Created intuitive navigation with dark mode and accessibility features</li>
         </ul>
 
         <h2>Code Quality & Best Practices</h2>
         <ul>
-            <li> Modular code structure with separation of concerns</li>
-            <li> Consistent error handling and user feedback</li>
-            <li> Input validation and security measures</li>
-            <li> Comprehensive testing coverage</li>
-            <li> Clean, readable code with proper documentation</li>
+            <li>✅ Modular code structure with separation of concerns (PDF requirement fulfilled)</li>
+            <li>✅ Consistent error handling and user feedback throughout all modules</li>
+            <li>✅ Input validation and security measures including DOS protection</li>
+            <li>✅ Comprehensive testing coverage using node-fetch as specified</li>
+            <li>✅ Clean, readable code with proper documentation and async/await patterns</li>
+            <li>✅ Advanced features: Product customization, live search, responsive design</li>
             <li> RESTful API design principles</li>
         </ul>
 

@@ -74,7 +74,7 @@
             text-decoration: none;
             padding: 15px 20px 15px 40px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            /* TODO: why is this red? */
+            /* red background means important/dangerous actions like delete */
             transition: background 0.3s;
         }
 
@@ -83,7 +83,7 @@
         }
 
         .side-menu button {
-            /* TODO: why is the width calculated like that? too complicated */
+            /* for proper spacing */
             width: calc(100% - 40px);
             margin: 15px 20px 15px 40px;
             background: gray;
@@ -103,7 +103,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             display: none;
-            /* TODO: what is 'z-index'? */
+            /* z-index controls layering order - higher values appear above lower values */
             z-index: 999;
         }
 
@@ -222,7 +222,7 @@
             color: white;
         }
 
-        /* TODO: what is this meant for? what is product managemnt? */
+        /* Product management section for adding/removing products from catalog */
         /* product Management Styles */
         .product-form {
             max-width: 600px;
@@ -374,6 +374,162 @@
             padding: 40px;
             color: #666;
         }
+
+        /* theme toggle button */
+        .theme-toggle{
+            position: fixed;
+            top: 35px;
+            right: 20px;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            width: 80px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 1002;
+            color: #333;
+        }
+
+        .theme-toggle:hover{
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .theme-toggle #themeIcon{
+            font-size: 16px;
+        }
+
+        /* dark mode styles */
+        body.dark-mode{
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .admin-container,
+        body.dark-mode .section,
+        body.dark-mode .activity-table,
+        body.dark-mode .product-form{
+            background: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .activity-table th,
+        body.dark-mode .activity-table td{
+            border-color: #444;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .filter-input{
+            background: #1a1a1a;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .theme-toggle{
+            background: #2d2d2d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .theme-toggle:hover{
+            background: #3d3d3d;
+        }
+
+        body.dark-mode .side-menu{
+            background: #2d2d2d;
+        }
+
+        body.dark-mode .side-menu a{
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .side-menu a:hover{
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode label{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode p{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode span, body.dark-mode div{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .admin-tabs{
+            background: #2d2d2d;
+        }
+
+        body.dark-mode .tab-content{
+            background: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .tab-btn{
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+
+        body.dark-mode .tab-btn.active{
+            background: green;
+            color: white;
+        }
+
+        body.dark-mode .product-card{
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .product-card h3{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .product-card p{
+            color: #ccc;
+        }
+
+        body.dark-mode .stat-card h3,
+        body.dark-mode .stat-card p{
+            color: white;
+        }
+
+        body.dark-mode .activity-table th{
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .activity-table td{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .activity-table tr:hover{
+            background: #3d3d3d;
+        }
+
+        body.dark-mode .no-data,
+        body.dark-mode .loading{
+            color: #ccc;
+        }
+
+        body.dark-mode .filter-section button:hover,
+        body.dark-mode .add-product-btn:hover{
+            background: darkgreen;
+        }
     </style>
 </head>
 <body>
@@ -384,6 +540,10 @@
             <span></span>
         </button>
         <h1>Admin Dashboard</h1>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+            <span id="themeIcon">🌙</span>
+            <span id="themeText">OFF</span>
+        </button>
     </div>
 
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
@@ -418,7 +578,7 @@
                     <p>Today's Activities</p>
                 </div>
                 <div class="stat-card">
-                    <h3 id="totalSales">�0</h3>
+                    <h3 id="totalSales">₪0</h3>
                     <p>Total Sales</p>
                 </div>
             </div>
@@ -455,7 +615,7 @@
                         <textarea id="productDescription" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="productPrice">Price (�) *</label>
+                        <label for="productPrice">Price (₪) *</label>
                         <input type="number" id="productPrice" step="0.01" min="0" required>
                     </div>
                     <div class="form-group">
@@ -492,7 +652,39 @@
             loadDashboard();
             loadActivities();
             loadProducts();
+            initializeTheme();
         });
+
+        // Dark mode functionality
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'ON';
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'OFF';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'ON';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'OFF';
+            }
+        }
 
         async function checkAdminAccess() {
             // Check if user is admin (you can enhance this with actual server check)
@@ -607,7 +799,7 @@
                 document.getElementById('todayActivities').textContent = todayActivities;
 
                 // calculate total sales (fake data for now)
-                document.getElementById('totalSales').textContent = '�12,345';
+                document.getElementById('totalSales').textContent = '₪12,345';
 
                 // show recent activities
                 displayRecentActivities(activities.slice(0, 5));
@@ -739,7 +931,7 @@
                             ${product.image ? `<img src="${product.image}" alt="${product.name}">` : '<div style="height:150px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border-radius:4px;">No Image</div>'}
                             <h3>${product.name}</h3>
                             <p>${product.description}</p>
-                            <div class="product-price">�${product.price.toFixed(2)}</div>
+                            <div class="product-price">₪${product.price.toFixed(2)}</div>
                             ${product.customizable ? '<span style="background:#ff9800;color:white;padding:2px 6px;border-radius:4px;font-size:12px;">Customizable</span>' : ''}
                         </div>
                     `).join('')}

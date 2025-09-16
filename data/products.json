@@ -1,17 +1,122 @@
 [
-  { "id": 1, "name": "Delicate Gold Chain Necklace", "description":"14k gold filled delicate chain necklace, perfect for layering", "price": 89.99, "customizable": true, "image": "https://i.pinimg.com/564x/00/9d/bc/009dbc66497c7dfd735fd515b560d80c.jpg"},
-  { "id": 2, "name": "Minimalist Gold Hoop Earrings", "description":"Small 14k gold plated hoop earrings, everyday elegance", "price": 65.99, "customizable": false, "image": "https://i.pinimg.com/564x/04/5d/1a/045d1a74e120817c35869299d02e10de.jpg"},
-  { "id": 3, "name": "Pearl Drop Earrings", "description":"Elegant freshwater pearl drop earrings with gold accents", "price": 125.99, "customizable": false, "image": "https://i.pinimg.com/564x/c8/3f/3c/c83f3c10c72923a2c155033dd8802aa9.jpg"},
-  { "id": 4, "name": "Gold Geometric Ring", "description":"Modern 14k gold plated geometric statement ring", "price": 95.99, "customizable": true, "image": "https://i.pinimg.com/564x/a8/bd/91/a8bd91f95b6c934b68983fbf79acd1ee.jpg"},
-  { "id": 5, "name": "Layered Chain Necklace Set", "description":"Set of 3 layered gold chain necklaces in different lengths", "price": 149.99, "customizable": true, "image": "https://i.pinimg.com/564x/22/b8/73/22b873c624162ac7fb587a84f5325d74.jpg"},
-  { "id": 6, "name": "Dainty Gold Stud Earrings", "description":"Tiny 14k gold plated stud earrings, perfect for second piercings", "price": 45.99, "customizable": false, "image": "https://i.pinimg.com/564x/41/72/4a/41724a9b16e7f199e954fb5a5eb33cdc.jpg"},
-  { "id": 7, "name": "Elegant Pearl Necklace", "description":"Classic freshwater pearl strand necklace with gold clasp", "price": 199.99, "customizable": true, "image": "https://i.pinimg.com/564x/4d/78/bb/4d78bb72586dcb807876292fc5c31d3e.jpg"},
-  { "id": 8, "name": "Gold Coin Pendant Necklace", "description":"Vintage-inspired gold coin pendant on delicate chain", "price": 115.99, "customizable": true, "image": "https://i.pinimg.com/564x/0a/9d/64/0a9d648a22200550e08581e49ec6f48f.jpg"},
-  { "id": 9, "name": "Minimalist Gold Ring Set", "description":"Set of 3 thin gold rings, perfect for stacking", "price": 79.99, "customizable": true, "image": "https://i.pinimg.com/564x/d0/19/03/d01903b883de44e49f0e8aa0b95f641c.jpg"},
-  { "id": 10, "name": "Gold Wire Hoop Earrings", "description":"Delicate gold wire hoop earrings, lightweight and modern", "price": 69.99, "customizable": false, "image": "https://i.pinimg.com/564x/2b/57/39/2b5739d0431059142a97f21d8df76a68.jpg"},
-  { "id": 11, "name": "Crystal Stud Earrings", "description":"Sparkling crystal stud earrings in gold setting", "price": 55.99, "customizable": false, "image": "https://i.pinimg.com/564x/c3/7f/04/c37f04a0446e4bb96684a75e38fba316.jpg"},
-  { "id": 12, "name": "Gold Chain Bracelet", "description":"14k gold filled chain bracelet with adjustable clasp", "price": 89.99, "customizable": true, "image": "https://i.pinimg.com/564x/49/8f/60/498f60e0d62a18a9849b285497203a34.jpg"},
-  { "id": 13, "name": "Twisted Gold Ring", "description":"14k gold plated twisted band ring, organic modern design", "price": 105.99, "customizable": true, "image": "https://i.pinimg.com/564x/03/aa/9c/03aa9c92cd9d6699a3d7c37c3c4faa52.jpg"},
-  { "id": 14, "name": "Gold Bar Earrings", "description":"Modern gold bar stud earrings, minimalist and chic", "price": 59.99, "customizable": false, "image": "https://i.pinimg.com/564x/84/10/06/8410069ccbdaea88ae993c0b811420f6.jpg"},
-  { "id": 15, "name": "Layered Pearl Necklace", "description":"Double strand pearl necklace with gold accents", "price": 165.99, "customizable": true, "image": "https://i.pinimg.com/564x/2a/e1/d4/2ae1d4842123a576a5a2a0a162a95281.jpg"}
+  {
+    "id": 1,
+    "name": "Gold Drop Earrings",
+    "description": "Elegant 14k gold plated drop earrings with delicate design",
+    "price": 129.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/00/9d/bc/009dbc66497c7dfd735fd515b560d80c.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Classic Gold Hoop Earrings",
+    "description": "Medium 14k gold plated hoop earrings, timeless elegance",
+    "price": 89.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/04/5d/1a/045d1a74e120817c35869299d02e10de.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Gold Chain Bracelet",
+    "description": "Delicate 14k gold filled chain bracelet, perfect for stacking",
+    "price": 179.99,
+    "customizable": true,
+    "image": "https://i.pinimg.com/564x/c8/3f/3c/c83f3c10c72923a2c155033dd8802aa9.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Gold Drop Earrings",
+    "description": "Elegant 14k gold plated drop earrings with unique design",
+    "price": 119.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/a8/bd/91/a8bd91f95b6c934b68983fbf79acd1ee.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Gold Pearl Pendant Necklace",
+    "description": "Elegant 14k gold plated necklace with pearl pendant",
+    "price": 199.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/22/b8/73/22b873c624162ac7fb587a84f5325d74.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Gold Tennis Bracelet",
+    "description": "Elegant 14k gold plated tennis bracelet with crystal details",
+    "price": 69.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/41/72/4a/41724a9b16e7f199e954fb5a5eb33cdc.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Gold Drop Earrings Set",
+    "description": "Set of elegant 14k gold plated drop earrings in matching design",
+    "price": 249.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/4d/78/bb/4d78bb72586dcb807876292fc5c31d3e.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Gold Crystal Bracelet",
+    "description": "Elegant 14k gold plated bracelet with clear crystal centerpiece",
+    "price": 159.99,
+    "customizable": true,
+    "image": "https://i.pinimg.com/564x/0a/9d/64/0a9d648a22200550e08581e49ec6f48f.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Gold Blue Gem Necklace",
+    "description": "Delicate 14k gold plated necklace with light blue gemstone pendant",
+    "price": 139.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/d0/19/03/d01903b883de44e49f0e8aa0b95f641c.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Gold Watch",
+    "description": "Elegant 14k gold plated watch with refined design and comfortable band",
+    "price": 99.99,
+    "customizable": true,
+    "image": "https://i.pinimg.com/564x/2b/57/39/2b5739d0431059142a97f21d8df76a68.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Gold Blue Gem Ring",
+    "description": "Beautiful 14k gold plated ring with light blue gemstone setting",
+    "price": 79.99,
+    "customizable": true,
+    "image": "https://i.pinimg.com/564x/c3/7f/04/c37f04a0446e4bb96684a75e38fba316.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Gold Dangle Earrings",
+    "description": "Elegant 14k gold plated dangle earrings with refined movement",
+    "price": 119.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/49/8f/60/498f60e0d62a18a9849b285497203a34.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Gold Green Gem Necklace",
+    "description": "Elegant 14k gold plated necklace with light green gemstone pendant",
+    "price": 129.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/03/aa/9c/03aa9c92cd9d6699a3d7c37c3c4faa52.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Gold Drop Earrings",
+    "description": "Modern 14k gold plated drop earrings with elegant design",
+    "price": 89.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/84/10/06/8410069ccbdaea88ae993c0b811420f6.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Gold Double Hoop Earrings",
+    "description": "Stylish 14k gold plated double hoop earrings with layered design",
+    "price": 219.99,
+    "customizable": false,
+    "image": "https://i.pinimg.com/564x/2a/e1/d4/2ae1d4842123a576a5a2a0a162a95281.jpg"
+  }
 ]

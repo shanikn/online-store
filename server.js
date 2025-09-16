@@ -7,12 +7,12 @@ const persist= require('./persist_module');
 
 // screen modules imports 
 // TODO:(uncomment after implementing them)
-// const loginServer= require('./screens/login-server');
-// const storeServer= require('./screens/store-server');
-// const adminServer= require('./screens/admin-server');
-// const cartServer= require('./screens/cart-server');
-// const checkoutServer= require('./screens/checkout-server');
-// const registerServer= require('./screens/register-server');
+const loginServer = require('./screens/login-server');
+const storeServer = require('./screens/store-server');
+const adminServer = require('./screens/admin-server');
+const cartServer = require('./screens/cart-server');
+const checkoutServer = require('./screens/checkout-server');
+const registerServer = require('./screens/register-server');
 
 
 // app startup
@@ -235,27 +235,44 @@ app.get('/api/products', async(req, res)=> {
 app.post('/api/cart/add', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
-        const { productId }= req.body;
+        const { productId, customization }= req.body;
+
+        console.log(`[DEBUG] Adding to cart - Username: ${username}, ProductId: ${productId} (type: ${typeof productId}), Customization:`, customization);
 
         // get the user cart
         const cart= await persist.loadCart(username);
+        console.log(`[DEBUG] Current cart before add:`, cart);
 
-        // add the new item to cart (if item already exists, add 1 to quantity)
-        const existingItem= cart.find(item=> item.productId === productId);
-        if(existingItem){
-            existingItem.quantity+=1;
-        }
-        else{
-            cart.push({ productId, quantity: 1, addedAt: new Date().toISOString() });
+        // For customizable items, always add as new item since each customization is unique
+        if(customization && Object.keys(customization).length > 0) {
+            cart.push({
+                productId,
+                quantity: 1,
+                customization,
+                addedAt: new Date().toISOString()
+            });
+            console.log(`[DEBUG] Added new customized item to cart`);
+        } else {
+            // add the new item to cart (if item already exists, add 1 to quantity)
+            const existingItem= cart.find(item=> item.productId === productId && !item.customization);
+            if(existingItem){
+                existingItem.quantity+=1;
+                console.log(`[DEBUG] Updated existing item quantity to ${existingItem.quantity}`);
+            }
+            else{
+                cart.push({ productId, quantity: 1, addedAt: new Date().toISOString() });
+                console.log(`[DEBUG] Added new item to cart`);
+            }
         }
 
         // save the cart
         await persist.saveCart(username, cart);
+        console.log(`[DEBUG] Cart after save:`, cart);
 
         // log activity
-        await persist.logActivity(username, 'add-to-cart', { productId });
+        await persist.logActivity(username, 'add-to-cart', { productId, customization });
         res.json({ success: true });
-    } 
+    }
     catch(error){
         console.error('Error adding to cart: ', error);
         res.status(500).json({ error: 'Failed to add to cart' });
@@ -267,9 +284,30 @@ app.get('/api/cart', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const cart= await persist.loadCart(username);
-        res.json(cart);
+
+        // Enrich cart items with product details
+        const products = await persist.loadProducts();
+        const enrichedCart = cart.map(cartItem => {
+            const product = products.find(p => p.id === cartItem.productId);
+            if (!product) {
+                console.warn(`Product with ID ${cartItem.productId} not found`);
+                return null;
+            }
+            return {
+                ...cartItem,
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                image: product.image,
+                customizable: product.customizable
+            };
+        }).filter(item => item !== null); // Remove null items (products not found)
+
+        console.log(`[DEBUG] Loading enriched cart for ${username}:`, enrichedCart);
+        res.json(enrichedCart);
     }
     catch(error){
+        console.error('Error loading cart:', error);
         res.status(500).json({ error: 'Failed to load cart' });
     }
 });
@@ -447,7 +485,7 @@ app.post('/api/checkout', requireAuthAPI, async(req, res)=> {
     }
     catch(error){
         console.error('Checkout error: ', error);
-        res.status(500).json({ error: 'Failed to checkout' });
+        res.json({ success: false, error: 'Failed to checkout' });
     }
 });
 

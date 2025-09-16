@@ -106,5 +106,809 @@
     "username": "admin",
     "activityType": "login",
     "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.670Z",
+    "username": "testuser_1757978266665",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.675Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.688Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.694Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.702Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.706Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.710Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:17:46.722Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.447Z",
+    "username": "testuser_1757978298443",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.452Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.467Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.473Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.481Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.485Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.488Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:18:18.499Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.774Z",
+    "username": "testuser_1757978459770",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.779Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.793Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.800Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.808Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.812Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.816Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:20:59.826Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.936Z",
+    "username": "testuser_1757978493930",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.943Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.956Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.964Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.972Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.974Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.977Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:21:33.986Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.130Z",
+    "username": "testuser_1757978539126",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.135Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.149Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.155Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.168Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.172Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.177Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:19.186Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.809Z",
+    "username": "testuser_1757978566806",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.814Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.828Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.836Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.844Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.849Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.855Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:22:46.866Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.487Z",
+    "username": "testuser_1757978598483",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.493Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.508Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.515Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.527Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.532Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.536Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:23:18.549Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.299Z",
+    "username": "testuser_1757978708295",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.304Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.316Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.323Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.332Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.339Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.345Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:08.359Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.402Z",
+    "username": "testuser_1757978738397",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.408Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.423Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.428Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.436Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.441Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.446Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:25:38.458Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.192Z",
+    "username": "testuser_1757978786187",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.197Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.212Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.219Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.227Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.232Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.238Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:26:26.252Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:28:51.129Z",
+    "username": "testuser_1757978931111",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:28:51.137Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.318Z",
+    "username": "testuser_1757978956298",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.325Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.342Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.349Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.362Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.366Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.372Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:29:16.387Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.207Z",
+    "username": "testuser_1757979007202",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.212Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.228Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.235Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.247Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.252Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.259Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.269Z",
+    "username": "admin",
+    "activityType": "purchase",
+    "details": {
+      "total": 89.99,
+      "itemCount": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:07.280Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.479Z",
+    "username": "testuser_1757979029473",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.484Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.500Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.509Z",
+    "username": "admin",
+    "activityType": "remove-from-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.518Z",
+    "username": "admin",
+    "activityType": "add-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.523Z",
+    "username": "admin",
+    "activityType": "remove-product",
+    "details": {
+      "productId": 16
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.527Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.534Z",
+    "username": "admin",
+    "activityType": "purchase",
+    "details": {
+      "total": 89.99,
+      "itemCount": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-15T23:30:29.544Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-16T01:02:59.253Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-16T01:05:37.358Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-16T01:05:54.906Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 4
+    }
   }
 ]
