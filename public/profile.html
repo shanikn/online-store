@@ -83,16 +83,27 @@
                 background: rgba(255, 255, 255, 0.2);
             }
 
+            .side-menu a i, .side-menu button i{
+                margin-right: 10px;
+                width: 16px;
+                text-align: center;
+            }
+
             .side-menu button{
                 width: calc(100% - 40px);
                 margin: 15px 20px;
-                background: gray;
+                background: #d32f2f;
                 color: white;
                 border: none;
                 padding: 12px;
                 border-radius: 4px;
                 cursor: pointer;
                 font-size: 16px;
+                transition: background 0.3s;
+            }
+
+            .side-menu button:hover{
+                background: #b71c1c;
             }
 
             /* overlay */
@@ -296,13 +307,14 @@
             right: 20px;
             background: #f0f0f0;
             border: 2px solid #ddd;
-            border-radius: 25px;
-            width: 80px;
-            height: 35px;
+            border-radius: 20px;
+            width: 100px;
+            height: 40px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             font-size: 14px;
             font-weight: bold;
             transition: all 0.3s ease;
@@ -356,6 +368,10 @@
 
         body.dark-mode .side-menu{
             background: #2d2d2d;
+        }
+
+        body.dark-mode .menu span{
+            background: white;
         }
 
         body.dark-mode label{
@@ -571,6 +587,7 @@
                         <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
                         <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
                         <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
                         <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
                         <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
                         <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>

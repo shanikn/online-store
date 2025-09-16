@@ -404,6 +404,7 @@ async function cleanupTestData() {
             await fs.writeFile(contactsPath, '[]');
         } catch (e) {
             // File might not exist, that's okay
+            console.log('Cleanup warning:', e.message);
         }
 
         console.log('   ✨ Test data cleaned up successfully');

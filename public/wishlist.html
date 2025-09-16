@@ -81,16 +81,27 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
+        .side-menu a i, .side-menu button i{
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+
         .side-menu button {
             width: calc(100% - 40px);
-            margin: 15px 20px 15px 40px;
-            background: gray;
+            margin: 15px 20px;
+            background: #d32f2f;
             color: white;
             border: none;
             padding: 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .side-menu button:hover {
+            background: #b71c1c;
         }
 
         .menu-overlay {
@@ -293,13 +304,14 @@
             right: 20px;
             background: #f0f0f0;
             border: 2px solid #ddd;
-            border-radius: 25px;
-            width: 80px;
-            height: 35px;
+            border-radius: 20px;
+            width: 100px;
+            height: 40px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             font-size: 14px;
             font-weight: bold;
             transition: all 0.3s ease;
@@ -345,6 +357,10 @@
 
         body.dark-mode .side-menu{
             background: #2d2d2d;
+        }
+
+        body.dark-mode .menu span{
+            background: white;
         }
 
         body.dark-mode .side-menu a{
@@ -510,6 +526,7 @@
                     <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
                     <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
                     <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
                     <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
                     <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
                     <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
@@ -563,11 +580,27 @@
                 return;
             }
 
-            container.innerHTML = wishlistItems.map(item => `
+            container.innerHTML = wishlistItems.map(item => {
+                // Products that need better positioning (no cropping of jewelry)
+                const customPositions = {
+                    1: 'object-position: center 80%;', // Delicate Gold Chain Necklace - moved a bit lower
+                    2: 'object-position: center 80%;', // Minimalist Gold Hoop Earrings - moved a lot lower
+                    5: 'object-position: center 15%;', // Layered Chain Necklace Set - show necklaces
+                    9: 'object-position: center 70%;', // Minimalist Gold Ring Set - moved a bit lower
+                    12: 'object-position: center 60%;', // Gold Chain Bracelet - moved a bit lower
+                    13: 'object-position: center 30%;', // Twisted Gold Ring - moved a bit higher
+                    15: 'object-position: center 40%;' // Gold Vintage Ring - moved a bit higher
+                };
+
+                const imageStyle = customPositions[item.id] ?
+                    `style="width: 100%; height: 100%; object-fit: cover; ${customPositions[item.id]}"` :
+                    'style="width: 100%; height: 100%; object-fit: cover; object-position: center;"';
+
+                return `
                 <div class="wishlist-item">
-                    <div class="heart-icon">e</div>
+                    <div class="heart-icon"><i class="fa-solid fa-heart"></i></div>
                     <div class="item-image">
-                        ${item.image ? `<img src="${item.image}" style="max-width: 100%; max-height: 100%; object-fit: cover;">` : 'No image available'}
+                        ${item.image ? `<img src="${item.image}" alt="${item.name}" ${imageStyle}>` : 'No image available'}
                     </div>
                     <div class="item-name">${item.name}</div>
                     <div class="item-description">${item.description || ''}</div>
@@ -577,7 +610,8 @@
                         <button class="remove-btn" onclick="removeFromWishlist(${item.id})">Remove</button>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         async function addToCart(productId) {

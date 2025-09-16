@@ -14,7 +14,8 @@ async function ensureDataDir(){
         await fs.mkdir('data', { recursive: true});
     }
     catch(error){
-        // errors like directory already exists
+        // errors like directory already exists - can be safely ignored
+        console.log('Data directory creation:', error.message);
     }
 }
 
@@ -40,6 +41,7 @@ async function loadData(filename, defaultValue= []){
     }
     catch(error){
         // file doesn't exist=> return default
+        console.log('File read error (using default):', error.message);
         return defaultValue;
     }
 }

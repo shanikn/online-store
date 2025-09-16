@@ -102,91 +102,13 @@ app.get('/', (req, res)=> {
 
 
 // auth routes (login, logout, register)
-app.post('/login', async(req, res)=> {
-    // getting users data and validating it
-    try{
-        const { username, password, remember }= req.body;
-        
-        // load users & find specific user
-        const users= await persist.loadUsers();
-        const user= users.find(u=> u.username === username && u.password === password);
-
-        if(user){
-            // set cookie with experation time (12 days or 30 minutes)
-            const maxAge= remember ? (12*24*60*60*1000) : (30*60*1000);
-            res.cookie('userToken', username, {maxAge: maxAge});
-
-            // log activity
-            await persist.logActivity(username, 'login');
-
-            // on login success (valid input): send success response & redirect to store screen
-            res.json({ success: true, redirect: '/store.html' });
-        }
-        else{
-            // on login error (invalid input): send error response & display error message
-            res.json({ success: false, message: 'Invalid credentials' });
-        }
-    }
-    catch(error){
-        // error handling
-        console.error('Login error: ', error);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
+app.post('/login', loginServer.handleLogin);
 
 
-app.post('/logout', async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-
-        // clear the cookie on logout (multiple ways to ensure it's cleared)
-        res.clearCookie('userToken');
-        res.clearCookie('userToken', { path: '/' });
-        res.clearCookie('userToken', { path: '/', domain: 'localhost' });
-
-        // and log the logout itself in activity.json
-        if(username){
-            await persist.logActivity(username, 'logout');
-        }
-
-        res.json({ success: true, redirect: '/store.html' });
-    }
-    catch(error){
-        console.error('Logout error: ', error);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
+app.post('/logout', loginServer.handleLogout);
 
 
-app.post('/register', async(req, res)=> {
-    try{
-        const { username, password, remember }= req.body;
-
-        // check if the username already exists
-        const users= await persist.loadUsers();
-        if(users.find(u=> u.username === username)){
-            return res.json({ success: false, message: 'Username already exists' });
-        }
-
-        // add a new user
-        await persist.addUser({ username, password });
-
-
-        // auto login the newly added user (instead of redirecting him to login screen)
-        const maxAge= remember ? (12*24*60*60*1000) : (30*60*1000);
-        res.cookie('userToken', username, { maxAge: maxAge });
-
-        //log the activity
-        await persist.logActivity(username, 'register');
-
-        // redirect right to the store screen
-        res.json({ success: true, redirect: '/store.html' });
-    }
-    catch(error){
-        console.error('Register error: ', error);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
+app.post('/register', registerServer.handleRegister);
 
 
 
@@ -220,16 +142,7 @@ app.get('/profile.html', requireAuth, (req, res)=> {
 
 // API routes (AJAX)
 // Public API - no auth required for browsing products
-app.get('/api/products', async(req, res)=> {
-    try{
-        const products= await persist.loadProducts();
-        res.json(products);
-    }
-    catch(error){
-        console.error('Error loading products: ', error);
-        res.status(500).json({ error: 'Failed to load products' });
-    }
-});
+app.get('/api/products', storeServer.getProducts);
 
 
 app.post('/api/cart/add', requireAuthAPI, async(req, res)=> {
@@ -283,7 +196,26 @@ app.post('/api/cart/add', requireAuthAPI, async(req, res)=> {
 app.get('/api/cart', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
-        const cart= await persist.loadCart(username);
+
+        // First call our cart server to get cart with cartItemIds (migration happens there)
+        let cart = await persist.loadCart(username);
+
+        // Migration: Add cartItemId to existing items that don't have it
+        let cartUpdated = false;
+        cart = cart.map(item => {
+            if (!item.cartItemId) {
+                item.cartItemId = Date.now() + Math.random();
+                cartUpdated = true;
+                console.log(`[DEBUG] Added cartItemId ${item.cartItemId} to existing item with productId ${item.productId}`);
+            }
+            return item;
+        });
+
+        // Save the cart if we added any cartItemIds
+        if (cartUpdated) {
+            await persist.saveCart(username, cart);
+            console.log(`[DEBUG] Updated cart with cartItemIds for ${username}`);
+        }
 
         // Enrich cart items with product details
         const products = await persist.loadProducts();
@@ -313,23 +245,7 @@ app.get('/api/cart', requireAuthAPI, async(req, res)=> {
 });
 
 
-app.delete('/api/cart/remove/:productId', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        const productId= parseInt(req.params.productId);
-
-        let cart= await persist.loadCart(username);
-        cart= cart.filter(item=> item.productId != productId);
-
-        await persist.saveCart(username, cart);
-        await persist.logActivity(username, 'remove-from-cart', { productId });
-
-        res.json({ success: true });
-    }
-    catch(error){
-        res.status(500).json({ error: 'Failed removing from cart' });
-    }
-});
+app.delete('/api/cart/remove/:cartItemId', requireAuthAPI, cartServer.removeFromCart);
 
 
 // update cart quantity (also for when clearing cart after purchase- resetting quanitity to 0)
@@ -355,6 +271,7 @@ app.put('/api/cart/update', requireAuthAPI, async(req, res)=> {
 
     }
     catch(error){
+        console.error('Error updating cart:', error);
         res.status(500).json({ error: 'Failed to update cart' });
     }
 });
@@ -368,126 +285,30 @@ app.delete('/api/cart/clear', requireAuthAPI, async(req, res)=> {
         res.json({ success: true });
     }
     catch(error){
+        console.error('Error clearing cart:', error);
         res.status(500).json({ error: 'Failed to clear cart' });
     }
 });
 
+// update cart item customization
+app.put('/api/cart/update-customization', requireAuthAPI, cartServer.updateCustomization);
+
 
 // search a product in store - public API
-app.get('/api/products/search', async(req, res)=> {
-    try{
-        // filter products by name/description
-        const { q }= req.query;
-        const products= await persist.loadProducts();
-
-        const filtered= products.filter(p=>
-            p.name.toLowerCase().includes(q.toLowerCase()) ||
-            p.description.toLowerCase().includes(q.toLocaleLowerCase())
-        );
-
-        res.json(filtered);
-    }
-    catch(error){
-        res.status(500).json({ error: 'Failed to search product in store' });
-    }
-});
+app.get('/api/products/search', storeServer.searchProducts);
 
 
-app.get('/api/admin/activities', requireAuthAPI, async(req, res)=> {
-    try{
-        // username filter from admin panel
-        const { filter }= req.query;
-        const activities= await persist.getActivities(filter);
-        res.json(activities);
-    }
-    catch(error){
-        res.status(500).json({ error: 'Failed to load activity logs' });
-    }
-});
+app.get('/api/admin/activities', requireAuthAPI, adminServer.getActivities);
 
 
-app.post('/api/admin/products', requireAuthAPI, async(req, res)=> {
-    try{
-        const { name, description, price, customizable }= req.body;
-        const newProduct= await persist.addProduct({
-            name,
-            description,
-            price: parseFloat(price),
-            customizable: customizable || false
-        });
-
-        await persist.logActivity(getCurrentUser(req), 'add-product', { productId: newProduct.id });
-        res.json({ success: true, product: newProduct });
-    }
-    catch(error){
-        res.status(500).json({ error: 'Failed to add product' });
-    }
-});
+app.post('/api/admin/products', requireAuthAPI, adminServer.addProduct);
 
 
-app.delete('/api/admin/products/:id', requireAuthAPI, async(req, res)=> {
-    try{
-        const productId= parseInt(req.params.id);
-        await persist.removeProduct(productId);
-
-        await persist.logActivity(getCurrentUser(req), 'remove-product', { productId });
-        res.json({ success: true });
-    }
-    catch(error){
-        res.status(500).json({ error: 'Failed to remove product' });
-    }
-});
+app.delete('/api/admin/products/:id', requireAuthAPI, adminServer.removeProduct);
 
 
 
-app.post('/api/checkout', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        // (fake payment)
-        const { paymentDetails }= req.body;
-
-        // get the current cart
-        const cart= await persist.loadCart(username);
-        if(cart.length==0){
-            return res.json({ success: false, message: 'Cart is empty' });
-        }
-
-        // get cart details
-        const products= await persist.loadProducts();
-        let total= 0;
-        const purchaseItems= cart.map(cartItem=> {
-            const product= products.find(p=> p.id===cartItem.productId);
-            const itemTotal= product.price*cartItem.quantity;
-            total+=itemTotal;
-            return {
-                productId: cartItem.productId,
-                name: product.name,
-                price: product.price,
-                quantity: cartItem.quantity,
-                itemTotal
-            }
-        });
-
-        // save the purchase
-        await persist.savePurchase(username, {
-            items: purchaseItems,
-            total,
-            paymentDetails
-        });
-
-        // clear cart after purchase (empty array)
-        await persist.saveCart(username, []);
-
-        // log activity
-        await persist.logActivity(username, 'purchase', { total, itemCount: cart.length });
-
-        res.json({ success: true, total, items: purchaseItems });
-    }
-    catch(error){
-        console.error('Checkout error: ', error);
-        res.json({ success: false, error: 'Failed to checkout' });
-    }
-});
+app.post('/api/checkout', requireAuthAPI, checkoutServer.processCheckout);
 
 
 
@@ -498,6 +319,7 @@ app.get('/api/purchases', requireAuthAPI, async(req, res)=> {
         res.json(purchases);
     }
     catch(error){
+        console.error('Error loading purchases:', error);
         res.status(500).json({ error: 'Failed to load purchases' });
     }
 });
@@ -511,14 +333,13 @@ app.get('/api/users/current', requireAuthAPI, async(req, res)=> {
         const user= users.find(u=> u.username === username);
 
         if(user){
-            // don't send password in response
-            const { password, ...userInfo } = user;
-            res.json(userInfo);
+            res.json(user);
         } else {
             res.status(404).json({ error: 'User not found' });
         }
     }
     catch(error){
+        console.error('Error loading user info:', error);
         res.status(500).json({ error: 'Failed to load user info' });
     }
 });
@@ -544,9 +365,10 @@ app.post('/api/contact', requireAuthAPI, async(req, res)=> {
         res.json({ success: true, message: 'Message sent' });
     }
     catch(error){
+        console.error('Error sending message:', error);
         res.status(500).json({ error: 'Failed to send message' });
     }
-})
+});
 
 
 app.put('/api/profile', requireAuthAPI, async(req, res)=> {
@@ -565,6 +387,7 @@ app.put('/api/profile', requireAuthAPI, async(req, res)=> {
         res.json({ success: true });
     }
     catch(error){
+        console.error('Error updating profile:', error);
         res.status(500).json({ error: 'Failed to update profile' });
     }
 });
@@ -574,9 +397,16 @@ app.get('/api/wishlist', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
         const wishlists= await persist.loadData('wishlists.json', {});
-        res.json(wishlists[username] || []);
+        const userWishlistIds= wishlists[username] || [];
+
+        // Get full product details for wishlist items
+        const products= await persist.loadData('products.json', []);
+        const wishlistItems= products.filter(product => userWishlistIds.includes(product.id));
+
+        res.json(wishlistItems);
     }
     catch(error){
+        console.error('Error loading wishlist:', error);
         res.status(500).json({ error: 'Failed to load wishlist '});
     }
 });
@@ -600,12 +430,13 @@ app.post('/api/wishlist/add', requireAuthAPI, async(req, res)=>{
         res.json({ success: true });
     }
     catch(error){
+        console.error('Error adding to wishlist:', error);
         res.status(500).json({ error: 'Failed to add to wishlist' });
     }
 });
 
 
 // start server
-const server= app.listen(5000, ()=> {
+app.listen(5000, ()=> {
     console.log("Express App running at http://127.0.0.1:5000/");
 });

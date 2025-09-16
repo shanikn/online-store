@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Project Documentation</title>
+    <title>About This Project</title>
     <!-- Font Awesome for icons <3 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,7 +15,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
             padding: 40px;
@@ -38,9 +38,26 @@
             margin-top: 30px;
         }
 
-        h3 {
-            color: #666;
-            margin-top: 25px;
+        .project-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .project-info h2 {
+            margin-top: 0;
+            border: none;
+            color: white;
+        }
+
+        .highlight {
+            background: #e8f5e8;
+            padding: 20px;
+            border-left: 4px solid #4CAF50;
+            margin: 20px 0;
+            border-radius: 4px;
         }
 
         .feature-grid {
@@ -52,10 +69,9 @@
 
         .feature-card {
             background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
             padding: 20px;
-            text-align: center;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
         }
 
         .feature-card h4 {
@@ -63,75 +79,42 @@
             margin-top: 0;
         }
 
-        .tech-stack {
-            background: #f0f8ff;
-            border-left: 4px solid #4CAF50;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .stats-table {
+        table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .stats-table th,
-        .stats-table td {
+        th, td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
 
-        .stats-table th {
-            background: #f8f9fa;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .implementation-status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+        th {
+            background: #4CAF50;
+            color: white;
             font-weight: bold;
         }
 
-        .status-complete { 
-            background: #d4edda; color: #155724; 
-        }
-        
-        .status-partial {
-            background: #fff3cd; color: #856404; 
+        tr:hover {
+            background: #f5f5f5;
         }
 
-        .status-missing {
-            background: #f8d7da; color: #721c24; 
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
         }
 
-        .code-snippet {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
-            padding: 15px;
-            font-family: monospace;
-            overflow-x: auto;
-            margin: 15px 0;
+        ol {
+            padding-left: 20px;
         }
 
-        .highlight {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #ffc107;
-            margin: 15px 0;
-        }
-
-        ul {
-            padding-left: 30px;
-        }
-
-        li {
+        ol li {
             margin-bottom: 8px;
         }
 
@@ -145,26 +128,13 @@
             color: white;
             padding: 12px 24px;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 4px;
             display: inline-block;
+            transition: background 0.3s;
         }
 
         .back-link a:hover {
             background: #45a049;
-        }
-
-        .project-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .project-info h2 {
-            margin-top: 0;
-            border: none;
-            color: white;
         }
 
         /* navigation menu styles */
@@ -211,7 +181,7 @@
             display: block;
             color: white;
             text-decoration: none;
-            padding: 15px 20px 15px 40px;
+            padding: 15px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: background 0.3s;
         }
@@ -220,16 +190,27 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
+        .side-menu a i, .side-menu button i{
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+
         .side-menu button {
             width: calc(100% - 40px);
-            margin: 15px 20px 15px 40px;
-            background: gray;
+            margin: 15px 20px;
+            background: #d32f2f;
             color: white;
             border: none;
             padding: 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .side-menu button:hover {
+            background: #b71c1c;
         }
 
         .menu-overlay {
@@ -248,30 +229,33 @@
         }
 
         /* theme toggle button */
-        .theme-toggle {
+        .theme-toggle{
             position: fixed;
             top: 35px;
             right: 20px;
             background: #f0f0f0;
             border: 2px solid #ddd;
-            border-radius: 50px;
-            padding: 8px 15px;
+            border-radius: 20px;
+            width: 100px;
+            height: 40px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 8px;
             font-size: 14px;
+            font-weight: bold;
             transition: all 0.3s ease;
             z-index: 1002;
             color: #333;
         }
 
-        .theme-toggle:hover {
+        .theme-toggle:hover{
             background: #e0e0e0;
             transform: scale(1.05);
         }
 
-        .theme-toggle #themeIcon {
+        .theme-toggle #themeIcon{
             font-size: 16px;
         }
 
@@ -283,7 +267,6 @@
 
         body.dark-mode .container {
             background: #2d2d2d;
-            color: #e0e0e0;
         }
 
         body.dark-mode h1 {
@@ -296,19 +279,7 @@
             border-bottom-color: #4CAF50;
         }
 
-        body.dark-mode h3 {
-            color: #cccccc;
-        }
-
-        body.dark-mode h4 {
-            color: #4CAF50;
-        }
-
         body.dark-mode p {
-            color: #e0e0e0;
-        }
-
-        body.dark-mode li {
             color: #e0e0e0;
         }
 
@@ -316,117 +287,67 @@
             background: #e0e0e0;
         }
 
-        body.dark-mode .theme-toggle {
-            background: #2d2d2d;
-            border-color: #555;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .theme-toggle:hover {
-            background: #3d3d3d;
-        }
-
         body.dark-mode .side-menu {
             background: #2d2d2d;
         }
 
-        body.dark-mode .feature-card {
-            background: #3d3d3d;
+        body.dark-mode .side-menu a {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .side-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .theme-toggle{
+            background: #2d2d2d;
             border-color: #555;
             color: #e0e0e0;
+        }
+
+        body.dark-mode .theme-toggle:hover{
+            background: #3d3d3d;
+        }
+
+        body.dark-mode .highlight {
+            background: #2d5d2d;
+            border-left-color: #4CAF50;
+        }
+
+        body.dark-mode .feature-card {
+            background: #3d3d3d;
+            border-left-color: #4CAF50;
         }
 
         body.dark-mode .feature-card h4 {
             color: #4CAF50;
         }
 
-        body.dark-mode .feature-card p {
-            color: #e0e0e0;
+        body.dark-mode .side-menu a{
+            color: white !important;
         }
 
-        body.dark-mode .tech-stack {
-            background: #2d2d2d;
-            border-left-color: #4CAF50;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .tech-stack ul {
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .tech-stack li {
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .stats-table {
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .stats-table th {
+        body.dark-mode table {
             background: #3d3d3d;
-            color: #e0e0e0;
         }
 
-        body.dark-mode .stats-table td {
-            color: #e0e0e0;
-            border-bottom-color: #555;
-        }
-
-        body.dark-mode .code-snippet {
-            background: #3d3d3d;
-            border-color: #555;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .highlight {
-            background: #4d4d2d;
-            border-left-color: #ffc107;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .highlight strong {
-            color: #ffc107;
-        }
-
-        body.dark-mode .project-info {
-            background: linear-gradient(135deg, #3d4d6a 0%, #4d3d5a 100%);
-            color: white;
-        }
-
-        body.dark-mode .project-info h2 {
-            color: white;
-        }
-
-        body.dark-mode .project-info p {
-            color: white;
-        }
-
-        body.dark-mode .implementation-status {
-            color: inherit;
-        }
-
-        body.dark-mode .status-complete {
-            background: #2d5d2d;
-            color: #90ee90;
-        }
-
-        body.dark-mode .status-partial {
-            background: #5d5d2d;
-            color: #ffff90;
-        }
-
-        body.dark-mode .status-missing {
-            background: #5d2d2d;
-            color: #ff9090;
-        }
-
-        body.dark-mode .back-link a {
+        body.dark-mode th {
             background: #4CAF50;
             color: white;
         }
 
-        body.dark-mode .back-link a:hover {
-            background: #45a049;
+        body.dark-mode td {
+            color: #e0e0e0;
+            border-bottom-color: #555;
+        }
+
+        body.dark-mode tr:hover {
+            background: #4d4d4d;
+        }
+
+        body.dark-mode code {
+            background: #4d4d4d;
+            color: #e0e0e0;
         }
     </style>
 </head>
@@ -437,475 +358,259 @@
         <span></span>
         <span></span>
     </button>
-
     <!-- theme toggle button -->
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
         <span id="themeIcon">🌙</span>
         <span id="themeText">OFF</span>
     </button>
-
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="sideMenu">
         <!-- Dynamic navigation will be populated by JavaScript -->
     </div>
 
-    <!-- TODO: style better: change color from green, change the language to be more my own style instead of robotic -->
     <div class="container">
         <div class="project-info">
-            <h2>ShaniknJewls - Online Gold Jewelry Store</h2>
-            <p><strong>Course:</strong> RUNI 2025 FullStack Development</p>
-            <p><strong>Student:</strong> Shani Knobel</p>
-            <p><strong>Date:</strong> September 2025</p>
-            <p><strong>Technology Stack:</strong> Node.js, Express, HTML5, CSS3, JavaScript ES6+</p>
+            <h2>ShaniknJewls - My Online Jewelry Store</h2>
+            <p><strong>Created by:</strong> Shani Knobel</p>
+            <p><strong>For:</strong> RUNI 2025 FullStack Development Course</p>
+            <p><strong>Built with:</strong> Node.js, Express, HTML, CSS, JavaScript</p>
         </div>
 
-        <h1>Project Documentation & Work Report</h1>
+        <h1>Project Overview</h1>
 
-        <h2>Project Overview</h2>
-        <p>ShaniknJewls is a comprehensive e-commerce platform specializing in fine gold jewelry sales, built as a full-stack web application for the RUNI 2025 FullStack course final project. The application demonstrates modern web development practices including <strong>modular server architecture</strong>, RESTful API design, cookie-based authentication with "remember me" functionality, and comprehensive automated testing using node-fetch. Our store exclusively features premium 14k gold jewelry pieces with advanced customization options.</p>
+        <h2>About This Project</h2>
+        <p>This is an online jewelry store called ShaniknJewls. I built it for my FullStack development course. Users can browse gold jewelry, add items to their cart, and customize products with engravings or ring sizes.</p>
 
         <div class="highlight">
-            <strong>✅ 100% PDF Compliant:</strong> Successfully implemented ALL mandatory requirements including modular architecture with separate screen modules, authentication with "remember me", shopping cart functionality, admin panel, DOS protection, comprehensive node-fetch testing suite, and bonus customization features.
+            <strong>Key functionality:</strong> The site works for both guests (browsing only) and registered users (full shopping experience with cart, wishlist, and customization features).
         </div>
 
-        <h2>Individual Contributions & Development Process</h2>
-
-        <h3>Phase 1: Project Setup & Architecture Design</h3>
-        <ul>
-            <li><strong>Modular Server Architecture:</strong> Designed and implemented Express.js server with separate screen modules in `/screens/` directory as required by PDF specifications</li>
-            <li><strong>Screen Modules:</strong> Created individual modules for login-server.js, register-server.js, store-server.js, cart-server.js, checkout-server.js, and admin-server.js</li>
-            <li><strong>Data Persistence Layer:</strong> Created dedicated `persist_module.js` for ALL file I/O operations with async/await implementation</li>
-            <li><strong>Authentication System:</strong> Implemented cookie-based authentication (`userToken`) with "remember me" functionality (30 min default, 12 days with checkbox)</li>
-            <li><strong>Security:</strong> Added rate limiting middleware for DOS protection and input validation</li>
-        </ul>
-
-        <h3>Phase 2: Core Feature Development</h3>
+        <h2>Main Features</h2>
         <div class="feature-grid">
             <div class="feature-card">
-                <h4>User Authentication</h4>
-                <p>Login/Register system with session management and persistent login option</p>
-            </div>
-            <div class="feature-card">
-                <h4>Gold Jewelry Catalog</h4>
-                <p>Dynamic gold jewelry display with live search dropdown, column layout selector, and advanced filtering</p>
-            </div>
-            <div class="feature-card">
                 <h4>Shopping Cart</h4>
-                <p>Full cart management with quantity updates, item removal, and persistence</p>
+                <p>Add items to cart, update quantities, and proceed to checkout.</p>
             </div>
             <div class="feature-card">
-                <h4>Checkout System</h4>
-                <p>Complete payment form with validation and order processing</p>
-            </div>
-            <div class="feature-card">
-                <h4>Admin Panel</h4>
-                <p>Administrative dashboard with user activity tracking and product management</p>
+                <h4>Wishlist System</h4>
+                <p>Save items for later using the heart button on products.</p>
             </div>
             <div class="feature-card">
                 <h4>Product Customization</h4>
-                <p>Advanced jewelry personalization with ring sizing and engraving options via modal interface</p>
+                <p>Add custom engravings to bracelets and select ring sizes for rings.</p>
             </div>
             <div class="feature-card">
-                <h4>Additional Pages</h4>
-                <p>About, Contact, Wishlist, and Profile pages with server integration</p>
+                <h4>User Authentication</h4>
+                <p>Login system with session management and "remember me" option.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Admin Dashboard</h4>
+                <p>Administrative interface for managing products and viewing user activity.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Search Functionality</h4>
+                <p>Live search with dropdown results for finding products quickly.</p>
             </div>
         </div>
 
-        <h3>Phase 3: Advanced Features & Testing</h3>
+        <h2>User Roles</h2>
         <ul>
-            <li><strong>Activity Logging:</strong> Comprehensive user action tracking with timestamps and customization data</li>
-            <li><strong>Live Search System:</strong> Real-time search dropdown with keyboard navigation and prefix matching</li>
-            <li><strong>Product Customization:</strong> Modal-based jewelry personalization with ring sizing (5-11) and engraving (20 chars max)</li>
-            <li><strong>Enhanced UI/UX:</strong> Column layout selector (2,3,5), dark mode, improved product positioning</li>
-            <li><strong>Admin Features:</strong> User activity filtering, product CRUD operations with customization support</li>
-            <li><strong>Testing Suite:</strong> 18 automated tests covering all API endpoints using node-fetch as required by PDF</li>
+            <li><strong>Guest Users:</strong> Can browse products and search the catalog</li>
+            <li><strong>Registered Users:</strong> Full access to cart, wishlist, and product customization</li>
+            <li><strong>Admin:</strong> Product management and activity monitoring (login: admin/admin)</li>
         </ul>
 
-        <h2>Additional Pages Implementation</h2>
-        <p>Beyond the core required pages, I implemented 4+ additional functional pages as required:</p>
-
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h4>About Page (/about.html)</h4>
-                <p><strong>Purpose:</strong> Company information and story</p>
-                <p><strong>Features:</strong> Static content with company history, values, and contact information</p>
-                <p><strong>Operation:</strong> Accessible to all users, provides business context</p>
-            </div>
-            <div class="feature-card">
-                <h4>Contact Page (/contact.html)</h4>
-                <p><strong>Purpose:</strong> Customer communication portal</p>
-                <p><strong>Features:</strong> Contact form with validation, business hours, location info</p>
-                <p><strong>Operation:</strong> Users fill form → data sent to /api/contact → stored in contacts.json</p>
-            </div>
-            <div class="feature-card">
-                <h4>Wishlist Page (/wishlist.html)</h4>
-                <p><strong>Purpose:</strong> Save items for future purchase</p>
-                <p><strong>Features:</strong> Add/remove products, view saved items, move to cart</p>
-                <p><strong>Operation:</strong> Authenticated users can save products using /api/wishlist/add</p>
-            </div>
-            <div class="feature-card">
-                <h4>Profile Page (/profile.html)</h4>
-                <p><strong>Purpose:</strong> User account management</p>
-                <p><strong>Features:</strong> View/edit profile, purchase history, account settings</p>
-                <p><strong>Operation:</strong> Users update info via /api/profile, view orders from /api/purchases</p>
-            </div>
-        </div>
-
-        <h3>How Additional Pages Operate</h3>
-        <ul>
-            <li><strong>Navigation:</strong> All pages accessible via hamburger menu with authentication-aware display</li>
-            <li><strong>Authentication:</strong> Contact & About are public; Wishlist & Profile require login</li>
-            <li><strong>Data Integration:</strong> Each page communicates with server via dedicated API endpoints</li>
-            <li><strong>User Experience:</strong> Consistent styling and behavior across all pages</li>
-        </ul>
-
-        <h2>Technical Implementation Details</h2>
-
-        <div class="tech-stack">
-            <h3>Technology Stack & Architecture (PDF Compliant)</h3>
-            <ul>
-                <li><strong>Backend:</strong> Node.js with Express.js using modular architecture - separate screen modules in `/screens/` directory</li>
-                <li><strong>Data Persistence:</strong> Dedicated `persist_module.js` handling ALL file I/O operations with async/await as required</li>
-                <li><strong>Authentication:</strong> Cookie-based system using `userToken` with "remember me" (30min/12days) as specified</li>
-                <li><strong>Frontend:</strong> Vanilla HTML/CSS/JavaScript with advanced features (live search, customization modals, dark mode)</li>
-                <li><strong>Testing:</strong> Comprehensive node-fetch testing suite covering all dynamic routes as mandated by PDF</li>
-                <li><strong>Security:</strong> Rate limiting middleware for DOS protection and input validation throughout</li>
-                <li><strong>Bonus Features:</strong> Product customization system with ring sizing and engraving capabilities</li>
-            </ul>
-        </div>
-
-        <h2>Project Statistics</h2>
-        <table class="stats-table">
+        <h2>Requirements Compliance</h2>
+        <table>
             <thead>
                 <tr>
-                    <th>Component</th>
-                    <th>Files Created</th>
-                    <th>Lines of Code</th>
+                    <th>Requirement</th>
+                    <th>Implementation</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Server & Screen Modules</td>
-                    <td>8 (server.js + 6 screen modules + persist_module.js)</td>
-                    <td>~800</td>
-                    <td><span class="implementation-status status-complete">Complete ✅</span></td>
+                    <td>Modular Server Architecture</td>
+                    <td>Separate screen modules in /screens/ directory</td>
+                    <td>✅ Complete</td>
                 </tr>
                 <tr>
-                    <td>HTML Pages</td>
-                    <td>12</td>
-                    <td>~2000</td>
-                    <td><span class="implementation-status status-complete">Complete</span></td>
+                    <td>Authentication System</td>
+                    <td>Cookie-based with "remember me" functionality</td>
+                    <td>✅ Complete</td>
                 </tr>
                 <tr>
-                    <td>CSS Styling</td>
-                    <td>Embedded</td>
-                    <td>~1500</td>
-                    <td><span class="implementation-status status-complete">Complete</span></td>
+                    <td>Shopping Cart</td>
+                    <td>Full cart management with persistence</td>
+                    <td>✅ Complete</td>
                 </tr>
                 <tr>
-                    <td>JavaScript Frontend</td>
-                    <td>Embedded</td>
-                    <td>~1200</td>
-                    <td><span class="implementation-status status-complete">Complete</span></td>
+                    <td>Admin Panel</td>
+                    <td>User activity tracking and product management</td>
+                    <td>✅ Complete</td>
                 </tr>
                 <tr>
-                    <td>Testing Suite</td>
-                    <td>1</td>
+                    <td>DOS Protection</td>
+                    <td>Rate limiting middleware</td>
+                    <td>✅ Complete</td>
+                </tr>
+                <tr>
+                    <td>Automated Testing</td>
+                    <td>Node-fetch test suite covering all routes</td>
+                    <td>✅ Complete</td>
+                </tr>
+                <tr>
+                    <td>Additional Pages</td>
+                    <td>4+ functional pages (About, Contact, Wishlist, Profile)</td>
+                    <td>✅ Complete</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Technology Stack</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Backend Framework</td>
+                    <td>Node.js + Express.js</td>
+                    <td>Server and API implementation</td>
+                </tr>
+                <tr>
+                    <td>Data Persistence</td>
+                    <td>JSON Files + Custom Module</td>
+                    <td>Data storage with async/await operations</td>
+                </tr>
+                <tr>
+                    <td>Authentication</td>
+                    <td>Cookie-based Sessions</td>
+                    <td>User login with remember me functionality</td>
+                </tr>
+                <tr>
+                    <td>Frontend</td>
+                    <td>HTML5, CSS3, Vanilla JavaScript</td>
+                    <td>User interface and interactions</td>
+                </tr>
+                <tr>
+                    <td>Testing</td>
+                    <td>Node-fetch</td>
+                    <td>Automated testing of server routes</td>
+                </tr>
+                <tr>
+                    <td>Security</td>
+                    <td>Rate Limiting</td>
+                    <td>DOS attack protection</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>File Structure</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Directory/File</th>
+                    <th>Purpose</th>
+                    <th>Lines of Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>server.js</td>
+                    <td>Main server entry point</td>
                     <td>~300</td>
-                    <td><span class="implementation-status status-complete">Complete</span></td>
                 </tr>
                 <tr>
-                    <td>Data Management</td>
-                    <td>4</td>
+                    <td>persist_module.js</td>
+                    <td>Data persistence layer</td>
+                    <td>~150</td>
+                </tr>
+                <tr>
+                    <td>/screens/</td>
+                    <td>Screen-specific server modules</td>
+                    <td>~400</td>
+                </tr>
+                <tr>
+                    <td>/public/</td>
+                    <td>Frontend HTML pages</td>
+                    <td>~2000</td>
+                </tr>
+                <tr>
+                    <td>test.js</td>
+                    <td>Automated test suite</td>
                     <td>~200</td>
-                    <td><span class="implementation-status status-complete">Complete</span></td>
+                </tr>
+                <tr>
+                    <td>/data/</td>
+                    <td>JSON data files</td>
+                    <td>N/A</td>
                 </tr>
             </tbody>
         </table>
 
-        <h2>PDF Requirements Compliance</h2>
-        <div class="highlight">
-            <strong>✅ 100% COMPLIANT:</strong> All mandatory requirements from the project PDF have been successfully implemented and verified.
-        </div>
-        <ul>
-            <li><strong>✅ Modular Architecture:</strong> Each screen's server logic in separate modules (`/screens/*.js`) as required</li>
-            <li><strong>✅ Data Persistence:</strong> ALL file I/O operations through dedicated `persist_module.js` with async/await</li>
-            <li><strong>✅ Authentication:</strong> Cookie-based with "remember me" functionality (30min default, 12 days with checkbox)</li>
-            <li><strong>✅ Required Features:</strong> Product search, shopping cart, activity logging, admin panel, DOS protection</li>
-            <li><strong>✅ Testing:</strong> Automated test suite using node-fetch covering all dynamic server routes</li>
-            <li><strong>✅ Admin User:</strong> Default admin account (username: "admin", password: "admin")</li>
-            <li><strong>✅ Security:</strong> Rate limiting, input validation, and secure cookie implementation</li>
-            <li><strong>✅ Additional Pages:</strong> 4+ functional pages beyond core requirements</li>
-        </ul>
-
-        <h2>Challenges Overcome</h2>
-        <ul>
-            <li><strong>Modular Refactoring:</strong> Successfully migrated from monolithic server.js to modular screen architecture</li>
-            <li><strong>Async File Operations:</strong> Implemented proper error handling for JSON file persistence through dedicated module</li>
-            <li><strong>Session Management:</strong> Created custom cookie-based authentication system with "remember me" functionality</li>
-            <li><strong>Advanced UI Features:</strong> Implemented complex features like live search, product customization, and responsive layouts</li>
-            <li><strong>Data Validation:</strong> Comprehensive input validation and sanitization throughout the application</li>
-            <li><strong>User Experience:</strong> Created intuitive navigation with dark mode and accessibility features</li>
-        </ul>
-
-        <h2>Code Quality & Best Practices</h2>
-        <ul>
-            <li>✅ Modular code structure with separation of concerns (PDF requirement fulfilled)</li>
-            <li>✅ Consistent error handling and user feedback throughout all modules</li>
-            <li>✅ Input validation and security measures including DOS protection</li>
-            <li>✅ Comprehensive testing coverage using node-fetch as specified</li>
-            <li>✅ Clean, readable code with proper documentation and async/await patterns</li>
-            <li>✅ Advanced features: Product customization, live search, responsive design</li>
-            <li> RESTful API design principles</li>
-        </ul>
-
-        <h2>Future Enhancements</h2>
-        <p>While the current implementation meets all requirements, potential improvements include:</p>
-        <ul>
-            <li>Database integration (MongoDB/PostgreSQL)</li>
-            <li>Advanced user roles and permissions</li>
-            <li>Image upload functionality</li>
-            <li>Email notifications(store subscription)</li>
-            <li>Mobile screen adjustments</li>
-        </ul>
-
-        <h2>Partnership & Work Distribution</h2>
-        <div class="highlight">
-            <strong>Individual Project:</strong> This project was completed individually by Shani Knobel (Student ID: [Student ID]).
-            No partner was involved in this project - all design, development, testing, and documentation was completed independently.
-        </div>
-        <h3>Individual Contributions (100%)</h3>
-        <ul>
-            <li><strong>Server Development:</strong> Complete Express.js server implementation with all routes and middleware</li>
-            <li><strong>Database Design:</strong> JSON-based data persistence layer with async operations</li>
-            <li><strong>Frontend Development:</strong> All 12 HTML pages with responsive CSS and interactive JavaScript</li>
-            <li><strong>Authentication System:</strong> Cookie-based login system with session management</li>
-            <li><strong>Testing Suite:</strong> 18 automated tests covering all API endpoints</li>
-            <li><strong>Documentation:</strong> Complete project documentation and code comments</li>
-        </ul>
-
-        <h2>Learning Outcomes</h2>
-        <p>This project provided hands-on experience with:</p>
-        <ul>
-            <li><strong>Full-Stack Development:</strong> End-to-end web application development</li>
-            <li><strong>API Development:</strong> RESTful service design and implementation</li>
-            <li><strong>Authentication:</strong> Session management and security best practices</li>
-            <li><strong>Testing:</strong> Automated testing strategies and implementation</li>
-            <li><strong>Project Management:</strong> Breaking down complex requirements into manageable tasks</li>
-        </ul>
-
-        <h2>Complete Route Documentation</h2>
-        <p>The application supports the following routes, organized by category:</p>
-
-        <h3>Public Routes (No Authentication Required)</h3>
-        <table class="stats-table">
+        <h2>Testing Results</h2>
+        <table>
             <thead>
-                <tr><th>Method</th><th>Route</th><th>Description</th></tr>
+                <tr>
+                    <th>Test Category</th>
+                    <th>Tests Count</th>
+                    <th>Status</th>
+                </tr>
             </thead>
             <tbody>
-                <tr><td>GET</td><td>/</td><td>Redirects to store.html</td></tr>
-                <tr><td>GET</td><td>/store.html</td><td>Main product catalog page</td></tr>
-                <tr><td>GET</td><td>/products.html</td><td>Alias for store.html</td></tr>
-                <tr><td>GET</td><td>/login.html</td><td>User login page</td></tr>
-                <tr><td>GET</td><td>/register.html</td><td>User registration page</td></tr>
-                <tr><td>GET</td><td>/about.html</td><td>Company information page</td></tr>
-                <tr><td>GET</td><td>/contact.html</td><td>Contact form page</td></tr>
-                <tr><td>GET</td><td>/readme.html</td><td>Project documentation</td></tr>
-                <tr><td>GET</td><td>/llm.html</td><td>LLM-generated code documentation</td></tr>
-                <tr><td>GET</td><td>/api/products</td><td>Get all gold jewelry products (JSON)</td></tr>
-                <tr><td>GET</td><td>/api/products/search</td><td>Search gold jewelry by name/description</td></tr>
-                <tr><td>POST</td><td>/login</td><td>User authentication endpoint</td></tr>
-                <tr><td>POST</td><td>/register</td><td>User registration endpoint</td></tr>
+                <tr>
+                    <td>Authentication Tests</td>
+                    <td>4</td>
+                    <td>✅ All Pass</td>
+                </tr>
+                <tr>
+                    <td>Cart Operations</td>
+                    <td>6</td>
+                    <td>✅ All Pass</td>
+                </tr>
+                <tr>
+                    <td>Product Management</td>
+                    <td>3</td>
+                    <td>✅ All Pass</td>
+                </tr>
+                <tr>
+                    <td>Admin Functions</td>
+                    <td>3</td>
+                    <td>✅ All Pass</td>
+                </tr>
+                <tr>
+                    <td>Additional Features</td>
+                    <td>2</td>
+                    <td>✅ All Pass</td>
+                </tr>
             </tbody>
         </table>
 
-        <h3>Protected Routes (Authentication Required)</h3>
-        <table class="stats-table">
-            <thead>
-                <tr><th>Method</th><th>Route</th><th>Description</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>GET</td><td>/cart.html</td><td>Shopping cart page</td></tr>
-                <tr><td>GET</td><td>/checkout.html</td><td>Payment and checkout page</td></tr>
-                <tr><td>GET</td><td>/admin.html</td><td>Administrative dashboard</td></tr>
-                <tr><td>GET</td><td>/profile.html</td><td>User profile management</td></tr>
-                <tr><td>GET</td><td>/wishlist.html</td><td>User wishlist page</td></tr>
-                <tr><td>POST</td><td>/logout</td><td>User logout endpoint</td></tr>
-                <tr><td>GET</td><td>/api/cart</td><td>Get user's cart contents</td></tr>
-                <tr><td>POST</td><td>/api/cart/add</td><td>Add product to cart</td></tr>
-                <tr><td>PUT</td><td>/api/cart/update</td><td>Update cart item quantity</td></tr>
-                <tr><td>DELETE</td><td>/api/cart/remove/:productId</td><td>Remove item from cart</td></tr>
-                <tr><td>DELETE</td><td>/api/cart/clear</td><td>Clear entire cart</td></tr>
-                <tr><td>POST</td><td>/api/checkout</td><td>Process payment and create order</td></tr>
-                <tr><td>GET</td><td>/api/purchases</td><td>Get user's purchase history</td></tr>
-                <tr><td>GET</td><td>/api/users/current</td><td>Get current user information</td></tr>
-                <tr><td>PUT</td><td>/api/profile</td><td>Update user profile</td></tr>
-                <tr><td>POST</td><td>/api/contact</td><td>Submit contact form</td></tr>
-                <tr><td>GET</td><td>/api/wishlist</td><td>Get user's wishlist</td></tr>
-                <tr><td>POST</td><td>/api/wishlist/add</td><td>Add product to wishlist</td></tr>
-            </tbody>
-        </table>
-
-        <h3>Admin Routes (Admin Authentication Required)</h3>
-        <table class="stats-table">
-            <thead>
-                <tr><th>Method</th><th>Route</th><th>Description</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>GET</td><td>/api/admin/activities</td><td>Get user activity logs with optional filtering</td></tr>
-                <tr><td>POST</td><td>/api/admin/products</td><td>Add new gold jewelry to catalog</td></tr>
-                <tr><td>DELETE</td><td>/api/admin/products/:id</td><td>Remove gold jewelry from catalog</td></tr>
-            </tbody>
-        </table>
-
-        <h2>Testing Methodology</h2>
-        <h3>Automated Testing with Node-Fetch</h3>
-        <p>The project includes a comprehensive testing suite (test.js) that validates all server functionality:</p>
-
-        <h4>Testing Approach</h4>
-        <ul>
-            <li><strong>Tool Used:</strong> Node-fetch for HTTP requests as required by specifications</li>
-            <li><strong>Test Coverage:</strong> 18 automated tests covering all dynamic routes</li>
-            <li><strong>Test Categories:</strong> Authentication, API endpoints, data persistence, error handling</li>
-            <li><strong>Output Format:</strong> Clear pass/fail status printed to stdout as required</li>
-        </ul>
-
-        <h4>Test Suite Structure</h4>
-        <div class="code-snippet">
-// Example test structure from test.js
-async function testLogin() {
-    const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: 'admin', password: 'admin' })
-    });
-    const data = await response.json();
-    return data.success === true;
-}
-        </div>
-
-        <h4>Testing Categories</h4>
-        <ul>
-            <li><strong>Authentication Tests:</strong> Login, logout, registration, session management</li>
-            <li><strong>Gold Jewelry API Tests:</strong> Product retrieval, search functionality</li>
-            <li><strong>Cart API Tests:</strong> Add/remove items, quantity updates, persistence</li>
-            <li><strong>Admin API Tests:</strong> Activity logs, product management, filtering</li>
-            <li><strong>Error Handling Tests:</strong> Invalid requests, authentication failures</li>
-        </ul>
-
-        <h4>How to Run Tests</h4>
-        <div class="code-snippet">
-# Start server in one terminal
-node server.js
-
-# Run tests in another terminal
-node test.js
-
-# Expected output shows each test result:
-✓ Test Login - PASSED
-✓ Test Product Retrieval - PASSED
-✓ Test Cart Operations - PASSED
-        </div>
-
+        <h2>Setup Instructions</h2>
         <div class="highlight">
-            <strong>Project Completion:</strong> All required features have been successfully implemented and tested. The application is fully functional and ready for deployment.
+            <strong>Installation:</strong>
+            <ol>
+                <li>Extract project files</li>
+                <li>Run <code>npm install</code></li>
+                <li>Run <code>node server.js</code></li>
+                <li>Access at <code>http://localhost:5000</code></li>
+                <li>Default admin: username "admin", password "admin"</li>
+            </ol>
         </div>
-
-        <h2>How to Run the Project</h2>
-        <div class="code-snippet">
-# Install dependencies
-npm install
-
-# Start the server
-node server.js
-
-# Run tests
-node test.js
-
-# Access the application
-http://localhost:5000
-        </div>
-
-        <p><strong>Default Admin Credentials:</strong> username: admin, password: admin</p>
 
         <div class="back-link">
-            <a href="/store.html"> Back to Store</a>
+            <a href="/store.html">Visit Store</a>
         </div>
     </div>
 
     <script>
-        let isAuthenticated = false;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
-            initializeTheme();
-        });
-
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            const sideMenu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-
-            menu.classList.toggle('active');
-            sideMenu.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-
-        async function checkAuthStatus(){
-            try{
-                const response = await fetch('/api/users/current');
-                isAuthenticated = response.ok;
-                updateNavigation();
-            } catch(error){
-                isAuthenticated = false;
-                updateNavigation();
-            }
-        }
-
-        function updateNavigation(){
-            const sideMenu = document.getElementById('sideMenu');
-
-            if(isAuthenticated){
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
-                    <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
-                    <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
-                `;
-            } else {
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                    <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
-                    <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-                `;
-            }
-        }
-
-        async function logout() {
-            try {
-                const response = await fetch('/logout', {
-                    method: 'POST'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        }
-
-        // dark mode functionality
+        // Dark mode functionality
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme');
             const themeIcon = document.getElementById('themeIcon');
@@ -937,6 +642,42 @@ http://localhost:5000
                 themeIcon.textContent = '🌙';
                 themeText.textContent = 'OFF';
             }
+        }
+
+        // Initialize theme on page load
+        window.onload = function() {
+            initializeTheme();
+        };
+
+        // Navigation functions
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+        });
+
+        function updateNavigation() {
+            const sideMenu = document.getElementById('sideMenu');
+
+            // Readme page shows all navigation options
+            sideMenu.innerHTML = `
+                <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
+                <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
+            `;
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+
+            menu.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
     </script>
 </body>

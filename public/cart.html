@@ -81,16 +81,27 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
+        .side-menu a i, .side-menu button i{
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+
         .side-menu button {
             width: calc(100% - 40px);
-            margin: 15px 20px 15px 40px;
-            background: gray;
+            margin: 15px 20px;
+            background: #d32f2f;
             color: white;
             border: none;
             padding: 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .side-menu button:hover {
+            background: #b71c1c;
         }
 
         .menu-overlay {
@@ -141,6 +152,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            overflow: hidden;
         }
 
         .item-details {
@@ -275,6 +287,65 @@
             background: #45a049;
         }
 
+        .customization-section {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 8px;
+            border-left: 3px solid #FF9800;
+        }
+
+        .customization-label {
+            font-weight: bold;
+            color: #FF9800;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .customization-value {
+            color: #333;
+            font-style: italic;
+            margin-bottom: 3px;
+        }
+
+        .customization-edit {
+            margin-top: 8px;
+        }
+
+        .customization-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-bottom: 5px;
+        }
+
+        .customization-btn {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .customization-btn:hover {
+            background: #F57C00;
+        }
+
+        .edit-customization-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
         .empty-cart {
             text-align: center;
             padding: 50px;
@@ -329,13 +400,14 @@
             right: 20px;
             background: #f0f0f0;
             border: 2px solid #ddd;
-            border-radius: 25px;
-            width: 80px;
-            height: 35px;
+            border-radius: 20px;
+            width: 100px;
+            height: 40px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             font-size: 14px;
             font-weight: bold;
             transition: all 0.3s ease;
@@ -385,6 +457,25 @@
 
         body.dark-mode .side-menu{
             background: #2d2d2d;
+        }
+
+        body.dark-mode .menu span{
+            background: white;
+        }
+
+        body.dark-mode .customization-section{
+            background: #1a1a1a;
+            border-left-color: #FF9800;
+        }
+
+        body.dark-mode .customization-value{
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .customization-input{
+            background: #2d2d2d;
+            border-color: #555;
+            color: #e0e0e0;
         }
 
         body.dark-mode .side-menu a{
@@ -537,6 +628,7 @@
                     <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
                     <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
                     <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
                     <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
                     <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
                     <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
@@ -603,26 +695,71 @@
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
                     <div class="cart-items">
                         <h2>Cart Items (${itemCount})</h2>
-                        ${cartItems.map(item => `
+                        ${cartItems.map(item => {
+                            // Products that need better positioning (no cropping of jewelry)
+                            const customPositions = {
+                                1: 'object-position: center 80%;', // Delicate Gold Chain Necklace - moved a bit lower
+                                2: 'object-position: center 80%;', // Minimalist Gold Hoop Earrings - moved a lot lower
+                                5: 'object-position: center 15%;', // Layered Chain Necklace Set - show necklaces
+                                9: 'object-position: center 70%;', // Minimalist Gold Ring Set - moved a bit lower
+                                12: 'object-position: center 60%;', // Gold Chain Bracelet - moved a bit lower
+                                13: 'object-position: center 30%;', // Twisted Gold Ring - moved a bit higher
+                                15: 'object-position: center 40%;' // Gold Vintage Ring - moved a bit higher
+                            };
+
+                            const imageStyle = customPositions[item.productId] ?
+                                `style="width: 100%; height: 100%; object-fit: cover; ${customPositions[item.productId]}"` :
+                                'style="width: 100%; height: 100%; object-fit: cover; object-position: center;"';
+
+                            return `
                             <div class="cart-item">
                                 <div class="item-image">
-                                    ${item.image ? `<img src="${item.image}" style="max-width: 100%; max-height: 100%;">` : 'No image'}
+                                    ${item.image ? `<img src="${item.image}" alt="${item.name}" ${imageStyle}>` : 'No image'}
                                 </div>
                                 <div class="item-details">
                                     <div class="item-name">${item.name}</div>
                                     <div class="item-description">${item.description || ''}</div>
                                     <div class="item-price">₪${item.price.toFixed(2)}</div>
+                                    ${isCustomizable(item.productId) ? (item.customization ? `
+                                        <div class="customization-section">
+                                            <div class="customization-label">🎨 Customization:</div>
+                                            <div id="customization-display-${item.productId}">
+                                                ${Object.entries(item.customization).map(([key, value]) => `
+                                                    <div class="customization-value"><strong>${key}:</strong> ${value}</div>
+                                                `).join('')}
+                                            </div>
+                                            <button class="edit-customization-btn" onclick="toggleCustomizationEdit(${item.productId})">✏️ Edit</button>
+                                            <div id="customization-edit-${item.productId}" class="customization-edit" style="display: none;">
+                                                ${Object.entries(item.customization).map(([key, value]) => `
+                                                    <input type="text" class="customization-input" id="${key}-${item.productId}" placeholder="${key}" value="${value}">
+                                                `).join('')}
+                                                <button class="customization-btn" onclick="saveCustomization(${item.productId})">💾 Save</button>
+                                                <button class="customization-btn" onclick="cancelCustomizationEdit(${item.productId})">❌ Cancel</button>
+                                            </div>
+                                        </div>
+                                    ` : `
+                                        <div class="customization-section">
+                                            <div class="customization-label">🎨 Add Customization:</div>
+                                            <button class="edit-customization-btn" onclick="showAddCustomization(${item.productId})">➕ Add Custom Text</button>
+                                            <div id="customization-add-${item.productId}" class="customization-edit" style="display: none;">
+                                                <input type="text" class="customization-input" id="engraving-${item.productId}" placeholder="Engraving text (e.g., initials, name)">
+                                                <button class="customization-btn" onclick="addCustomization(${item.productId})">💾 Add</button>
+                                                <button class="customization-btn" onclick="cancelAddCustomization(${item.productId})">❌ Cancel</button>
+                                            </div>
+                                        </div>
+                                    `) : ''}
                                 </div>
                                 <div class="item-controls">
                                     <div class="quantity-controls">
-                                        <button class="quantity-btn" onclick="updateQuantity(${item.productId}, ${item.quantity - 1})">-</button>
+                                        <button class="quantity-btn" onclick="updateQuantity(${item.cartItemId || item.productId}, ${item.quantity - 1}, ${item.productId})">-</button>
                                         <span class="quantity">${item.quantity}</span>
-                                        <button class="quantity-btn" onclick="updateQuantity(${item.productId}, ${item.quantity + 1})">+</button>
+                                        <button class="quantity-btn" onclick="updateQuantity(${item.cartItemId || item.productId}, ${item.quantity + 1}, ${item.productId})">+</button>
                                     </div>
-                                    <button class="remove-btn" onclick="removeFromCart(${item.productId})">Remove</button>
+                                    <button class="remove-btn" onclick="removeFromCart(${item.cartItemId || item.productId})">Remove</button>
                                 </div>
                             </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>
 
                     <div class="cart-summary">
@@ -643,9 +780,9 @@
             `;
         }
 
-        async function updateQuantity(productId, newQuantity) {
+        async function updateQuantity(cartItemId, newQuantity, productId) {
             if (newQuantity < 1) {
-                removeFromCart(productId);
+                removeFromCart(cartItemId);
                 return;
             }
 
@@ -671,9 +808,9 @@
             }
         }
 
-        async function removeFromCart(productId) {
+        async function removeFromCart(cartItemId) {
             try {
-                const response = await fetch(`/api/cart/remove/${productId}`, {
+                const response = await fetch(`/api/cart/remove/${cartItemId}`, {
                     method: 'DELETE'
                 });
 
@@ -743,6 +880,117 @@
             setTimeout(() => {
                 errorDiv.style.display = 'none';
             }, 5000);
+        }
+
+        // Helper function to check if a product is customizable
+        function isCustomizable(productId) {
+            const product = products.find(p => p.id === productId);
+            return product ? product.customizable : false;
+        }
+
+        // Customization functions
+        function toggleCustomizationEdit(productId) {
+            const displayDiv = document.getElementById(`customization-display-${productId}`);
+            const editDiv = document.getElementById(`customization-edit-${productId}`);
+
+            if (editDiv.style.display === 'none') {
+                editDiv.style.display = 'block';
+                displayDiv.style.display = 'none';
+            } else {
+                editDiv.style.display = 'none';
+                displayDiv.style.display = 'block';
+            }
+        }
+
+        function cancelCustomizationEdit(productId) {
+            const displayDiv = document.getElementById(`customization-display-${productId}`);
+            const editDiv = document.getElementById(`customization-edit-${productId}`);
+            editDiv.style.display = 'none';
+            displayDiv.style.display = 'block';
+        }
+
+        function showAddCustomization(productId) {
+            const addDiv = document.getElementById(`customization-add-${productId}`);
+            addDiv.style.display = 'block';
+        }
+
+        function cancelAddCustomization(productId) {
+            const addDiv = document.getElementById(`customization-add-${productId}`);
+            addDiv.style.display = 'none';
+            document.getElementById(`engraving-${productId}`).value = '';
+        }
+
+        async function saveCustomization(productId) {
+            try {
+                const item = cartItems.find(item => item.productId === productId);
+                if (!item) return;
+
+                const newCustomization = {};
+                Object.keys(item.customization).forEach(key => {
+                    const input = document.getElementById(`${key}-${productId}`);
+                    if (input && input.value.trim()) {
+                        newCustomization[key] = input.value.trim();
+                    }
+                });
+
+                const response = await fetch('/api/cart/update-customization', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        customization: newCustomization
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showSuccess('Customization updated!');
+                    loadCart(); // Reload cart to show updated data
+                } else {
+                    showError('Failed to update customization');
+                }
+            } catch (error) {
+                console.error('Error updating customization:', error);
+                showError('Connection error. Please try again.');
+            }
+        }
+
+        async function addCustomization(productId) {
+            try {
+                const engravingInput = document.getElementById(`engraving-${productId}`);
+                const engravingText = engravingInput.value.trim();
+
+                if (!engravingText) {
+                    showError('Please enter text for engraving');
+                    return;
+                }
+
+                const response = await fetch('/api/cart/update-customization', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        customization: {
+                            engraving: engravingText
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showSuccess('Customization added!');
+                    loadCart(); // Reload cart to show updated data
+                } else {
+                    showError('Failed to add customization');
+                }
+            } catch (error) {
+                console.error('Error adding customization:', error);
+                showError('Connection error. Please try again.');
+            }
         }
     </script>
 </body>

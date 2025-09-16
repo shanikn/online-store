@@ -406,6 +406,9 @@
             .product-button-container{
                 margin-top: auto;
                 padding-top: 15px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
             }
 
             .add-to-cart-btn{
@@ -416,10 +419,44 @@
                 border-radius: 4px;
                 cursor: pointer;
                 font-size: 16px;
-                width: 40%;
-                margin: 0 auto;
-                display: block;
+                flex: 1;
                 text-align: center;
+            }
+
+            .wishlist-btn{
+                background: #ff6b6b;
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 50%;
+                cursor: pointer;
+                font-size: 16px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+            }
+
+            .wishlist-btn:hover{
+                background: #ff5252;
+                transform: scale(1.1);
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            }
+
+            .wishlist-btn.added{
+                background: #e91e63;
+                animation: heartBeat 0.6s ease-in-out;
+            }
+
+            @keyframes heartBeat {
+                0% { transform: scale(1); }
+                25% { transform: scale(1.2); }
+                50% { transform: scale(1); }
+                75% { transform: scale(1.1); }
+                100% { transform: scale(1); }
             }
 
             /* add to cart hover color */
@@ -451,6 +488,13 @@
                 text-align: center;
                 display: none;
                 box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1500;
+                width: 90%;
+                max-width: 400px;
             }
 
             .success-actions {
@@ -822,6 +866,20 @@
                 background: rgba(204, 255, 204, 0.1);
             }
 
+            body.dark-mode .wishlist-btn{
+                background: #d32f2f;
+                box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
+            }
+
+            body.dark-mode .wishlist-btn:hover{
+                background: #b71c1c;
+                box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+            }
+
+            body.dark-mode .wishlist-btn.added{
+                background: #ad1457;
+            }
+
         </style>
     </head>
     <body>
@@ -936,6 +994,7 @@
                         <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
                         <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
                         <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
                         <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
                         <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
                         <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
@@ -1022,6 +1081,9 @@
                                         `<button class="add-to-cart-btn" onclick="openCustomizationModal(${product.id})">Customize & Add</button>` :
                                         `<button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to cart</button>`
                                     }
+                                    <button class="wishlist-btn" onclick="addToWishlist(${product.id}, this)" title="Add to Wishlist">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1057,6 +1119,48 @@
                 }
                 catch(error){
                     console.error('Error adding item to cart', error);
+                    showError('Connection error. Please try again.');
+                }
+            }
+
+            async function addToWishlist(productId, buttonElement){
+                try{
+                    const response= await fetch('/api/wishlist/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productId: productId })
+                    });
+
+                    // If user is not authenticated, redirect to login
+                    if(response.status === 401 || response.redirected && response.url.includes('login')){
+                        alert('Please login to add items to your wishlist');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    const data= await response.json();
+
+                    if(data.success){
+                        // Add visual feedback
+                        if(buttonElement){
+                            buttonElement.classList.add('added');
+
+                            // Remove the added class after animation
+                            setTimeout(() => {
+                                buttonElement.classList.remove('added');
+                            }, 600);
+                        }
+
+                        showWishlistSuccess('Item added to wishlist! ❤️');
+                    }
+                    else{
+                        showError('Failed to add item to wishlist');
+                    }
+                }
+                catch(error){
+                    console.error('Error adding item to wishlist', error);
                     showError('Connection error. Please try again.');
                 }
             }
@@ -1156,9 +1260,6 @@
                             <a href="/cart.html" class="view-cart-btn">
                                 <i class="fa-solid fa-shopping-cart"></i> View Cart
                             </a>
-                            <button class="continue-shopping-btn" onclick="hideSuccess()">
-                                Continue Shopping
-                            </button>
                         </div>
                     `;
                 }
@@ -1174,6 +1275,29 @@
             function hideSuccess() {
                 const successDiv = document.getElementById('successMessage');
                 successDiv.style.display = 'none';
+            }
+
+            function showWishlistSuccess(message) {
+                const successDiv = document.getElementById('successMessage');
+
+                let htmlContent = `<div>${message}</div>`;
+
+                if (isAuthenticated) {
+                    htmlContent += `
+                        <div class="success-actions">
+                            <a href="/wishlist.html" class="view-cart-btn">
+                                <i class="fa-solid fa-heart"></i> View Wishlist
+                            </a>
+                        </div>
+                    `;
+                }
+
+                successDiv.innerHTML = htmlContent;
+                successDiv.style.display = 'block';
+
+                setTimeout(() => {
+                    successDiv.style.display = 'none';
+                }, 8000); // Same timeout as cart success message
             }
 
 
@@ -1338,30 +1462,44 @@
             function generateCustomizationOptions(product) {
                 let options = '';
 
-                // Ring sizing options (for product ID 11 - Gold Blue Gem Ring)
-                if (product.id === 11) {
+                // Determine customization type based on product category
+                const productName = product.name.toLowerCase();
+
+                // Ring sizing options (for rings)
+                if (productName.includes('ring')) {
                     options += `
                         <div class="customization-group">
                             <label for="ringSize">Ring Size:</label>
                             <select id="ringSize" required>
                                 <option value="">Select size</option>
-                                <option value="5">Size 5</option>
-                                <option value="6">Size 6</option>
-                                <option value="7">Size 7</option>
-                                <option value="8">Size 8</option>
-                                <option value="9">Size 9</option>
-                                <option value="10">Size 10</option>
-                                <option value="11">Size 11</option>
+                                <option value="5">Size 5 (4.9cm) - Small</option>
+                                <option value="6">Size 6 (5.2cm) - Small/Medium</option>
+                                <option value="7">Size 7 (5.4cm) - Medium</option>
+                                <option value="8">Size 8 (5.7cm) - Medium/Large</option>
+                                <option value="9">Size 9 (6.0cm) - Large</option>
+                                <option value="10">Size 10 (6.2cm) - Large/XL</option>
+                                <option value="11">Size 11 (6.5cm) - Extra Large</option>
                             </select>
                         </div>
                     `;
                 }
 
-                // Engraving options (for bracelets and watch - IDs 3, 8, 10)
-                if ([3, 8, 10].includes(product.id)) {
+                // Engraving options (for bracelets and watches)
+                if (productName.includes('bracelet') || productName.includes('watch')) {
                     options += `
                         <div class="customization-group">
                             <label for="engraving">Engraving (optional):</label>
+                            <input type="text" id="engraving" placeholder="Enter your custom text (max 20 characters)" maxlength="20">
+                            <small style="color: #666; font-size: 12px;">Leave blank for no engraving</small>
+                        </div>
+                    `;
+                }
+
+                // If no specific customization type is found but product is customizable, show general engraving
+                if (options === '' && product.customizable) {
+                    options += `
+                        <div class="customization-group">
+                            <label for="engraving">Custom Engraving (optional):</label>
                             <input type="text" id="engraving" placeholder="Enter your custom text (max 20 characters)" maxlength="20">
                             <small style="color: #666; font-size: 12px;">Leave blank for no engraving</small>
                         </div>

@@ -18,13 +18,15 @@ module.exports = {
 
             // For customizable items, always add as new item since each customization is unique
             if (customization && Object.keys(customization).length > 0) {
+                const cartItemId = Date.now() + Math.random(); // Generate unique ID
                 cart.push({
+                    cartItemId,
                     productId,
                     quantity: 1,
                     customization,
                     addedAt: new Date().toISOString()
                 });
-                console.log(`[DEBUG] Added new customized item to cart`);
+                console.log(`[DEBUG] Added new customized item to cart with ID: ${cartItemId}`);
             } else {
                 // add the new item to cart (if item already exists, add 1 to quantity)
                 const existingItem = cart.find(item => item.productId === productId && !item.customization);
@@ -32,8 +34,9 @@ module.exports = {
                     existingItem.quantity += 1;
                     console.log(`[DEBUG] Updated existing item quantity to ${existingItem.quantity}`);
                 } else {
-                    cart.push({ productId, quantity: 1, addedAt: new Date().toISOString() });
-                    console.log(`[DEBUG] Added new item to cart`);
+                    const cartItemId = Date.now() + Math.random(); // Generate unique ID
+                    cart.push({ cartItemId, productId, quantity: 1, addedAt: new Date().toISOString() });
+                    console.log(`[DEBUG] Added new item to cart with ID: ${cartItemId}`);
                 }
             }
 
@@ -53,10 +56,29 @@ module.exports = {
     async getCart(req, res) {
         try {
             const username = getCurrentUser(req);
-            const cart = await persist.loadCart(username);
+            let cart = await persist.loadCart(username);
+
+            // Migration: Add cartItemId to existing items that don't have it
+            let cartUpdated = false;
+            cart = cart.map(item => {
+                if (!item.cartItemId) {
+                    item.cartItemId = Date.now() + Math.random();
+                    cartUpdated = true;
+                    console.log(`[DEBUG] Added cartItemId ${item.cartItemId} to existing item with productId ${item.productId}`);
+                }
+                return item;
+            });
+
+            // Save the cart if we added any cartItemIds
+            if (cartUpdated) {
+                await persist.saveCart(username, cart);
+                console.log(`[DEBUG] Updated cart with cartItemIds for ${username}`);
+            }
+
             console.log(`[DEBUG] Loading cart for ${username}:`, cart);
             res.json(cart);
         } catch (error) {
+            console.error('Error loading cart:', error);
             res.status(500).json({ error: 'Failed to load cart' });
         }
     },
@@ -64,16 +86,25 @@ module.exports = {
     async removeFromCart(req, res) {
         try {
             const username = getCurrentUser(req);
-            const productId = parseInt(req.params.productId);
+            const cartItemId = parseFloat(req.params.cartItemId); // Use cartItemId instead of productId
 
             let cart = await persist.loadCart(username);
-            cart = cart.filter(item => item.productId != productId);
+
+            console.log(`[DEBUG] Attempting to remove cartItemId: ${cartItemId}`);
+            console.log(`[DEBUG] Current cart:`, cart.map(item => ({ productId: item.productId, cartItemId: item.cartItemId, customization: item.customization })));
+
+            const itemToRemove = cart.find(item => item.cartItemId === cartItemId);
+            console.log(`[DEBUG] Item to remove:`, itemToRemove);
+
+            cart = cart.filter(item => item.cartItemId !== cartItemId);
+            console.log(`[DEBUG] Cart after removal:`, cart.map(item => ({ productId: item.productId, cartItemId: item.cartItemId, customization: item.customization })));
 
             await persist.saveCart(username, cart);
-            await persist.logActivity(username, 'remove-from-cart', { productId });
+            await persist.logActivity(username, 'remove-from-cart', { productId: itemToRemove?.productId, cartItemId });
 
             res.json({ success: true });
         } catch (error) {
+            console.error('Error removing from cart:', error);
             res.status(500).json({ error: 'Failed removing from cart' });
         }
     },
@@ -101,6 +132,7 @@ module.exports = {
                 res.status(400).json({ error: 'Item not found in cart' });
             }
         } catch (error) {
+            console.error('Error updating cart:', error);
             res.status(500).json({ error: 'Failed to update cart' });
         }
     },
@@ -111,7 +143,39 @@ module.exports = {
             await persist.saveCart(username, []);
             res.json({ success: true });
         } catch (error) {
+            console.error('Error clearing cart:', error);
             res.status(500).json({ error: 'Failed to clear cart' });
+        }
+    },
+
+    async updateCustomization(req, res) {
+        try {
+            const username = getCurrentUser(req);
+            const { productId, customization } = req.body;
+
+            console.log(`[DEBUG] Updating customization - Username: ${username}, ProductId: ${productId}, Customization:`, customization);
+
+            let cart = await persist.loadCart(username);
+
+            // Find the item in cart by productId
+            const item = cart.find(item => item.productId === productId);
+
+            if (item) {
+                // Update the customization
+                item.customization = customization;
+                item.lastModified = new Date().toISOString();
+
+                await persist.saveCart(username, cart);
+                await persist.logActivity(username, 'update-customization', { productId, customization });
+
+                console.log(`[DEBUG] Customization updated successfully`);
+                res.json({ success: true });
+            } else {
+                res.status(400).json({ error: 'Item not found in cart' });
+            }
+        } catch (error) {
+            console.error('Error updating customization:', error);
+            res.status(500).json({ error: 'Failed to update customization' });
         }
     }
 };

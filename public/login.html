@@ -3,6 +3,8 @@
     <head>
         <meta charset="UTF-8"/>
         <title>Login</title>
+        <!-- Font Awesome for icons <3 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             body{
                 font-family: Arial, sans-serif;
@@ -60,17 +62,18 @@
             /* theme toggle button */
             .theme-toggle{
                 position: fixed;
-                top: 20px;
+                top: 35px;
                 right: 20px;
                 background: #f0f0f0;
                 border: 2px solid #ddd;
-                border-radius: 25px;
-                width: 80px;
-                height: 35px;
+                border-radius: 20px;
+                width: 100px;
+                height: 40px;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                gap: 8px;
                 font-size: 14px;
                 font-weight: bold;
                 transition: all 0.3s ease;
@@ -81,6 +84,10 @@
             .theme-toggle:hover{
                 background: #e0e0e0;
                 transform: scale(1.05);
+            }
+
+            .theme-toggle #themeIcon{
+                font-size: 16px;
             }
 
             /* dark mode styles */
@@ -123,6 +130,10 @@
                 color: #66b3ff;
             }
 
+            body.dark-mode .side-menu a{
+                color: white !important;
+            }
+
             body.dark-mode .caps-lock-warning{
                 color: #66b3ff;
             }
@@ -156,12 +167,138 @@
             body.dark-mode .password-toggle:hover{
                 color: #fff;
             }
+            /* navigation menu styles */
+            .menu {
+                position: fixed;
+                top: 35px;
+                left: 20px;
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                background: none;
+                border: none;
+                padding: 5px;
+                z-index: 1002;
+            }
+
+            .menu span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background: black;
+                margin: 3px 0;
+                transition: 0.3s;
+            }
+
+            .side-menu {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 280px;
+                height: 100vh;
+                background: green;
+                transition: left 0.3s ease;
+                z-index: 1000;
+                padding-top: 80px;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+                overflow-y: auto;
+            }
+
+            .side-menu.active {
+                left: 0;
+            }
+
+            .side-menu a {
+                display: block;
+                color: white;
+                text-decoration: none;
+                padding: 15px 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                transition: background 0.3s;
+            }
+
+            .side-menu a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            .side-menu a i, .side-menu button i{
+                margin-right: 10px;
+                width: 16px;
+                text-align: center;
+            }
+
+            .side-menu button {
+                width: calc(100% - 40px);
+                margin: 15px 20px;
+                background: #d32f2f;
+                color: white;
+                border: none;
+                padding: 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background 0.3s;
+            }
+
+            .side-menu button:hover {
+                background: #b71c1c;
+            }
+
+            .menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                z-index: 999;
+            }
+
+            .menu-overlay.active {
+                display: block;
+            }
+
+            /* dark mode navigation */
+            body.dark-mode .menu span{
+                background: white;
+            }
+
+            body.dark-mode .side-menu{
+                background: #2d2d2d;
+            }
+
+            body.dark-mode .side-menu a{
+                border-bottom-color: rgba(255, 255, 255, 0.1);
+            }
+
+            body.dark-mode .side-menu a:hover{
+                background: rgba(255, 255, 255, 0.1);
+            }
+
         </style>
     </head>
     <body>
+        <!-- navigation menu -->
+        <button class="menu" id="menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- theme toggle button -->
         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
             <span id="themeIcon">🌙</span>
+            <span id="themeText">OFF</span>
         </button>
+
+        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        <div class="side-menu" id="sideMenu">
+            <!-- Dynamic navigation will be populated by JavaScript -->
+        </div>
+
+        <h1>Login</h1>
+
         <form action="/login" method="POST" autocomplete="on">
             <label for="username">Username: </label>
             <input type="text" id="username" name="username" placeholder="Your username" required><br><br>
@@ -218,35 +355,41 @@
                 initializeTheme();
             };
 
-            // Dark mode functionality
+            // dark mode functionality
             function initializeTheme() {
                 const savedTheme = localStorage.getItem('theme');
                 const themeIcon = document.getElementById('themeIcon');
+                const themeText = document.getElementById('themeText');
 
                 if (savedTheme === 'dark') {
                     document.body.classList.add('dark-mode');
-                    themeIcon.textContent = '☀️';
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'ON';
                 } else {
                     themeIcon.textContent = '🌙';
+                    themeText.textContent = 'OFF';
                 }
             }
 
             function toggleTheme() {
                 const body = document.body;
                 const themeIcon = document.getElementById('themeIcon');
+                const themeText = document.getElementById('themeText');
 
                 body.classList.toggle('dark-mode');
 
                 if (body.classList.contains('dark-mode')) {
                     localStorage.setItem('theme', 'dark');
-                    themeIcon.textContent = '☀️';
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'ON';
                 } else {
                     localStorage.setItem('theme', 'light');
                     themeIcon.textContent = '🌙';
+                    themeText.textContent = 'OFF';
                 }
             }
 
-            // Password visibility toggle
+            // password visibility toggle
             function togglePasswordVisibility(inputId, toggleElement) {
                 const passwordInput = document.getElementById(inputId);
                 const svg = toggleElement.querySelector('svg');
@@ -312,6 +455,37 @@
                 document.getElementById('error').textContent = 'Connection error. Please try again.';
             });
         });
+
+        // navigation functions
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+        });
+
+        function updateNavigation() {
+            const sideMenu = document.getElementById('sideMenu');
+
+            // login page shows non-authenticated navigation
+            sideMenu.innerHTML = `
+                <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
+                <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
+                <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
+                <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+                <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
+                <a href="/login.html"><i class="fa-solid fa-sign-in-alt"></i> Login</a>
+                <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
+            `;
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+
+            menu.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
     </script>
     </body>
 </html>
