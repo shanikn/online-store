@@ -192,6 +192,16 @@ async function logout(){
 function initializeBaseLayout(){
     initializeTheme();
 
+    const menuButton = document.getElementById("menu");
+    const overlay = document.getElementById("menuOverlay");
+
+    if(menuButton && menuButton.parentElement !== document.body){
+        if(overlay && overlay.parentElement){
+            overlay.parentElement.insertBefore(menuButton, overlay);
+        } else {
+            document.body.insertBefore(menuButton, document.body.firstChild);
+        }
+    }
     // Call checkAuthStatus and ensure navigation is updated
     checkAuthStatus();
 
@@ -208,7 +218,6 @@ function initializeBaseLayout(){
     initializeImageLoading();
 
     // Close menu when clicking overlay
-    const overlay = document.getElementById('menuOverlay');
     if(overlay){
         overlay.addEventListener('click', () => {
             const menu = document.getElementById('menu');

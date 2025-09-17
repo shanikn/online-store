@@ -204,6 +204,9 @@
             .menu{
                 display: flex;
                 flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
                 cursor: pointer;
                 position: fixed;
                 top: clamp(20px, 4vw, 32px);
@@ -211,40 +214,37 @@
                 z-index: 4200;
                 background: rgba(255, 255, 255, 0.9);
                 border: 1px solid rgba(120, 108, 98, 0.28);
-                padding: 10px;
+                padding: 12px;
                 border-radius: 14px;
-                transition: all 0.3s ease;
+                transition: none;
                 box-shadow: 0 10px 22px rgba(50, 40, 32, 0.16);
                 backdrop-filter: blur(6px);
             }
 
             .menu span{
                 display: block;
-                width: 24px;
-                height: 2px;
+                width: 28px;
+                height: 3px;
                 background: #3f362f;
-                margin: 4px 0;
-                transition: all 0.3s ease;
-                border-radius: 99px;
-                transform-origin: center;
+                transition: none;
+                border-radius: 999px;
             }
 
             .menu.active span:nth-child(1){
-                transform: translateY(6px) rotate(45deg);
+                transform: none;
             }
 
             .menu.active span:nth-child(2){
-                opacity: 0;
-                transform: scaleX(0);
+                opacity: 1;
+                transform: none;
             }
 
             .menu.active span:nth-child(3){
-                transform: translateY(-6px) rotate(-45deg);
+                transform: none;
             }
 
             .menu:hover{
                 background: rgba(241, 235, 229, 0.95);
-                transform: translateY(-2px);
             }
 
 /* ==============================================
@@ -2954,19 +2954,19 @@
                 position: fixed;
                 bottom: 30px;
                 right: 30px;
-                width: 50px;
-                height: 50px;
-                background: linear-gradient(135deg, var(--accent-gold) 0%, #B8860B 100%);
-                color: var(--surface);
-                border: none;
+                width: 56px;
+                height: 56px;
+                background: rgba(255, 255, 255, 0.95);
+                color: #3f362f;
+                border: 1px solid rgba(120, 108, 98, 0.2);
                 border-radius: 50%;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 18px;
-                box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
-                transition: all 0.3s ease;
+                font-size: 20px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
                 z-index: 1000;
                 opacity: 0;
                 visibility: hidden;
@@ -2980,25 +2980,27 @@
             }
 
             .scroll-to-top:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-                background: linear-gradient(135deg, #E6C872 0%, var(--accent-gold) 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
             }
 
             .scroll-to-top:active {
-                transform: translateY(0);
+                transform: translateY(-1px);
             }
 
             body.dark-mode .scroll-to-top {
-                background: linear-gradient(135deg, #9b8778 0%, #8a7968 100%);
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-                color: #fff8ef;
+                background: rgba(39, 36, 33, 0.85);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+                color: #f5ede4;
+                border-color: rgba(120, 108, 98, 0.35);
             }
 
             body.dark-mode .scroll-to-top:hover {
-                background: linear-gradient(135deg, #b29d8d 0%, #9b8778 100%);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
             }
+
+
+
 
 
 
