@@ -2,135 +2,36 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Checkout</title>
+    <title>Checkout - ShanikJewls</title>
     <!-- Font Awesome for icons <3 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="/styles/theme.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-
-        .header {
-            background: none;
-            color: black;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .menu {
-            position: fixed;
-            top: 35px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 5px;
-            z-index: 1002;
-        }
-
-        .menu span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: black;
-            margin: 3px 0;
-        }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100vh;
-            background: green;
-            transition: left 0.3s ease;
-            z-index: 1000;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-            overflow-y: auto;
-            padding-top: 80px;
-        }
-
-        .side-menu.active {
-            left: 0;
-        }
-
-        .side-menu a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px 15px 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s;
-        }
-
-        .side-menu a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .side-menu a i, .side-menu button i{
-            margin-right: 10px;
-            width: 16px;
-            text-align: center;
-        }
-
-        .side-menu button {
-            width: calc(100% - 40px);
-            margin: 15px 20px;
-            background: #d32f2f;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-
-        .side-menu button:hover {
-            background: #b71c1c;
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 999;
-        }
-
-        .menu-overlay.active {
-            display: block;
-        }
+        /* Checkout-specific styles */
 
         .checkout-container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 40px auto;
+            padding: 0 20px;
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 20px;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
         }
 
         .checkout-form {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
+            border: 1px solid rgba(162, 150, 138, 0.2);
         }
 
         .form-section {
@@ -175,12 +76,14 @@
         }
 
         .order-summary {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
+            border: 1px solid rgba(162, 150, 138, 0.2);
             height: fit-content;
             position: sticky;
-            top: 20px;
+            top: 120px;
         }
 
         .summary-item {
@@ -232,126 +135,6 @@
             display: none;
         }
 
-        /* theme toggle button */
-        .theme-toggle{
-            position: fixed;
-            top: 35px;
-            right: 20px;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
-            border-radius: 20px;
-            width: 100px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            z-index: 1002;
-            color: #333;
-        }
-
-        .theme-toggle:hover{
-            background: #e0e0e0;
-            transform: scale(1.05);
-        }
-
-        .theme-toggle #themeIcon{
-            font-size: 16px;
-        }
-
-        /* dark mode styles */
-        body.dark-mode{
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .checkout-container,
-        body.dark-mode .checkout-form,
-        body.dark-mode .payment-form,
-        body.dark-mode .order-summary{
-            background: #2d2d2d;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .summary-item{
-            border-bottom-color: #444;
-        }
-
-        body.dark-mode .form-group input,
-        body.dark-mode .form-group select{
-            background: #1a1a1a;
-            border-color: #555;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .form-group input:focus,
-        body.dark-mode .form-group select:focus{
-            border-color: #777;
-            background: #2d2d2d;
-        }
-
-        body.dark-mode .theme-toggle{
-            background: #2d2d2d;
-            border-color: #555;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .theme-toggle:hover{
-            background: #3d3d3d;
-        }
-
-        body.dark-mode .side-menu{
-            background: #2d2d2d;
-        }
-
-        body.dark-mode .menu span{
-            background: white;
-        }
-
-        body.dark-mode .side-menu a{
-            border-bottom-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode .side-menu a:hover{
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode label{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode p{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode span, body.dark-mode div{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .form-group label{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .form-section h2{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .summary-item{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode strong{
-            color: #e0e0e0;
-        }
-
         .error {
             background: #f44336;
             color: white;
@@ -389,23 +172,37 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <button class="menu" id="menu" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <h1>Checkout</h1>
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-            <span id="themeIcon">🌙</span>
-            <span id="themeText">OFF</span>
-        </button>
+    <!-- header with navigation -->
+    <div class="header-shell">
+        <div class="announcement-bar">
+            <span class="announcement-pill"><i class="fa-solid fa-truck"></i> Free Shipping</span>
+            <span>Complimentary express delivery on every order.</span>
+            <button type="button" class="announcement-action" onclick="scrollToCheckout()">Complete Order <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="header">
+            <button class="menu" id="menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="brand">
+                <h1>ShanikJewls</h1>
+                <span class="brand-tagline">Handcrafted Jewelry</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">OFF</span>
+                </button>
+            </div>
+        </div>
     </div>
 
+    <!-- Side menu -->
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-    <div class="side-menu" id="sideMenu">
+    <nav class="side-menu" id="sideMenu">
         <!-- Dynamic navigation will be populated by JavaScript -->
-    </div>
+    </nav>
 
     <div id="successMessage" class="success"></div>
     <div id="errorMessage" class="error"></div>
@@ -492,106 +289,61 @@
         </div>
     </div>
 
+    <script src="/scripts/layout.js"></script>
+
     <script>
         let cartItems = [];
         let orderTotal = 0;
         let isAuthenticated = false;
 
+        function scrollToCheckout() {
+            const checkoutContainer = document.querySelector('.checkout-container');
+            if (checkoutContainer) {
+                checkoutContainer.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
+            console.log('DOM Content Loaded - initializing checkout page');
+
+            // Force hide loading after 3 seconds if still visible (fallback)
+            setTimeout(() => {
+                const loadingElement = document.getElementById('loading');
+                if (loadingElement && loadingElement.style.display !== 'none') {
+                    console.log('Force hiding loading indicator after timeout');
+                    loadingElement.style.display = 'none';
+                    document.getElementById('checkoutContent').style.display = 'grid';
+                }
+            }, 3000);
+
+            initializeBaseLayout();
             loadCart();
-            initializeTheme();
         });
 
-        // Dark mode functionality
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'ON';
-            } else {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'OFF';
-            }
-        }
 
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'ON';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'OFF';
-            }
-        }
 
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            const sideMenu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
 
-            menu.classList.toggle('active');
-            sideMenu.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-
-        async function checkAuthStatus(){
-            try{
-                const response = await fetch('/api/users/current');
-                isAuthenticated = response.ok;
-                updateNavigation();
-            } catch(error){
-                isAuthenticated = false;
-                updateNavigation();
-            }
-        }
-
-        function updateNavigation(){
-            const sideMenu = document.getElementById('sideMenu');
-
-            if(isAuthenticated){
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                    <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
-                    <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
-                    <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
-                `;
-            } else {
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                    <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
-                    <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-                `;
-            }
-        }
 
         async function loadCart() {
             try {
+                console.log('Loading cart...');
                 const response = await fetch('/api/cart');
+                console.log('Cart response status:', response.status);
+
                 if (!response.ok) {
+                    if (response.status === 401) {
+                        console.log('User not authenticated, redirecting to login');
+                        window.location.href = '/login.html';
+                        return;
+                    }
                     throw new Error('Failed to load cart');
                 }
 
                 cartItems = await response.json();
+                console.log('Cart items loaded:', cartItems);
 
                 if (!cartItems || cartItems.length === 0) {
                     showEmptyCart();
@@ -603,7 +355,13 @@
                 console.error('Error loading cart:', error);
                 showError('Failed to load cart');
             } finally {
-                document.getElementById('loading').style.display = 'none';
+                console.log('Hiding loading indicator');
+                const loadingElement = document.getElementById('loading');
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                } else {
+                    console.error('Loading element not found');
+                }
             }
         }
 

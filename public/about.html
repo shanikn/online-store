@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', Oxygen, Ubuntu, Cantarell, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f9f9f9;
+            background: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 50%, #FAEBD7 100%);
+            min-height: 100vh;
         }
 
         .header {
@@ -56,7 +57,7 @@
             left: -300px;
             width: 280px;
             height: 100vh;
-            background: green;
+            background: linear-gradient(180deg, #D4AF37 0%, #B8860B 100%);
             transition: left 0.3s ease;
             z-index: 1000;
             box-shadow: 2px 0 10px rgba(0,0,0,0.3);
@@ -128,8 +129,10 @@
         }
 
         .about-container h2 {
-            color: green;
+            color: #B8860B;
             margin-bottom: 20px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 8px;
         }
 
         .about-container p {
@@ -153,7 +156,7 @@
         }
 
         .feature h3 {
-            color: green;
+            color: #B8860B;
             margin-bottom: 10px;
         }
 
@@ -162,8 +165,8 @@
             position: fixed;
             top: 35px;
             right: 20px;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
+            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+            border: 2px solid #D4AF37;
             border-radius: 20px;
             width: 100px;
             height: 40px;
@@ -176,12 +179,14 @@
             font-weight: bold;
             transition: all 0.3s ease;
             z-index: 1002;
-            color: #333;
+            color: white;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
         }
 
         .theme-toggle:hover{
-            background: #e0e0e0;
+            background: linear-gradient(135deg, #B8860B 0%, #DAA520 100%);
             transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.5);
         }
 
         .theme-toggle #themeIcon{
@@ -190,8 +195,9 @@
 
         /* dark mode styles */
         body.dark-mode{
-            background-color: #1a1a1a;
-            color: #e0e0e0;
+            background: linear-gradient(135deg, #2F2F2F 0%, #1A1A1A 50%, #2F2F2F 100%);
+            color: #F5F5DC;
+            min-height: 100vh;
         }
 
         body.dark-mode .about-container,
@@ -210,21 +216,21 @@
         }
 
         body.dark-mode .feature h3{
-            color: #4CAF50;
+            color: #D4AF37;
         }
 
         body.dark-mode .theme-toggle{
-            background: #2d2d2d;
-            border-color: #555;
-            color: #e0e0e0;
+            background: linear-gradient(135deg, #8B7355 0%, #A0522D 100%);
+            border-color: #8B7355;
+            color: #F5F5DC;
         }
 
         body.dark-mode .theme-toggle:hover{
-            background: #3d3d3d;
+            background: linear-gradient(135deg, #A0522D 0%, #B8860B 100%);
         }
 
         body.dark-mode .side-menu{
-            background: #2d2d2d;
+            background: linear-gradient(180deg, #B8860B 0%, #8B7355 100%);
         }
 
         body.dark-mode label{
@@ -237,6 +243,32 @@
 
         body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
             color: #e0e0e0;
+        }
+
+        /* Jewelry showcase for about page */
+        .jewelry-showcase {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .jewelry-showcase img {
+            max-width: 400px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .jewelry-showcase img:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .jewelry-showcase img {
+                max-width: 90%;
+            }
         }
     </style>
 </head>
@@ -260,6 +292,11 @@
     </div>
 
     <div class="about-container">
+        <!-- Beautiful Jewelry Photo -->
+        <div class="jewelry-showcase">
+            <img src="https://i.pinimg.com/1200x/f3/c5/7b/f3c57be1299165a2b216c679189ab117.jpg" alt="Our Craftsmanship">
+        </div>
+        
         <h2>Welcome to ShaniknJewls</h2>
         <p>ShaniknJewls is your premier destination for exquisite gold jewelry and accessories. Founded with a passion for craftsmanship and beauty, we specialize in creating unique gold pieces that celebrate life's most precious moments.</p>
 

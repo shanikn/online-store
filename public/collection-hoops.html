@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Hoop Earrings Collection - ShaniknJewls</title>
+        <!-- Font Awesome for icons <3 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="/styles/theme.css">
+    </head>
+    <body>
+        <!-- header with navigation -->
+        <div class="header-shell">
+            <div class="announcement-bar">
+                <span class="announcement-pill"><i class="fa-solid fa-truck"></i> Free Shipping</span>
+                <span>Complimentary express delivery on every order.</span>
+                <button type="button" class="announcement-action" onclick="scrollToProducts()">Shop New Arrivals <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div class="header">
+                <button class="menu" id="menu" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="brand">
+                    <h1>ShanikJewls</h1>
+                    <span class="brand-tagline">Handcrafted Jewelry</span>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                        <span id="themeIcon">🌙</span>
+                        <span id="themeText">OFF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side menu -->
+        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        <nav class="side-menu" id="sideMenu">
+            <!-- Dynamic navigation will be populated by JavaScript -->
+        </nav>
+
+        <main class="page-frame">
+            <section class="page-hero">
+                <div class="page-hero__content">
+                    <span class="page-hero__eyebrow">Effortless Glow</span>
+                    <h1 class="page-hero__title">Hoop Earrings</h1>
+                    <p class="page-hero__copy">From delicate huggies to statement double hoops, each pair is polished for glow and comfort that lasts all night.</p>
+                    <div class="hero-actions">
+                        <a class="cta-btn primary" href="/store.html">Back to Store</a>
+                        <a class="cta-btn secondary" href="/collection-bracelets.html">Shop Bracelets</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://i.pinimg.com/1200x/8f/2e/1a/8f2e1a4d5c3b2a1f9e8d7c6b5a4f3e2d.jpg" alt="Elegant gold hoop earrings collection">
+                </div>
+            </section>
+
+            <section class="collection-highlight surface-card" style="margin: 48px 0;">
+                <h2>Golden Circles</h2>
+                <p>The perfect finishing touch to any look. Designed for comfort and crafted to catch the light beautifully.</p>
+            </section>
+
+            <div id="successMessage" class="success"></div>
+            <div id="errorMessage" class="error" style="display: none;"></div>
+
+            <div id="loading" class="loading">Loading hoop earrings...</div>
+            <div id="collectionToolbar" class="collection-toolbar">
+                <div class="column-selector">
+                    <label for="columnSelect">Columns:</label>
+                    <select id="columnSelect" onchange="changeColumns()">
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+            <div id="productsContainer" class="products-grid"></div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <h3>ShaniknJewls</h3>
+                    <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="Follow on Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+                        <a href="#" aria-label="Follow on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Explore</h4>
+                    <nav>
+                        <a href="/store.html">Store</a>
+                        <a href="/about.html">About</a>
+                        <a href="/contact.html">Contact</a>
+                        <a href="/readme.html">Story</a>
+                    </nav>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Insider List</h4>
+                    <p>Be first to know about limited releases, styling events, and private previews.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); showSuccess('You are on the list!', false);">
+                        <input type="email" placeholder="Enter your email" aria-label="Email address">
+                        <button type="submit">Join Now</button>
+                    </form>
+                    <div class="footer-note">We respect your inbox</div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Customization Modal -->
+        <div id="customizationModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="customizationTitle">Customize Your Item</h3>
+                    <button class="modal-close" onclick="closeCustomizationModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="customizationOptions">
+                        <!-- Customization options will be populated here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeCustomizationModal()">Cancel</button>
+                    <button class="btn-primary" onclick="addCustomizedToCart()">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="/scripts/layout.js"></script>
+
+        <script>
+            const COLLECTION_FILTER = function(product){
+                // Include hoop earrings: items 1, 2, 14, 15
+                return product.id === 1 || product.id === 2 || product.id === 14 || product.id === 15;
+            };
+
+            let allProducts = [];
+            const CUSTOM_POSITIONS = {
+                1: 'object-position: center 80%;',
+                2: 'object-position: center 80%;',
+                5: 'object-position: center 15%;',
+                9: 'object-position: center 70%;',
+                12: 'object-position: center 60%;',
+                13: 'object-position: center 30%;',
+                15: 'object-position: center 40%;',
+                16: 'object-position: center 60%;',
+                17: 'object-position: center 55%;',
+                18: 'object-position: center 50%'
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeBaseLayout();
+                loadProducts();
+                initializeColumns();
+            });
+
+            async function loadProducts(){
+                try{
+                    const response = await fetch('/api/products');
+                    if(!response.ok){
+                        throw new Error('Failed to load products');
+                    }
+                    const products = await response.json();
+                    allProducts = products.filter(COLLECTION_FILTER);
+                    displayProducts(allProducts);
+                }
+                catch(error){
+                    console.error('Error loading products: ', error);
+                    showError('Failed to load products. Please try again.');
+                }
+                finally{
+                    const loadingIndicator = document.getElementById('loading');
+                    if(loadingIndicator){
+                        loadingIndicator.style.display = 'none';
+                    }
+                }
+            }
+
+            function displayProducts(products){
+                const container = document.getElementById('productsContainer');
+
+                if(!products || products.length === 0){
+                    container.innerHTML = '<div class="loading">No products found.</div>';
+                    return;
+                }
+
+                let html = '';
+                products.forEach(function(product){
+                    const imageStyle = CUSTOM_POSITIONS[product.id] ? ' style="' + CUSTOM_POSITIONS[product.id] + '"' : '';
+                    html += '<div class="products-card">';
+                    html += '<div class="product-image">';
+                    if (product.image){
+                        html += '<img src="' + product.image + '" alt="' + product.name + '"' + imageStyle + '>';
+                    } else {
+                        html += 'No image available';
+                    }
+                    html += '</div>';
+                    html += '<div class="product-content">';
+                    html += '<div class="product-name">' + product.name + '</div>';
+                    html += '<div class="product-description">' + product.description + '</div>';
+                    if (product.customizable){
+                        html += '<div class="customizable-badge">Customizable</div>';
+                    }
+                    html += '<div class="product-price">₪' + product.price.toFixed(2) + '</div>';
+                    html += '<div class="product-button-container">';
+                    if (product.customizable){
+                        html += '<button class="add-to-cart-btn" onclick="openCustomizationModal(' + product.id + ')">Customize & Add</button>';
+                    } else {
+                        html += '<button class="add-to-cart-btn" onclick="addToCart(' + product.id + ')">Add to cart</button>';
+                    }
+                    html += '<button class="wishlist-btn" onclick="addToWishlist(' + product.id + ', this)" title="Add to Wishlist">';
+                    html += '<i class="fa-solid fa-heart"></i>';
+                    html += '</button>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                });
+                container.innerHTML = html;
+            }
+
+            function initializeColumns() {
+                const savedColumns = localStorage.getItem('columnCount') || '3';
+                const columnSelect = document.getElementById('columnSelect');
+                columnSelect.value = savedColumns;
+                updateGridColumns(savedColumns);
+            }
+
+            function changeColumns() {
+                const columnSelect = document.getElementById('columnSelect');
+                const columnCount = columnSelect.value;
+                localStorage.setItem('columnCount', columnCount);
+                updateGridColumns(columnCount);
+            }
+
+            function updateGridColumns(columnCount) {
+                const productsGrid = document.getElementById('productsContainer');
+                productsGrid.className = 'products-grid';
+                productsGrid.classList.add('columns-' + columnCount);
+            }
+
+            async function addToCart(productId){
+                try{
+                    const response = await fetch('/api/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productId: productId })
+                    });
+
+                    if(response.status === 401 || (response.redirected && response.url.indexOf('login') !== -1)){
+                        alert('Please login to add items to cart');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    const data = await response.json();
+
+                    if(data.success){
+                        showSuccess('Item added to cart!');
+                    }
+                    else{
+                        showError('Failed to add item to cart');
+                    }
+                }
+                catch(error){
+                    console.error('Error adding item to cart', error);
+                    showError('Connection error. Please try again.');
+                }
+            }
+
+            async function addToWishlist(productId, buttonElement){
+                try{
+                    const response = await fetch('/api/wishlist/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productId: productId })
+                    });
+
+                    if(response.status === 401 || (response.redirected && response.url.indexOf('login') !== -1)){
+                        alert('Please login to add items to your wishlist');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    const data = await response.json();
+
+                    if(data.success){
+                        if(buttonElement){
+                            buttonElement.classList.add('added');
+                            setTimeout(function(){ buttonElement.classList.remove('added'); }, 600);
+                        }
+                        showWishlistSuccess('Item added to wishlist! ❤️');
+                    }
+                    else{
+                        showError('Failed to add item to wishlist');
+                    }
+                }
+                catch(error){
+                    console.error('Error adding item to wishlist', error);
+                    showError('Connection error. Please try again.');
+                }
+            }
+
+            function showSuccess(message, showCartButton = true){
+                const successDiv = document.getElementById('successMessage');
+
+                let htmlContent = '<div>' + message + '</div>';
+
+                if (showCartButton && typeof isAuthenticated !== 'undefined' && isAuthenticated) {
+                    htmlContent += '<div class="success-actions">';
+                    htmlContent += '<a href="/cart.html" class="view-cart-btn">';
+                    htmlContent += '<i class="fa-solid fa-shopping-cart"></i> View Cart';
+                    htmlContent += '</a>';
+                    htmlContent += '</div>';
+                }
+
+                successDiv.innerHTML = htmlContent;
+                successDiv.style.display = 'block';
+
+                setTimeout(function(){
+                    successDiv.style.display = 'none';
+                }, showCartButton ? 8000 : 3000);
+            }
+
+            function showWishlistSuccess(message) {
+                const successDiv = document.getElementById('successMessage');
+
+                let htmlContent = '<div>' + message + '</div>';
+
+                if (typeof isAuthenticated !== 'undefined' && isAuthenticated) {
+                    htmlContent += '<div class="success-actions">';
+                    htmlContent += '<a href="/wishlist.html" class="view-cart-btn">';
+                    htmlContent += '<i class="fa-solid fa-heart"></i> View Wishlist';
+                    htmlContent += '</a>';
+                    htmlContent += '</div>';
+                }
+
+                successDiv.innerHTML = htmlContent;
+                successDiv.style.display = 'block';
+
+                setTimeout(function(){
+                    successDiv.style.display = 'none';
+                }, 8000);
+            }
+
+            function showError(message){
+                const errorDiv = document.getElementById('errorMessage');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                setTimeout(function(){
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            function scrollToProducts() {
+                const productsContainer = document.getElementById('productsContainer');
+                if (productsContainer) {
+                    productsContainer.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        </script>
+    </body>
+</html>

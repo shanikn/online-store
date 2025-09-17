@@ -5,901 +5,39 @@
         <title>ShaniknJewls Store</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <style>
-            body{
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                background-color: #f9f9f9;
-            }
-
-            .header{
-                background: none;
-                color: black;
-                padding: 15px;
-                border-radius: 8px;
-                margin-bottom: 20px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-            }
-
-            .header h1{
-                margin: 0;
-            }
-
-            /* theme toggle button */
-            .theme-toggle{
-                position: fixed;
-                top: 35px;
-                right: 20px;
-                background: #f0f0f0;
-                border: 2px solid #ddd;
-                border-radius: 20px;
-                width: 100px;
-                height: 40px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                font-size: 14px;
-                font-weight: bold;
-                transition: all 0.3s ease;
-                z-index: 1002;
-                color: #333;
-            }
-
-            .theme-toggle:hover{
-                background: #e0e0e0;
-                transform: scale(1.05);
-            }
-
-            .theme-toggle #themeIcon{
-                font-size: 16px;
-            }
-
-            /* hamburger menu button */
-            .menu{
-                position: fixed;
-                top: 35px;
-                left: 20px;
-                display: flex;
-                flex-direction: column;
-                cursor: pointer;
-                background: none;
-                border: none;
-                padding: 5px;
-                z-index: 1002;
-            }
-
-            .menu span{
-                display: block;
-                width: 25px;
-                height: 3px;
-                background: black;
-                margin: 3px 0;
-                transition: all 0.3s ease;
-            }
-
-            .menu:hover span{
-                background: #666;
-            }
-
-            /* side menu */
-            .side-menu{
-                position: fixed;
-                top: 0;
-                left: -300px;
-                width: 280px;
-                height: 100vh;
-                background: green;
-                transition: left 0.3s ease;
-                z-index: 1000;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-                overflow-y: auto;
-                padding-top: 80px;
-            }
-
-            .side-menu.active{
-                left: 0;
-            }
-
-            .side-menu a{
-                display: block;
-                color: white;
-                text-decoration: none;
-                padding: 15px 20px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                transition: background 0.3s;
-            }
-
-            .side-menu a:hover{
-                background: rgba(255, 255, 255, 0.2);
-            }
-
-            .side-menu a i, .side-menu button i{
-                margin-right: 10px;
-                width: 16px;
-                text-align: center;
-            }
-
-            .side-menu button{
-                width: calc(100% - 40px);
-                margin: 15px 20px;
-                background: #d32f2f;
-                color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background 0.3s;
-            }
-
-            .side-menu button:hover{
-                background: #b71c1c;
-            }
-
-            /* overlay */
-            .menu-overlay{
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: none;
-                z-index: 999;
-            }
-
-            .menu-overlay.active{
-                display: block;
-            }
-
-            .search-bar{
-                margin-bottom: 20px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 30px;
-                flex-wrap: wrap;
-            }
-
-            .search-controls{
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                position: relative;
-            }
-
-            .search-dropdown{
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 300px;
-                background: white;
-                border: 1px solid #ddd;
-                border-top: none;
-                border-radius: 0 0 8px 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                max-height: 200px;
-                overflow-y: auto;
-                z-index: 1000;
-                display: none;
-            }
-
-            .search-dropdown.show{
-                display: block;
-            }
-
-            .search-suggestion{
-                padding: 12px 15px;
-                border-bottom: 1px solid #f0f0f0;
-                cursor: pointer;
-                transition: background 0.2s;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .search-suggestion:last-child{
-                border-bottom: none;
-            }
-
-            .search-suggestion:hover,
-            .search-suggestion.highlighted{
-                background: #f8f9fa;
-            }
-
-            .search-suggestion img{
-                width: 40px;
-                height: 40px;
-                object-fit: cover;
-                border-radius: 4px;
-                flex-shrink: 0;
-            }
-
-            .suggestion-info{
-                flex-grow: 1;
-            }
-
-            .suggestion-name{
-                font-weight: 500;
-                color: #333;
-                margin-bottom: 2px;
-            }
-
-            .suggestion-price{
-                color: #666;
-                font-size: 14px;
-            }
-
-            .search-bar input{
-                width: 300px;
-                font-size: 16px;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-
-            .search-bar button{
-                padding: 10px 20px;
-                background: green;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-
-            .column-selector{
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .column-selector label{
-                font-weight: bold;
-                color: #333;
-            }
-
-            .column-selector select{
-                padding: 8px 12px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                background: white;
-                cursor: pointer;
-                font-size: 14px;
-            }
-            
-            .products-grid{
-                display: grid;
-                grid-template-columns: repeat(5, 1fr);
-                gap: 30px;
-                margin-top: 20px;
-            }
-
-            .products-grid.columns-2{
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 800px;
-                margin: 20px auto 0;
-            }
-
-            .products-grid.columns-3{
-                grid-template-columns: repeat(3, 1fr);
-                max-width: 1200px;
-                margin: 20px auto 0;
-            }
-
-            .products-grid.columns-5{
-                grid-template-columns: repeat(5, 1fr);
-            }
-
-            .products-card{
-                background: white;
-                border-radius: 12px;
-                padding: 20px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                transition: transform 0.2s, box-shadow 0.2s;
-                border: 2px solid #f0f0f0;
-            }
-
-            .products-card:hover{
-                transform: translateY(-3px);
-                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-                border-color: #ddd;
-            }
-
-            .product-image{
-                width: 100%;
-                height: 250px;
-                background: #f0f0f0;
-                border-radius: 8px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 15px;
-                color: #666;
-                overflow: hidden;
-                position: relative;
-            }
-
-            /* Bigger images for 2 and 3 column layouts */
-            .products-grid.columns-2 .product-image{
-                height: 400px;
-            }
-
-            .products-grid.columns-3 .product-image{
-                height: 350px;
-            }
-
-            .product-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-            }
-
-
-            .product-name{
-                font-size: 18px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                color: #333;
-            }
-
-
-            .product-description{
-                color: #666;
-                margin-bottom: 15px;
-                font-size: 14px;
-            }
-
-            .product-price{
-                font-size: 20px;
-                font-weight: bold;
-                color: black;
-                margin-bottom: 15px;
-            }
-
-            .customizable-badge{
-                background: linear-gradient(135deg, #ff6b35, #f7931e);
-                color: white;
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-size: 11px;
-                font-weight: bold;
-                margin-bottom: 12px;
-                display: inline-block;
-                box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .customizable-badge::before{
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                transition: left 0.5s;
-            }
-
-            .customizable-badge:hover::before{
-                left: 100%;
-            }
-
-            .product-content{
-                flex-grow: 1;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .product-button-container{
-                margin-top: auto;
-                padding-top: 15px;
-                display: flex;
-                gap: 10px;
-                align-items: center;
-            }
-
-            .add-to-cart-btn{
-                background: green;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                flex: 1;
-                text-align: center;
-            }
-
-            .wishlist-btn{
-                background: #ff6b6b;
-                color: white;
-                border: none;
-                padding: 10px;
-                border-radius: 50%;
-                cursor: pointer;
-                font-size: 16px;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.3s ease;
-                box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
-            }
-
-            .wishlist-btn:hover{
-                background: #ff5252;
-                transform: scale(1.1);
-                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-            }
-
-            .wishlist-btn.added{
-                background: #e91e63;
-                animation: heartBeat 0.6s ease-in-out;
-            }
-
-            @keyframes heartBeat {
-                0% { transform: scale(1); }
-                25% { transform: scale(1.2); }
-                50% { transform: scale(1); }
-                75% { transform: scale(1.1); }
-                100% { transform: scale(1); }
-            }
-
-            /* add to cart hover color */
-            .add-to-cart-btn:hover{
-                background: darkgreen;
-            }
-
-            .loading{
-                text-align: center;
-                padding: 50px;
-                color: #666;
-            }
-
-            .error{
-                background: #f44336;
-                color: white;
-                padding: 15px;
-                border-radius: 4px;
-                margin-bottom: 20px;
-                text-align: center;
-            }
-
-            .success{
-                background: #4CAF50;
-                color: white;
-                padding: 15px;
-                border-radius: 8px;
-                margin-bottom: 20px;
-                text-align: center;
-                display: none;
-                box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 1500;
-                width: 90%;
-                max-width: 400px;
-            }
-
-            .success-actions {
-                margin-top: 15px;
-                display: flex;
-                justify-content: center;
-                gap: 15px;
-            }
-
-            .view-cart-btn {
-                background: white;
-                color: #4CAF50;
-                padding: 8px 16px;
-                border: 2px solid white;
-                border-radius: 4px;
-                text-decoration: none;
-                font-weight: bold;
-                font-size: 14px;
-                transition: all 0.3s ease;
-                display: inline-block;
-            }
-
-            .view-cart-btn:hover {
-                background: #f8f9fa;
-                transform: translateY(-1px);
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-
-            .continue-shopping-btn {
-                background: transparent;
-                color: white;
-                padding: 8px 16px;
-                border: 2px solid white;
-                border-radius: 4px;
-                text-decoration: none;
-                font-weight: bold;
-                font-size: 14px;
-                transition: all 0.3s ease;
-                cursor: pointer;
-            }
-
-            .continue-shopping-btn:hover {
-                background: rgba(255, 255, 255, 0.1);
-            }
-
-            /* Dark mode styles */
-            body.dark-mode{
-                background-color: #1a1a1a;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .header{
-                background: #2d2d2d;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .side-menu{
-                background: #2d2d2d;
-            }
-
-            body.dark-mode .menu span{
-                background: #e0e0e0;
-            }
-
-            body.dark-mode .menu:hover span{
-                background: #bbb;
-            }
-
-            body.dark-mode .theme-toggle{
-                background: #2d2d2d;
-                border-color: #555;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .theme-toggle:hover{
-                background: #3d3d3d;
-            }
-
-            body.dark-mode .search-bar input{
-                background: #2d2d2d;
-                border-color: #555;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .search-bar button{
-                background: #4d4d4d;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .column-selector label{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .column-selector select{
-                background: #2d2d2d;
-                border-color: #555;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .search-dropdown{
-                background: #2d2d2d;
-                border-color: #555;
-            }
-
-            body.dark-mode .search-suggestion{
-                border-bottom-color: #3d3d3d;
-            }
-
-            body.dark-mode .search-suggestion:hover,
-            body.dark-mode .search-suggestion.highlighted{
-                background: #3d3d3d;
-            }
-
-            body.dark-mode .suggestion-name{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .suggestion-price{
-                color: #bbb;
-            }
-
-            body.dark-mode .products-card{
-                background: #2d2d2d;
-                color: #e0e0e0;
-                box-shadow: 0 2px 4px rgba(255,255,255,0.1);
-            }
-
-            body.dark-mode .product-content{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .product-image{
-                background: #1a1a1a;
-                color: #888;
-            }
-
-            body.dark-mode .product-name{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .product-description{
-                color: #bbb;
-            }
-
-            body.dark-mode .product-price{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .add-to-cart-btn{
-                background: #4d4d4d;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .add-to-cart-btn:hover{
-                background: #555;
-            }
-
-            body.dark-mode .customizable-badge{
-                background: linear-gradient(135deg, #ff4081, #e91e63);
-                box-shadow: 0 2px 8px rgba(255, 64, 129, 0.4);
-            }
-
-            /* Dark mode for modal */
-            body.dark-mode .modal-content {
-                background: #2a2a2a;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .modal-header {
-                border-bottom-color: #404040;
-            }
-
-            body.dark-mode .modal-header h3 {
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .modal-close {
-                color: #ccc;
-            }
-
-            body.dark-mode .modal-close:hover {
-                color: #fff;
-            }
-
-            body.dark-mode .modal-footer {
-                border-top-color: #404040;
-            }
-
-            body.dark-mode .btn-secondary {
-                background: #404040;
-                color: #e0e0e0;
-                border-color: #555;
-            }
-
-            body.dark-mode .btn-secondary:hover {
-                background: #505050;
-            }
-
-            body.dark-mode .customization-group label {
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .customization-group input,
-            body.dark-mode .customization-group select {
-                background: #404040;
-                border-color: #555;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .customization-group input:focus,
-            body.dark-mode .customization-group select:focus {
-                border-color: #4CAF50;
-                box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-            }
-
-            /* Customization Modal */
-            .modal-overlay{
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.6);
-                display: none;
-                justify-content: center;
-                align-items: center;
-                z-index: 2000;
-            }
-
-            .modal-overlay.show{
-                display: flex;
-            }
-
-            .modal-content{
-                background: white;
-                border-radius: 12px;
-                width: 90%;
-                max-width: 500px;
-                max-height: 80vh;
-                overflow-y: auto;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            }
-
-            .modal-header{
-                padding: 20px 25px;
-                border-bottom: 1px solid #eee;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .modal-header h3{
-                margin: 0;
-                color: #333;
-            }
-
-            .modal-close{
-                background: none;
-                border: none;
-                font-size: 24px;
-                cursor: pointer;
-                color: #999;
-                padding: 0;
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .modal-close:hover{
-                color: #666;
-            }
-
-            .modal-body{
-                padding: 25px;
-            }
-
-            .modal-footer{
-                padding: 20px 25px;
-                border-top: 1px solid #eee;
-                display: flex;
-                gap: 15px;
-                justify-content: flex-end;
-            }
-
-            .btn-primary, .btn-secondary{
-                padding: 10px 20px;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: 500;
-                transition: background 0.2s;
-            }
-
-            .btn-primary{
-                background: green;
-                color: white;
-            }
-
-            .btn-primary:hover{
-                background: darkgreen;
-            }
-
-            .btn-secondary{
-                background: #f8f9fa;
-                color: #666;
-                border: 1px solid #ddd;
-            }
-
-            .btn-secondary:hover{
-                background: #e9ecef;
-            }
-
-            .customization-group{
-                margin-bottom: 20px;
-            }
-
-            .customization-group label{
-                display: block;
-                margin-bottom: 8px;
-                font-weight: 500;
-                color: #333;
-            }
-
-            .customization-group input,
-            .customization-group select{
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 6px;
-                font-size: 14px;
-            }
-
-            .customization-group input:focus,
-            .customization-group select:focus{
-                outline: none;
-                border-color: green;
-                box-shadow: 0 0 0 2px rgba(0, 128, 0, 0.1);
-            }
-
-            body.dark-mode .error{
-                background: #5d2d2d;
-                color: #ffcccc;
-            }
-
-            body.dark-mode .success{
-                background: #2d5d2d;
-                color: #ccffcc;
-            }
-
-            body.dark-mode .view-cart-btn {
-                background: #e0e0e0;
-                color: #2d5d2d;
-                border-color: #e0e0e0;
-            }
-
-            body.dark-mode .view-cart-btn:hover {
-                background: #f0f0f0;
-            }
-
-            body.dark-mode .continue-shopping-btn {
-                border-color: #ccffcc;
-                color: #ccffcc;
-            }
-
-            body.dark-mode .continue-shopping-btn:hover {
-                background: rgba(204, 255, 204, 0.1);
-            }
-
-            body.dark-mode .wishlist-btn{
-                background: #d32f2f;
-                box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
-            }
-
-            body.dark-mode .wishlist-btn:hover{
-                background: #b71c1c;
-                box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
-            }
-
-            body.dark-mode .wishlist-btn.added{
-                background: #ad1457;
-            }
-
-        </style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="/styles/theme.css">
     </head>
     <body>
         <!-- header with navigation -->
-        <div class="header">
-            <button class="menu" id="menu" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <h1>ShanikJewls</h1>
-            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-                <span id="themeIcon">🌙</span>
-                <span id="themeText">OFF</span>
-            </button>
+        <div class="header-shell">
+            <div class="announcement-bar">
+                <span class="announcement-pill"><i class="fa-solid fa-truck"></i> Free Shipping</span>
+                <span>Complimentary express delivery on every order.</span>
+                <button type="button" class="announcement-action" onclick="scrollToProducts()">Shop New Arrivals <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div class="header">
+                <button class="menu" id="menu" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="brand">
+                    <h1>ShanikJewls</h1>
+                    <span class="brand-tagline">Handcrafted Jewelry</span>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                        <span id="themeIcon">🌙</span>
+                        <span id="themeText">OFF</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Side menu -->
         <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-        <div class="side-menu" id="sideMenu">
+        <nav class="side-menu" id="sideMenu">
             <a href="/store.html">Store</a>
             <a href="/cart.html">Cart</a>
             <a href="/wishlist.html">Wishlist</a>
@@ -908,37 +46,199 @@
             <a href="/profile.html">Profile</a>
             <a href="/admin.html">Admin</a>
             <button onclick="logout()">Logout</button>
-        </div>
+        </nav>
 
-        <!-- Product search with prefix matching by name and description -->
-        <div class="search-bar">
-            <div class="search-controls">
-                <input type="text" id="search" placeholder="Search..">
-                <button onclick="searchProducts()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r=" 8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                </button>
-                <div class="search-dropdown" id="searchDropdown">
-                    <!-- Search suggestions will be populated here -->
+        <main class="page-frame">
+            <!-- Product search with prefix matching by name and description -->
+            <section class="toolbar">
+                <div class="toolbar-card">
+                    <div class="search-controls">
+                        <input type="text" id="search" placeholder="Search jewelry">
+                        <button class="search-btn" onclick="searchProducts()" aria-label="Search">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                        <div class="search-dropdown" id="searchDropdown">
+                            <!-- Search suggestions will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div id="successMessage" class="success"></div>
+            <div id="errorMessage" class="error" style="display: none;"></div>
+
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <span class="hero-badge">New Season</span>
+                    <h2>Elevate Every Moment with ShanikJewls</h2>
+                    <p>Discover handcrafted pieces inspired by timeless design and modern elegance. Each jewel is crafted to celebrate your story.</p>
+                    <div class="features-grid">
+                        <div class="feature-item"><i class="fa-solid fa-gem" aria-hidden="true"></i><span>Conflict-Free Materials</span></div>
+                        <div class="feature-item"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i><span>Custom Engravings</span></div>
+                        <div class="feature-item"><i class="fa-solid fa-box-open" aria-hidden="true"></i><span>Gift-Ready Packaging</span></div>
+                    </div>
+                    <div class="hero-actions">
+                        <a class="cta-btn primary" href="/collection-wedding.html">Shop Collection</a>
+                        <a class="cta-btn secondary" href="/collection-hoops.html">Our Craft</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://i.pinimg.com/736x/ed/ad/2d/edad2d1e32beea4598ebba0f8be4052b.jpg" alt="Woman wearing ShanikJewls gold jewelry">
+                </div>
+            </section>
+
+            <!-- Signature Collections -->
+            <section id="collections" class="collection-showcase">
+                <div class="collection-content">
+                    <div class="collection-header">
+                        <div>
+                            <h2>Signature Collections</h2>
+                            <p>Discover wedding bands, engagement keepsakes, and iconic hoops crafted for everyday radiance.</p>
+                        </div>
+                        <a class="cta-btn secondary" href="/collection-wedding.html">View Entire Collection</a>
+                    </div>
+                    <div class="collection-grid">
+                        <article class="collection-card collection-card--radiant">
+                            <span class="collection-card__meta">Bridal</span>
+                            <h3>Wedding Bands</h3>
+                            <p>Pavé diamonds and sculpted gold for saying forever. Layer the new luminous bands for an effortless ceremony stack.</p>
+                            <a class="collection-card__cta" href="/collection-wedding.html">Shop wedding bands <i class="fa-solid fa-arrow-right"></i></a>
+                        </article>
+                        <article class="collection-card collection-card--heirloom">
+                            <span class="collection-card__meta">Wrist Edit</span>
+                            <h3>Layering Bracelets</h3>
+                            <p>From delicate chains to statement bangles, each piece is designed to stack beautifully and catch the light with every gesture.</p>
+                            <a class="collection-card__cta" href="/collection-bracelets.html">Shop bracelets <i class="fa-solid fa-arrow-right"></i></a>
+                        </article>
+                        <article class="collection-card collection-card--minimal">
+                            <span class="collection-card__meta">Hoops</span>
+                            <h3>Golden Circles</h3>
+                            <p>From delicate huggies to statement double hoops, each pair is polished for glow and comfort that lasts all night.</p>
+                            <a class="collection-card__cta" href="/collection-hoops.html">Browse hoop earrings <i class="fa-solid fa-arrow-right"></i></a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Clean Jewelry Photos -->
+            <section class="photos-section">
+                <div class="photo-grid">
+                    <figure class="photo-item photo-item--feature">
+                        <img src="https://i.pinimg.com/1200x/f3/c5/7b/f3c57be1299165a2b216c679189ab117.jpg" alt="Delicate gold bracelets worn on hands">
+                        <figcaption class="photo-caption">Everyday Elegance</figcaption>
+                    </figure>
+                    <figure class="photo-item photo-item--portrait">
+                        <img src="https://i.pinimg.com/1200x/eb/75/63/eb75637ba6ded0150e84c30d76d7765a.jpg" alt="Layered gold necklaces">
+                        <figcaption class="photo-caption">Layered Glow</figcaption>
+                    </figure>
+                    <figure class="photo-item photo-item--display">
+                        <img src="https://i.pinimg.com/1200x/fe/33/57/fe3357e0976210a4b87d0804f9f14d31.jpg" alt="Curated gold jewelry display">
+                        <figcaption class="photo-caption">Curated Showcase</figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="customization-highlight">
+                <div class="customization-media">
+                    <img src="https://i.pinimg.com/1200x/eb/75/63/eb75637ba6ded0150e84c30d76d7765a.jpg" alt="Create your own story jewelry customization">
+                </div>
+                <div class="customization-copy">
+                    <h3>Create Your Own Story</h3>
+                    <p>Personalize our signature designs with engraving, sizing, and bespoke touches crafted in-house. Each customizable piece is hand-finished to capture your milestones.</p>
+                    <div class="customization-bullets">
+                        <span>Complimentary design consultation</span>
+                        <span>Engraving proofs within 24 hours</span>
+                        <span>Ready-to-gift packaging included</span>
+                    </div>
+                    <div class="customization-cta">
+                        <button class="cta-btn primary" onclick="scrollToProducts()">Explore Customizable Pieces</button>
+                        <button class="cta-btn secondary" onclick="document.getElementById('search').focus()">Start with a Favorite</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="testimonials">
+                <div class="testimonials-header">
+                    <h2>Loved by Our Community</h2>
+                    <p>&ldquo;Pieces that feel personal, refined, and ready for every celebration.&rdquo; Hear from the voices that inspire our craft.</p>
+                </div>
+                <div class="testimonial-grid">
+                    <article class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">&ldquo;The customization process was seamless. My bracelet arrived engraved exactly as discussed and packaged beautifully.&rdquo;</p>
+                        <div class="testimonial-client">
+                            <strong>Noa L.</strong>
+                            <span>Tel Aviv</span>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">&ldquo;I layered two necklaces from the Radiant collection and they instantly elevated my wedding look. Stunning craftsmanship.&rdquo;</p>
+                        <div class="testimonial-client">
+                            <strong>Sarah G.</strong>
+                            <span>Jerusalem</span>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">&ldquo;Fast delivery and gorgeous packaging. The earrings were even more delicate in person &mdash; I wear them daily.&rdquo;</p>
+                        <div class="testimonial-client">
+                            <strong>Maya R.</strong>
+                            <span>Haifa</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <div id="loading" class="loading">Loading products...</div>
+            <div id="collectionToolbar" class="collection-toolbar">
+                <div class="column-selector">
+                    <label for="columnSelect">Columns:</label>
+                    <select id="columnSelect" onchange="changeColumns()">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                    </select>
                 </div>
             </div>
-            <div class="column-selector">
-                <label for="columnSelect">Columns:</label>
-                <select id="columnSelect" onchange="changeColumns()">
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="5" selected>5</option>
-                </select>
-            </div>
-        </div>
-        
-        <div id="successMessage" class="success"></div>
-        <div id="errorMessage" class="error" style="display: none;"></div>
+            <div id="productsContainer" class="products-grid"></div>
+        </main>
 
-        <div id="loading" class="loading">Loading products..</div>
-        <div id="productsContainer" class="products-grid"></div>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <h3>ShaniknJewls</h3>
+                    <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="Follow on Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+                        <a href="#" aria-label="Follow on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Explore</h4>
+                    <nav>
+                        <a href="/store.html">Store</a>
+                        <a href="/about.html">About</a>
+                        <a href="/contact.html">Contact</a>
+                        <a href="/readme.html">Story</a>
+                    </nav>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Insider List</h4>
+                    <p>Be first to know about limited releases, styling events, and private previews.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); showSuccess('You are on the list!', false);">
+                        <input type="email" placeholder="Enter your email" aria-label="Email address">
+                        <button type="submit">Join Now</button>
+                    </form>
+                    <div class="footer-note">We respect your inbox</div>
+                </div>
+            </div>
+        </footer>
 
         <!-- Customization Modal -->
         <div id="customizationModal" class="modal-overlay">
@@ -959,71 +259,16 @@
             </div>
         </div>
 
+        <script src="/scripts/layout.js"></script>
+
         <script>
             let allProducts= [];
-            let isAuthenticated = false;
 
             document.addEventListener('DOMContentLoaded', function() {
-                checkAuthStatus();
+                initializeBaseLayout();
                 loadProducts();
-                initializeTheme();
                 initializeColumns();
             });
-
-            async function checkAuthStatus(){
-                try{
-                    // Try to make an authenticated request to see if user is logged in
-                    const response = await fetch('/api/users/current');
-                    isAuthenticated = response.ok;
-                    updateNavigation();
-                }
-                catch(error){
-                    isAuthenticated = false;
-                    updateNavigation();
-                }
-            }
-
-            function updateNavigation(){
-                const sideMenu = document.getElementById('sideMenu');
-
-                if(isAuthenticated){
-                    // Show full navigation for authenticated users
-                    sideMenu.innerHTML = `
-                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                        <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                        <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                        <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
-                        <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
-                        <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
-                    `;
-                } else {
-                    // Show navigation for non-authenticated users with login redirects
-                    sideMenu.innerHTML = `
-                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                        <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                        <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                        <a href="/login.html"><i class="fa-solid fa-sign-in-alt"></i> Login</a>
-                        <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-                    `;
-                }
-            }
-
-            function toggleMenu(){
-                const menu = document.getElementById('menu');
-                const sideMenu = document.getElementById('sideMenu');
-                const overlay = document.getElementById('menuOverlay');
-
-                menu.classList.toggle('active');
-                sideMenu.classList.toggle('active');
-                overlay.classList.toggle('active');
-            }
-
             async function loadProducts(){
                 try{
                     const response= await fetch('/api/products');
@@ -1060,7 +305,10 @@
                         9: 'object-position: center 70%;', // Minimalist Gold Ring Set - moved a bit lower
                         12: 'object-position: center 60%;', // Gold Chain Bracelet - moved a bit lower
                         13: 'object-position: center 30%;', // Twisted Gold Ring - moved a bit higher
-                        15: 'object-position: center 40%;' // Gold Vintage Ring - moved a bit higher
+                        15: 'object-position: center 40%;', // Gold Vintage Ring - moved a bit higher
+                        16: 'object-position: center 60%;', // Radiant Diamond Wedding Band - highlight diamonds
+                        17: 'object-position: center 55%;', // Classic 3-Stone Engagement Ring - focus on stones
+                        18: 'object-position: center 50%;' // Sculpted Gold Wedding Set - balanced view
                     };
                     
                     const imageStyle = customPositions[product.id] ? 
@@ -1089,6 +337,10 @@
                         </div>
                     `;
                 }).join('');
+            }
+
+            function showAllProducts(){
+                displayProducts(allProducts);
             }
 
             async function addToCart(productId){
@@ -1230,25 +482,6 @@
                 }
             });
 
-
-            async function logout(){
-                try{
-                    const response= await fetch('/logout', {
-                        method: 'POST'
-                    });
-
-                    const data= await response.json()
-                    if(data.success){
-                        // Force page reload to clear authentication state
-                        window.location.reload();
-                    }
-                }
-                catch(error){
-                    console.error('Logout error: ', error);
-                }
-            }
-
-
             function showSuccess(message, showCartButton = true){
                 const successDiv= document.getElementById('successMessage');
 
@@ -1311,39 +544,6 @@
             }
 
             // Dark mode functionality
-            function initializeTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                const themeIcon = document.getElementById('themeIcon');
-                const themeText = document.getElementById('themeText');
-
-                if (savedTheme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'ON';
-                } else {
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'OFF';
-                }
-            }
-
-            function toggleTheme() {
-                const body = document.body;
-                const themeIcon = document.getElementById('themeIcon');
-                const themeText = document.getElementById('themeText');
-
-                body.classList.toggle('dark-mode');
-
-                if (body.classList.contains('dark-mode')) {
-                    localStorage.setItem('theme', 'dark');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'ON';
-                } else {
-                    localStorage.setItem('theme', 'light');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'OFF';
-                }
-            }
-
             // Search suggestion functions
             function showSearchSuggestions(query) {
                 const queryLower = query.toLowerCase();
@@ -1581,6 +781,16 @@
                     closeCustomizationModal();
                 }
             });
+
+            function scrollToProducts() {
+                const productsContainer = document.getElementById('productsContainer');
+                if (productsContainer) {
+                    productsContainer.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
 
     </script>
     </body>
