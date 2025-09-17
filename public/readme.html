@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8"/>
@@ -145,20 +145,29 @@
             top: 35px;
             left: 20px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
             cursor: pointer;
-            background: none;
+            background: rgba(255, 255, 255, 0.8);
             border: none;
-            padding: 5px;
+            border-radius: 12px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+            backdrop-filter: blur(6px);
             z-index: 1002;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .menu span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: black;
-            margin: 3px 0;
+        .menu i {
+            font-size: 20px;
+            color: #1d1d1d;
+            pointer-events: none;
+        }
+
+        .menu:hover {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.2);
         }
 
         .side-menu {
@@ -285,7 +294,7 @@
             color: #e0e0e0;
         }
 
-        body.dark-mode .menu span {
+        body.dark-mode .menu i {
             background: #e0e0e0;
         }
 
@@ -355,14 +364,10 @@
 </head>
 <body>
     <!-- navigation menu -->
-    <button class="menu" id="menu" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
+    <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
     <!-- theme toggle button -->
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-        <span id="themeIcon">🌙</span>
+        <span id="themeIcon">ðŸŒ™</span>
         <span id="themeText">OFF</span>
     </button>
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
@@ -380,13 +385,13 @@
 
         <h1>Project Overview</h1>
 
-        <h2>About This Project ✨</h2>
-        <p>ShanikJewls is where my three greatest passions collide: the art of jewelry making, the beauty of web design, and the logic of coding! 💎 This isn't just a project for my FullStack course - it's a digital expression of my love for handcrafted gold jewelry and the endless possibilities of technology.</p>
+        <h2>About This Project âœ¨</h2>
+        <p>ShanikJewls is where my three greatest passions collide: the art of jewelry making, the beauty of web design, and the logic of coding! ðŸ’Ž This isn't just a project for my FullStack course - it's a digital expression of my love for handcrafted gold jewelry and the endless possibilities of technology.</p>
 
         <p>Every line of code I wrote was inspired by the way light catches on a perfectly polished piece of gold. The color palette wasn't just chosen - it was <em>felt</em>. Those warm creams and elegant golds aren't just CSS variables; they're the digital embodiment of the jewelry pieces I dream of creating.</p>
 
         <div class="highlight">
-            <strong>💝 From the heart:</strong> Building this site taught me that coding is just another form of craftsmanship - each function carefully shaped, each design element thoughtfully placed, just like setting a stone in gold. This project works for both casual browsers and jewelry enthusiasts who want the full shopping experience with personalization!
+            <strong>ðŸ’ From the heart:</strong> Building this site taught me that coding is just another form of craftsmanship - each function carefully shaped, each design element thoughtfully placed, just like setting a stone in gold. This project works for both casual browsers and jewelry enthusiasts who want the full shopping experience with personalization!
         </div>
 
         <h2>Main Features</h2>
@@ -437,37 +442,37 @@
                 <tr>
                     <td>Modular Server Architecture</td>
                     <td>Separate screen modules in /screens/ directory</td>
-                    <td>✅ Complete</td>
+                    <td>âœ… Complete</td>
                 </tr>
                 <tr>
                     <td>Authentication System</td>
                     <td>Cookie-based with "remember me" functionality</td>
-                    <td>✅ Complete</td>
+                    <td>âœ… Complete</td>
                 </tr>
                 <tr>
                     <td>Shopping Cart</td>
                     <td>Full cart management with persistence</td>
-                    <td>✅ Complete</td>
+                    <td>âœ… Complete</td>
                 </tr>
                 <tr>
                     <td>Admin Panel</td>
                     <td>User activity tracking and product management</td>
-                    <td>✅ Complete</td>
+                    <td>âœ… Complete</td>
                 </tr>
                 <tr>
                     <td>DOS Protection</td>
                     <td>Rate limiting middleware</td>
-                    <td>✅ Complete</td>
+                    <td>âœ… Complete</td>
                 </tr>
                 <tr>
                     <td>Automated Testing</td>
                     <td>Node-fetch test suite covering all routes</td>
-                    <td>✅ Complete</td>
+                    <td>âœ… Complete</td>
                 </tr>
                 <tr>
                     <td>Additional Pages</td>
                     <td>4+ functional pages (About, Contact, Wishlist, Profile)</td>
-                    <td>✅ Complete</td>
+                    <td>âœ… Complete</td>
                 </tr>
             </tbody>
         </table>
@@ -571,27 +576,27 @@
                 <tr>
                     <td>Authentication Tests</td>
                     <td>4</td>
-                    <td>✅ All Pass</td>
+                    <td>âœ… All Pass</td>
                 </tr>
                 <tr>
                     <td>Cart Operations</td>
                     <td>6</td>
-                    <td>✅ All Pass</td>
+                    <td>âœ… All Pass</td>
                 </tr>
                 <tr>
                     <td>Product Management</td>
                     <td>3</td>
-                    <td>✅ All Pass</td>
+                    <td>âœ… All Pass</td>
                 </tr>
                 <tr>
                     <td>Admin Functions</td>
                     <td>3</td>
-                    <td>✅ All Pass</td>
+                    <td>âœ… All Pass</td>
                 </tr>
                 <tr>
                     <td>Additional Features</td>
                     <td>2</td>
-                    <td>✅ All Pass</td>
+                    <td>âœ… All Pass</td>
                 </tr>
             </tbody>
         </table>
@@ -608,11 +613,11 @@
             </ol>
         </div>
 
-        <h2>Personal Reflection 💎</h2>
+        <h2>Personal Reflection ðŸ’Ž</h2>
         <div class="personal-section">
             <p><strong>This project has been pure joy!</strong> Combining my love for beautiful jewelry with coding has been like discovering that two of my favorite things were always meant to be together. Every time I see the golden theme colors blend perfectly, or watch a product card animate smoothly, I get the same excitement I feel when admiring a perfectly crafted piece of jewelry.</p>
 
-            <p>The most amazing part was realizing that writing clean, elegant code is just like crafting jewelry - both require patience, attention to detail, and a passion for creating something beautiful that brings joy to others. When I implemented the customization features for ring sizing and engraving, I could almost feel the craftsmanship flowing through my keyboard! 🥰</p>
+            <p>The most amazing part was realizing that writing clean, elegant code is just like crafting jewelry - both require patience, attention to detail, and a passion for creating something beautiful that brings joy to others. When I implemented the customization features for ring sizing and engraving, I could almost feel the craftsmanship flowing through my keyboard! ðŸ¥°</p>
         </div>
 
         <div class="back-link">
@@ -629,10 +634,10 @@
 
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-mode');
-                themeIcon.textContent = '🌙';
+                themeIcon.textContent = 'ðŸŒ™';
                 themeText.textContent = 'ON';
             } else {
-                themeIcon.textContent = '🌙';
+                themeIcon.textContent = 'ðŸŒ™';
                 themeText.textContent = 'OFF';
             }
         }
@@ -646,11 +651,11 @@
 
             if (body.classList.contains('dark-mode')) {
                 localStorage.setItem('theme', 'dark');
-                themeIcon.textContent = '🌙';
+                themeIcon.textContent = 'ðŸŒ™';
                 themeText.textContent = 'ON';
             } else {
                 localStorage.setItem('theme', 'light');
-                themeIcon.textContent = '🌙';
+                themeIcon.textContent = 'ðŸŒ™';
                 themeText.textContent = 'OFF';
             }
         }
@@ -693,3 +698,4 @@
     </script>
 </body>
 </html>
+

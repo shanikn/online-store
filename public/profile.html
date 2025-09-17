@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8"/>
@@ -37,20 +37,29 @@
                 top: 35px;
                 left: 20px;
                 display: flex;
-                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
                 cursor: pointer;
-                background: none;
+                background: rgba(255, 255, 255, 0.8);
                 border: none;
-                padding: 5px;
+                border-radius: 12px;
+                box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+                backdrop-filter: blur(6px);
                 z-index: 1002;
+                transition: background 0.2s ease, box-shadow 0.2s ease;
             }
 
-            .menu span{
-                display: block;
-                width: 25px;
-                height: 3px;
-                background: black;
-                margin: 3px 0;
+            .menu i{
+                font-size: 20px;
+                color: #1d1d1d;
+                pointer-events: none;
+            }
+
+            .menu:hover{
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 12px 22px rgba(0,0,0,0.2);
             }
 
             /* side menu */
@@ -372,7 +381,7 @@
             background: #2d2d2d;
         }
 
-        body.dark-mode .menu span{
+        body.dark-mode .menu i{
             background: white;
         }
 
@@ -443,14 +452,10 @@
     <body>
         <!-- header with menu -->
         <div class="header">
-            <button class="menu" id="menu" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
             <h1>ShanikJewls - Profile</h1>
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-                <span id="themeIcon">🌙</span>
+                <span id="themeIcon">ðŸŒ™</span>
                 <span id="themeText">OFF</span>
             </button>
         </div>
@@ -534,10 +539,10 @@
                 const themeText = document.getElementById('themeText');
                 if (savedTheme === 'dark') {
                     document.body.classList.add('dark-mode');
-                    themeIcon.textContent = '🌙';
+                    themeIcon.textContent = 'ðŸŒ™';
                     themeText.textContent = 'ON';
                 } else {
-                    themeIcon.textContent = '🌙';
+                    themeIcon.textContent = 'ðŸŒ™';
                     themeText.textContent = 'OFF';
                 }
             }
@@ -549,11 +554,11 @@
                 body.classList.toggle('dark-mode');
                 if (body.classList.contains('dark-mode')) {
                     localStorage.setItem('theme', 'dark');
-                    themeIcon.textContent = '🌙';
+                    themeIcon.textContent = 'ðŸŒ™';
                     themeText.textContent = 'ON';
                 } else {
                     localStorage.setItem('theme', 'light');
-                    themeIcon.textContent = '🌙';
+                    themeIcon.textContent = 'ðŸŒ™';
                     themeText.textContent = 'OFF';
                 }
             }
@@ -662,13 +667,13 @@
                         <div class="purchase-header">
                             <div class="purchase-id">Order #${purchase.id}</div>
                             <div class="purchase-date">${new Date(purchase.timeStamp).toLocaleDateString()}</div>
-                            <div class="purchase-total">₪${purchase.total.toFixed(2)}</div>
+                            <div class="purchase-total">â‚ª${purchase.total.toFixed(2)}</div>
                         </div>
                         <div class="purchase-items">
                             ${purchase.items.map(item => `
                                 <div class="item">
                                     <span>${item.name} x${item.quantity}</span>
-                                    <span>₪${item.itemTotal.toFixed(2)}</span>
+                                    <span>â‚ª${item.itemTotal.toFixed(2)}</span>
                                 </div>
                             `).join('')}
                         </div>
@@ -753,3 +758,4 @@
         </script>
     </body>
 </html>
+
