@@ -1,5 +1,10 @@
+// Global authentication state - tracks if user is logged in
 var isAuthenticated = false;
 
+/**
+ * Checks current user authentication status via API call
+ * Updates the navigation menu based on authentication result
+ */
 async function checkAuthStatus(){
     try{
         const response = await fetch('/api/users/current');
@@ -12,6 +17,10 @@ async function checkAuthStatus(){
     updateNavigation();
 }
 
+/**
+ * Dynamically updates the side navigation menu based on authentication status
+ * Shows different menu options for authenticated vs. non-authenticated users
+ */
 function updateNavigation(){
     const sideMenu = document.getElementById('sideMenu');
 
@@ -64,6 +73,10 @@ function updateNavigation(){
     }
 }
 
+/**
+ * Toggles the hamburger menu open/closed state
+ * Controls menu button animation, side menu visibility, and overlay
+ */
 function toggleMenu(){
     const menu = document.getElementById('menu');
     const sideMenu = document.getElementById('sideMenu');
@@ -78,6 +91,10 @@ function toggleMenu(){
     overlay.classList.toggle('active');
 }
 
+/**
+ * Toggles the Collections dropdown menu in the side navigation
+ * Controls dropdown visibility and arrow rotation animation
+ */
 function toggleCollections(){
     const dropdown = document.getElementById('collectionsDropdown');
     const arrow = document.querySelector('.dropdown-arrow');
@@ -91,6 +108,10 @@ function toggleCollections(){
     }
 }
 
+/**
+ * Initializes theme settings from localStorage on page load
+ * Applies saved dark mode preference and updates theme toggle UI
+ */
 function initializeTheme(){
     const savedTheme = localStorage.getItem('theme');
     const themeIcon = document.getElementById('themeIcon');
@@ -114,6 +135,10 @@ function initializeTheme(){
     }
 }
 
+/**
+ * Toggles between light and dark theme modes
+ * Updates localStorage setting and theme toggle button UI
+ */
 function toggleTheme(){
     const body = document.body;
     const themeIcon = document.getElementById('themeIcon');
@@ -140,6 +165,10 @@ function toggleTheme(){
     }
 }
 
+/**
+ * Handles user logout by calling the server logout endpoint
+ * Reloads the page on successful logout to reset authentication state
+ */
 async function logout(){
     try{
         const response= await fetch('/logout', {
@@ -156,10 +185,29 @@ async function logout(){
     }
 }
 
+/**
+ * Main initialization function - called when page loads
+ * Sets up all layout functionality: theme, auth, scroll, images, and menu overlay
+ */
 function initializeBaseLayout(){
     initializeTheme();
+
+    // Call checkAuthStatus and ensure navigation is updated
     checkAuthStatus();
 
+    // Fallback: ensure navigation is populated even if auth check fails
+    setTimeout(() => {
+        const sideMenu = document.getElementById('sideMenu');
+        if(sideMenu && sideMenu.innerHTML.trim() === ''){
+            console.log('Side menu empty after 1 second, forcing update...');
+            updateNavigation();
+        }
+    }, 1000);
+
+    initializeScrollToTop();
+    initializeImageLoading();
+
+    // Close menu when clicking overlay
     const overlay = document.getElementById('menuOverlay');
     if(overlay){
         overlay.addEventListener('click', () => {
@@ -170,3 +218,75 @@ function initializeBaseLayout(){
         });
     }
 }
+
+/**
+ * Initializes image loading states for smooth fade-in animations
+ * Adds 'loaded' class to images for CSS transition effects
+ */
+function initializeImageLoading(){
+    const images = document.querySelectorAll('.product-image img, .hero-image img, .photo-item img');
+    images.forEach(img => {
+        if(img.complete && img.naturalHeight !== 0){
+            img.classList.add('loaded');
+        } else {
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+            });
+        }
+    });
+}
+
+/**
+ * Creates and manages the scroll-to-top button
+ * Button appears after scrolling 300px down the page
+ */
+function initializeScrollToTop(){
+    // Create scroll to top button if it doesn't exist
+    if(!document.getElementById('scrollToTop')){
+        const scrollButton = document.createElement('button');
+        scrollButton.id = 'scrollToTop';
+        scrollButton.className = 'scroll-to-top';
+        scrollButton.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+        scrollButton.title = 'Scroll to top';
+        scrollButton.addEventListener('click', scrollToTop);
+        document.body.appendChild(scrollButton);
+    }
+
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+        const scrollButton = document.getElementById('scrollToTop');
+        if(scrollButton){
+            if(window.pageYOffset > 300){
+                scrollButton.classList.add('visible');
+            } else {
+                scrollButton.classList.remove('visible');
+            }
+        }
+    });
+}
+
+/**
+ * Smoothly scrolls to the top of the page
+ * Used by the scroll-to-top button
+ */
+function scrollToTop(){
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+function revealPhotoItemsOnScroll() {
+    const items = document.querySelectorAll('.photo-item');
+    const trigger = window.innerHeight * 0.9;
+
+    items.forEach(item => {
+        const boxTop = item.getBoundingClientRect().top;
+        if (boxTop < trigger) {
+            item.classList.add('visible');
+        }
+    });
+}
+
+window.addEventListener('scroll', revealPhotoItemsOnScroll);
+document.addEventListener('DOMContentLoaded', revealPhotoItemsOnScroll);

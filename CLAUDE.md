@@ -52,6 +52,9 @@ This is a RUNI 2025 FullStack course final project - an online gold jewelry stor
 - `readme.html` - Project documentation (individual work)
 - `llm.html` - LLM-generated code documentation
 
+### Frontend Scripting Notes
+- Pages that load `public/scripts/layout.js` must not redeclare `let isAuthenticated`. Doing so throws a syntax error that prevents `initializeBaseLayout()` from executing, which causes empty side menus and permanent loading spinners.
+
 ## Development Commands
 
 ```bash
@@ -183,7 +186,6 @@ All PDF requirements have been successfully implemented and tested. The applicat
 - GET `/login.html` - Login page
 - GET `/register.html` - Registration page
 - GET `/readme.html` - Project documentation
-- GET `/llm.html` - LLM code documentation
 - GET `/api/products` - Get all products (public API)
 - GET `/api/products/search` - Product search (public API)
 - POST `/login` - Authentication endpoint

@@ -2,288 +2,38 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>About Us</title>
+    <title>Our Craft - ShanikJewls</title>
     <!-- Font Awesome for icons <3 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', Oxygen, Ubuntu, Cantarell, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 50%, #FAEBD7 100%);
-            min-height: 100vh;
-        }
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="/styles/theme.css">
 
-        .header {
-            background: none;
-            color: black;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .menu {
-            position: fixed;
-            top: 35px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 5px;
-            z-index: 1002;
-        }
-
-        .menu span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: black;
-            margin: 3px 0;
-        }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(180deg, #D4AF37 0%, #B8860B 100%);
-            transition: left 0.3s ease;
-            z-index: 1000;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-            overflow-y: auto;
-            padding-top: 80px;
-        }
-
-        .side-menu.active {
-            left: 0;
-        }
-
-        .side-menu a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px 15px 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s;
-        }
-
-        .side-menu a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .side-menu a i, .side-menu button i{
-            margin-right: 10px;
-            width: 16px;
-            text-align: center;
-        }
-
-        .side-menu button {
-            width: calc(100% - 40px);
-            margin: 15px 20px;
-            background: #d32f2f;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-
-        .side-menu button:hover {
-            background: #b71c1c;
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 999;
-        }
-
-        .menu-overlay.active {
-            display: block;
-        }
-
-        .about-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-        }
-
-        .about-container h2 {
-            color: #B8860B;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #D4AF37;
-            padding-bottom: 8px;
-        }
-
-        .about-container p {
-            line-height: 1.6;
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .feature {
-            text-align: center;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
-
-        .feature h3 {
-            color: #B8860B;
-            margin-bottom: 10px;
-        }
-
-        /* theme toggle button */
-        .theme-toggle{
-            position: fixed;
-            top: 35px;
-            right: 20px;
-            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
-            border: 2px solid #D4AF37;
-            border-radius: 20px;
-            width: 100px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            z-index: 1002;
-            color: white;
-            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
-        }
-
-        .theme-toggle:hover{
-            background: linear-gradient(135deg, #B8860B 0%, #DAA520 100%);
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.5);
-        }
-
-        .theme-toggle #themeIcon{
-            font-size: 16px;
-        }
-
-        /* dark mode styles */
-        body.dark-mode{
-            background: linear-gradient(135deg, #2F2F2F 0%, #1A1A1A 50%, #2F2F2F 100%);
-            color: #F5F5DC;
-            min-height: 100vh;
-        }
-
-        body.dark-mode .about-container,
-        body.dark-mode .about-section{
-            background: #2d2d2d;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .menu span{
-            background: white;
-        }
-
-        body.dark-mode .feature{
-            background: #1a1a1a;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .feature h3{
-            color: #D4AF37;
-        }
-
-        body.dark-mode .theme-toggle{
-            background: linear-gradient(135deg, #8B7355 0%, #A0522D 100%);
-            border-color: #8B7355;
-            color: #F5F5DC;
-        }
-
-        body.dark-mode .theme-toggle:hover{
-            background: linear-gradient(135deg, #A0522D 0%, #B8860B 100%);
-        }
-
-        body.dark-mode .side-menu{
-            background: linear-gradient(180deg, #B8860B 0%, #8B7355 100%);
-        }
-
-        body.dark-mode label{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode p{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
-            color: #e0e0e0;
-        }
-
-        /* Jewelry showcase for about page */
-        .jewelry-showcase {
-            margin: 30px auto;
-            text-align: center;
-        }
-
-        .jewelry-showcase img {
-            max-width: 400px;
-            width: auto;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .jewelry-showcase img:hover {
-            transform: scale(1.02);
-        }
-
-        @media (max-width: 768px) {
-            .jewelry-showcase img {
-                max-width: 90%;
-            }
-        }
-    </style>
 </head>
 <body>
-    <div class="header">
-        <button class="menu" id="menu" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <h1>About ShaniknJewls</h1>
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-            <span id="themeIcon">🌙</span>
-            <span id="themeText">OFF</span>
-        </button>
+    <!-- header with navigation -->
+    <div class="header-shell">
+        <div class="announcement-bar">
+            <span class="announcement-pill"><i class="fa-solid fa-gem"></i> Our Craft</span>
+            <span>Handcrafted jewelry made with passion and precision.</span>
+            <button type="button" class="announcement-action" onclick="window.location.href='/store.html'">Shop Now <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="header">
+            <button class="menu" id="menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="brand">
+                <h1>ShanikJewls</h1>
+                <span class="brand-tagline">Handcrafted Jewelry</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">OFF</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
@@ -291,12 +41,13 @@
         <!-- Dynamic navigation will be populated by JavaScript -->
     </div>
 
-    <div class="about-container">
+    <main class="page-frame">
         <!-- Beautiful Jewelry Photo -->
         <div class="jewelry-showcase">
             <img src="https://i.pinimg.com/1200x/f3/c5/7b/f3c57be1299165a2b216c679189ab117.jpg" alt="Our Craftsmanship">
         </div>
         
+        <h1>Our Craft</h1>
         <h2>Welcome to ShaniknJewls</h2>
         <p>ShaniknJewls is your premier destination for exquisite gold jewelry and accessories. Founded with a passion for craftsmanship and beauty, we specialize in creating unique gold pieces that celebrate life's most precious moments.</p>
 
@@ -327,111 +78,13 @@
         <p>At ShaniknJewls, we are committed to providing exceptional quality gold jewelry, outstanding customer service, and designs that exceed expectations. Every gold piece is crafted with attention to detail and made to last a lifetime. We use only the finest 14k and 18k gold to ensure lasting beauty and value.</p>
 
         <p><strong>Visit our store today and discover the perfect piece for you or your loved ones!</strong></p>
-    </div>
+    </main>
 
+    <script src="/scripts/layout.js"></script>
     <script>
-        let isAuthenticated = false;
-
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            const sideMenu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-
-            menu.classList.toggle('active');
-            sideMenu.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-
-        async function checkAuthStatus(){
-            try{
-                const response = await fetch('/api/users/current');
-                isAuthenticated = response.ok;
-                updateNavigation();
-            } catch(error){
-                isAuthenticated = false;
-                updateNavigation();
-            }
-        }
-
-        function updateNavigation(){
-            const sideMenu = document.getElementById('sideMenu');
-
-            if(isAuthenticated){
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                    <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
-                    <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
-                    <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
-                `;
-            } else {
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                    <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
-                    <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-                `;
-            }
-        }
-
-        async function logout() {
-            try {
-                const response = await fetch('/logout', {
-                    method: 'POST'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        }
-
-        // check authentication status (when page loads)
-        window.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
-            initializeTheme();
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBaseLayout();
         });
-
-        // Dark mode functionality
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'ON';
-            } else {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'OFF';
-            }
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'ON';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'OFF';
-            }
-        }
     </script>
 </body>
 </html>

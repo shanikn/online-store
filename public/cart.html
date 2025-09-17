@@ -375,14 +375,32 @@
                     if (response.ok) {
                         cartItems = await response.json();
                         displayCart();
+                        // Show content only after successful load
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('cartContent').style.display = 'block';
                     } else if (response.status === 401) {
                         window.location.href = '/login.html';
+                        return;
+                    } else {
+                        throw new Error('Failed to load cart');
                     }
                 } catch (error) {
                     console.error('Error loading cart:', error);
                     showError('Failed to load cart. Please try again.');
-                } finally {
+                    // Show error state
                     document.getElementById('loading').style.display = 'none';
+                    document.getElementById('cartContent').innerHTML = `
+                        <div class="empty-cart">
+                            <div class="empty-cart-icon">
+                                <i class="fa-solid fa-exclamation-triangle"></i>
+                            </div>
+                            <h2>Failed to load cart</h2>
+                            <p>Please refresh the page or try again later.</p>
+                            <button class="continue-shopping-btn" onclick="location.reload()">
+                                <i class="fa-solid fa-refresh"></i> Try Again
+                            </button>
+                        </div>
+                    `;
                     document.getElementById('cartContent').style.display = 'block';
                 }
             }

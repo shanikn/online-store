@@ -6,86 +6,57 @@
     <head>
         <!-- TODO: customize the styling-->
         <meta charset="UTF-8"/>
-        <title>Register</title>
+        <title>Register - ShanikJewls</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="/styles/theme.css">
         <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            body{
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                min-height: 100vh;
-                background: #f8f9fa;
-                color: #212529;
-                padding: 0;
-                margin: 0;
+            /* Register-specific styles */
+            .register-container {
+                min-height: calc(100vh - 200px);
                 display: flex;
                 align-items: flex-start;
                 justify-content: center;
-                padding-top: 80px;
+                padding: 60px 20px 40px;
             }
 
-            .page-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                width: 100%;
-                max-width: 500px;
-                padding: 20px;
-            }
-
-            .logo {
-                position: fixed;
-                top: 40px;
-                left: 60px;
-                font-size: 20px;
-                font-weight: 700;
-                color: #212529;
-                text-decoration: none;
-                z-index: 100;
-            }
-
-            .form-container {
+            .register-form-card {
                 background: transparent;
                 width: 100%;
                 max-width: 440px;
                 padding: 48px 40px;
             }
 
-            h1 {
+            .register-title {
                 font-size: 32px;
                 font-weight: 700;
                 text-align: center;
                 margin-bottom: 16px;
-                color: #212529;
+                color: var(--text-primary);
             }
 
-            .subtitle {
+            .register-subtitle {
                 text-align: center;
-                color: #6c757d;
+                color: var(--text-secondary);
                 margin-bottom: 32px;
                 font-size: 14px;
             }
 
-            .subtitle a {
-                color: #3b82f6;
+            .register-subtitle a {
+                color: var(--accent-gold);
                 text-decoration: none;
                 font-weight: 500;
             }
 
-            .subtitle a:hover {
+            .register-subtitle a:hover {
                 text-decoration: underline;
             }
 
-            form{
+            .register-form {
                 display: flex;
                 flex-direction: column;
-                gap: 20px;
+                gap: 24px;
             }
 
             .form-group {
@@ -94,34 +65,26 @@
                 gap: 8px;
             }
 
-            label {
-                font-size: 14px;
-                font-weight: 500;
-                color: #495057;
-                display: none;
-            }
-
-            input[type="text"], input[type="password"], input[type="email"]{
+            .form-group input {
                 width: 100%;
-                padding: 14px 16px;
+                padding: 14px 0;
                 font-size: 15px;
                 border: none;
-                border-bottom: 2px solid #dee2e6;
+                border-bottom: 2px solid rgba(162, 150, 138, 0.3);
                 border-radius: 0;
                 transition: all 0.2s ease;
                 background: transparent;
+                color: var(--text-primary);
             }
 
-            input[type="text"]::placeholder,
-            input[type="password"]::placeholder,
-            input[type="email"]::placeholder {
-                color: #6c757d;
-            }
-
-            input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus{
+            .form-group input:focus {
                 outline: none;
-                border-bottom-color: #3b82f6;
-                background: rgba(59, 130, 246, 0.02);
+                border-bottom-color: var(--accent-gold);
+            }
+
+            .form-group input::placeholder {
+                color: var(--text-secondary);
+                opacity: 0.7;
             }
 
             .checkbox-group {
@@ -135,6 +98,7 @@
                 width: 18px;
                 height: 18px;
                 cursor: pointer;
+                accent-color: var(--accent-gold);
             }
 
             .checkbox-group label {
@@ -142,13 +106,14 @@
                 font-size: 14px;
                 cursor: pointer;
                 user-select: none;
+                color: var(--text-primary);
             }
 
             .submit-btn {
                 background: transparent;
-                color: #3b82f6;
-                border: 1px solid #3b82f6;
-                padding: 10px 24px;
+                color: var(--accent-gold);
+                border: 1px solid var(--accent-gold);
+                padding: 12px 32px;
                 border-radius: 25px;
                 font-size: 14px;
                 font-weight: 600;
@@ -161,38 +126,15 @@
             }
 
             .submit-btn:hover {
-                background: #3b82f6;
-                color: white;
+                background: var(--accent-gold);
+                color: var(--surface);
                 transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-            }
-
-            .submit-btn:active {
-                transform: translateY(0);
-            }
-
-
-            .footer-text {
-                text-align: center;
-                margin-top: 24px;
-                font-size: 14px;
-                color: #6c757d;
-            }
-
-            .footer-text a {
-                color: #3b82f6;
-                text-decoration: none;
-                font-weight: 500;
-            }
-
-            .footer-text a:hover {
-                text-decoration: underline;
             }
 
             #error {
-                background: #fee;
-                border: 1px solid #fcc;
-                color: #c00;
+                background: rgba(220, 53, 69, 0.1);
+                border: 1px solid rgba(220, 53, 69, 0.3);
+                color: #dc3545;
                 padding: 12px;
                 border-radius: 8px;
                 font-size: 14px;
@@ -200,134 +142,8 @@
                 text-align: center;
             }
 
-            /* theme toggle button */
-            .theme-toggle{
-                position: fixed;
-                top: 35px;
-                right: 20px;
-                background: #f0f0f0;
-                border: 2px solid #ddd;
-                border-radius: 20px;
-                width: 100px;
-                height: 40px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                font-size: 14px;
-                font-weight: bold;
-                transition: all 0.3s ease;
-                z-index: 1002;
-                color: #333;
-            }
-
-            .theme-toggle:hover{
-                background: #e0e0e0;
-                transform: scale(1.05);
-            }
-
-            .theme-toggle #themeIcon{
-                font-size: 16px;
-            }
-
-            /* dark mode styles */
-            body.dark-mode{
-                background-color: #0f0f0f;
-                color: #e0e0e0;
-                display: flex;
-                align-items: flex-start;
-                justify-content: center;
-                padding-top: 80px;
-            }
-
-            body.dark-mode .form-container {
-                background: transparent;
-            }
-
-            body.dark-mode h1 {
-                color: #ffffff;
-            }
-
-            body.dark-mode .subtitle {
-                color: #9ca3af;
-            }
-
-            body.dark-mode .logo {
-                color: #ffffff;
-            }
-
-            body.dark-mode input[type="text"],
-            body.dark-mode input[type="password"],
-            body.dark-mode input[type="email"] {
-                background: transparent;
-                border-bottom-color: #374151;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode input[type="text"]:focus,
-            body.dark-mode input[type="password"]:focus,
-            body.dark-mode input[type="email"]:focus {
-                border-bottom-color: #3b82f6;
-                background: rgba(59, 130, 246, 0.05);
-            }
-
-
-            body.dark-mode .footer-text {
-                color: #9ca3af;
-            }
-
-            body.dark-mode #error {
-                background: #2a1a1a;
-                border-color: #4a2a2a;
-                color: #ff9999;
-            }
-
-            /* continue with existing dark mode styles */
-            body.dark-mode .theme-toggle{
-                background: #2d2d2d;
-                border-color: #555;
-                color: #e0e0e0;
-            }
-
-            body.dark-mode .theme-toggle:hover{
-                background: #3d3d3d;
-            }
-
-            body.dark-mode a{
-                color: #66b3ff;
-            }
-
-            body.dark-mode label{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode p{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode span, body.dark-mode div{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode input[type="submit"]:hover{
-                background: #45a049;
-            }
-
-            body.dark-mode .caps-lock-warning{
-                color: #66b3ff;
-            }
-
-            body.dark-mode .menu span{
-                background: white;
-            }
-
-            /* password visibility toggle */
-            .password-container{
+            /* Password visibility toggle */
+            .password-container {
                 position: relative;
                 display: flex;
                 align-items: center;
@@ -339,14 +155,13 @@
                 padding-right: 40px;
             }
 
-            .password-toggle{
+            .password-toggle {
                 position: absolute;
                 right: 0;
                 top: 50%;
                 transform: translateY(-50%);
                 cursor: pointer;
-                font-size: 18px;
-                color: #666;
+                color: var(--text-secondary);
                 user-select: none;
                 padding: 5px;
                 background: transparent;
@@ -356,171 +171,52 @@
                 justify-content: center;
             }
 
-            .password-toggle:hover{
-                color: #3b82f6;
-            }
-
-            body.dark-mode .password-toggle{
-                color: #9ca3af;
-            }
-
-            body.dark-mode .password-toggle:hover{
-                color: #3b82f6;
-            }
-
-            /* navigation menu styles - SIMPLE LIKE OTHER SCREENS */
-            .menu {
-                position: fixed;
-                top: 35px;
-                left: 20px;
-                display: flex;
-                flex-direction: column;
-                cursor: pointer;
-                background: none;
-                border: none;
-                padding: 5px;
-                z-index: 1002;
-            }
-
-            .menu span {
-                display: block;
-                width: 25px;
-                height: 3px;
-                background: black;
-                margin: 3px 0;
-                transition: 0.3s;
-            }
-
-            .side-menu {
-                position: fixed;
-                top: 0;
-                left: -300px;
-                width: 280px;
-                height: 100vh;
-                background: green;
-                transition: left 0.3s ease;
-                z-index: 1000;
-                padding-top: 80px;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-                overflow-y: auto;
-            }
-
-            .side-menu.active {
-                left: 0;
-            }
-
-            .side-menu a {
-                display: block;
-                color: white;
-                text-decoration: none;
-                padding: 15px 20px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                transition: background 0.3s;
-            }
-
-            .side-menu a:hover {
-                background: rgba(255, 255, 255, 0.2);
-            }
-
-            .side-menu a i, .side-menu button i{
-                margin-right: 10px;
-                width: 16px;
-                text-align: center;
-            }
-
-            .side-menu button {
-                width: calc(100% - 40px);
-                margin: 15px 20px;
-                background: #d32f2f;
-                color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background 0.3s;
-            }
-
-            .side-menu button:hover {
-                background: #b71c1c;
-            }
-
-            .menu-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: none;
-                z-index: 999;
-            }
-
-            .menu-overlay.active {
-                display: block;
-            }
-
-            /* dark mode navigation */
-            body.dark-mode .menu span{
-                background: white;
-            }
-
-            body.dark-mode .side-menu{
-                background: #2d2d2d;
-            }
-
-            body.dark-mode .side-menu a{
-                border-bottom-color: rgba(255, 255, 255, 0.1);
-            }
-
-            body.dark-mode .side-menu a:hover{
-                background: rgba(255, 255, 255, 0.1);
-            }
-
-            body.dark-mode .side-menu a{
-                color: white !important;
-            }
-
-            /* dark mode button */
-            body.dark-mode .submit-btn {
-                color: #3b82f6;
-                border-color: #3b82f6;
-                background: transparent;
-            }
-
-            body.dark-mode .submit-btn:hover {
-                background: #3b82f6;
-                color: white;
+            .password-toggle:hover {
+                color: var(--accent-gold);
             }
         </style>
     </head>
     <body>
-        <!-- navigation menu -->
-        <button class="menu" id="menu" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <!-- theme toggle button -->
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-            <span id="themeIcon">🌙</span>
-            <span id="themeText">OFF</span>
-        </button>
-
-        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-        <div class="side-menu" id="sideMenu">
-            <!-- Dynamic navigation will be populated by JavaScript -->
+        <!-- header with navigation -->
+        <div class="header-shell">
+            <div class="announcement-bar">
+                <span class="announcement-pill"><i class="fa-solid fa-truck"></i> Free Shipping</span>
+                <span>Complimentary express delivery on every order.</span>
+                <button type="button" class="announcement-action" onclick="window.location.href='/store.html'">Shop Now <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div class="header">
+                <button class="menu" id="menu" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="brand">
+                    <h1>ShanikJewls</h1>
+                    <span class="brand-tagline">Handcrafted Jewelry</span>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                        <span id="themeIcon">🌙</span>
+                        <span id="themeText">OFF</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Page Container -->
-        <div class="page-container">
-            <!-- Main Form Container -->
-            <div class="form-container">
-                <h1>Register</h1>
-                <p class="subtitle">Already have an account? <a href="/login.html">Log In</a></p>
+        <!-- Side menu -->
+        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        <nav class="side-menu" id="sideMenu">
+            <!-- Dynamic navigation will be populated by JavaScript -->
+        </nav>
 
-                <form action="/register" method="POST" autocomplete="on">
+        <!-- Register Container -->
+        <div class="register-container">
+
+            <div class="register-form-card">
+                <h1 class="register-title">Register</h1>
+                <p class="register-subtitle">Already have an account? <a href="/login.html">Log In</a></p>
+
+                <form action="/register" method="POST" autocomplete="on" class="register-form">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="Email" required>
@@ -567,42 +263,13 @@
                 <div id="error" style="display: none;"></div>
             </div>
         </div>
-    <script>
-            // Dark mode functionality
-            function initializeTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                const themeIcon = document.getElementById('themeIcon');
-                const themeText = document.getElementById('themeText');
-                if (savedTheme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'ON';
-                } else {
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'OFF';
-                }
-            }
 
-            function toggleTheme() {
-                const body = document.body;
-                const themeIcon = document.getElementById('themeIcon');
-                const themeText = document.getElementById('themeText');
-                body.classList.toggle('dark-mode');
-                if (body.classList.contains('dark-mode')) {
-                    localStorage.setItem('theme', 'dark');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'ON';
-                } else {
-                    localStorage.setItem('theme', 'light');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'OFF';
-                }
-            }
-
-            // Initialize theme on page load
-            window.onload = function() {
-                initializeTheme();
-            };
+        <script src="/scripts/layout.js"></script>
+        <script>
+            // Initialize layout and theme on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeBaseLayout();
+            });
 
             // password visibility toggle
             function togglePasswordVisibility(inputId, toggleElement) {
@@ -678,44 +345,6 @@
             });
         });
 
-        // navigation functions
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavigation();
-            // Ensure menu starts closed
-            const sideMenu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-            const menu = document.getElementById('menu');
-
-            sideMenu.classList.remove('active');
-            overlay.classList.remove('active');
-            menu.classList.remove('active');
-        });
-
-        function updateNavigation() {
-            const sideMenu = document.getElementById('sideMenu');
-
-            // register page shows non-authenticated navigation
-            sideMenu.innerHTML = `
-                <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                <a href="/login.html"><i class="fa-solid fa-sign-in-alt"></i> Login</a>
-                <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-            `;
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            const sideMenu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-
-            menu.classList.toggle('active');
-            sideMenu.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
     </script>
     </body>
 </html>

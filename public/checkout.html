@@ -1,498 +1,429 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>Checkout - ShanikJewls</title>
-    <!-- Font Awesome for icons <3 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="/styles/theme.css">
-    <style>
-        /* Checkout-specific styles */
-
-        .checkout-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .checkout-container {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-        }
-
-        .checkout-form {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
-            border: 1px solid rgba(162, 150, 138, 0.2);
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-        }
-
-        .form-section h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        .form-group input:focus {
-            border-color: green;
-            outline: none;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .order-summary {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
-            border: 1px solid rgba(162, 150, 138, 0.2);
-            height: fit-content;
-            position: sticky;
-            top: 120px;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #333;
-        }
-
-        .place-order-btn {
-            width: 100%;
-            background: green;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        .place-order-btn:hover {
-            background: darkgreen;
-        }
-
-        .place-order-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .success {
-            background: #4CAF50;
-            color: white;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-
-        .error {
-            background: #f44336;
-            color: white;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 50px;
-            background: white;
-            border-radius: 8px;
-            grid-column: 1 / -1;
-        }
-
-        .cart-item-mini {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .item-qty {
-            color: #666;
-        }
-    </style>
-</head>
-<body>
-    <!-- header with navigation -->
-    <div class="header-shell">
-        <div class="announcement-bar">
-            <span class="announcement-pill"><i class="fa-solid fa-truck"></i> Free Shipping</span>
-            <span>Complimentary express delivery on every order.</span>
-            <button type="button" class="announcement-action" onclick="scrollToCheckout()">Complete Order <i class="fa-solid fa-arrow-right"></i></button>
-        </div>
-        <div class="header">
-            <button class="menu" id="menu" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="brand">
-                <h1>ShanikJewls</h1>
-                <span class="brand-tagline">Handcrafted Jewelry</span>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Checkout - ShaniknJewls</title>
+        <!-- Font Awesome for icons <3 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="/styles/theme.css">
+    </head>
+    <body>
+        <!-- header with navigation -->
+        <div class="header-shell">
+            <div class="announcement-bar">
+                <span class="announcement-pill"><i class="fa-solid fa-truck"></i> Free Shipping</span>
+                <span>Complimentary express delivery on every order.</span>
+                <button type="button" class="announcement-action" onclick="scrollToCheckout()">Complete Order <i class="fa-solid fa-arrow-right"></i></button>
             </div>
-            <div class="header-actions">
-                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-                    <span id="themeIcon">🌙</span>
-                    <span id="themeText">OFF</span>
+            <div class="header">
+                <button class="menu" id="menu" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
+                <div class="brand">
+                    <h1>ShanikJewls</h1>
+                    <span class="brand-tagline">Handcrafted Jewelry</span>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                        <span id="themeIcon">🌙</span>
+                        <span id="themeText">OFF</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Side menu -->
-    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-    <nav class="side-menu" id="sideMenu">
-        <!-- Dynamic navigation will be populated by JavaScript -->
-    </nav>
+        <!-- Side menu -->
+        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        <nav class="side-menu" id="sideMenu"></nav>
 
-    <div id="successMessage" class="success"></div>
-    <div id="errorMessage" class="error"></div>
-
-    <div id="loading" class="loading">Loading checkout...</div>
-
-    <div class="checkout-container" id="checkoutContent" style="display: none;">
-        <div class="checkout-form">
-            <form id="checkoutForm">
-                <div class="form-section">
-                    <h2>Shipping Information</h2>
-                    <div class="form-group">
-                        <label for="fullName">Full Name *</label>
-                        <input type="text" id="fullName" name="fullName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Street Address *</label>
-                        <input type="text" id="address" name="address" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="city">City *</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="zipCode">ZIP Code *</label>
-                            <input type="text" id="zipCode" name="zipCode" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="country">Country *</label>
-                        <select id="country" name="country" required>
-                            <option value="">Select Country</option>
-                            <option value="Israel">Israel</option>
-                            <option value="USA">United States</option>
-                            <option value="UK">United Kingdom</option>
-                            <option value="Canada">Canada</option>
-                            <option value="Other">Other</option>
-                        </select>
+        <main class="page-frame">
+            <section class="page-hero page-hero--single">
+                <div class="page-hero__content">
+                    <span class="page-hero__eyebrow">Secure Checkout</span>
+                    <h1 class="page-hero__title">Complete Your ShaniknJewls Order</h1>
+                    <p class="page-hero__copy">Review your details and place your order with confidence. Every purchase is wrapped, insured, and shipped with love.</p>
+                    <div class="hero-actions">
+                        <a class="cta-btn secondary" href="/cart.html"><i class="fa-solid fa-arrow-left"></i> Back to Cart</a>
+                        <a class="cta-btn primary" href="/collection-wedding.html">Explore Wedding Bands</a>
                     </div>
                 </div>
+            </section>
 
-                <div class="form-section">
-                    <h2>Payment Information</h2>
-                    <div class="form-group">
-                        <label for="cardName">Cardholder Name *</label>
-                        <input type="text" id="cardName" name="cardName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cardNumber">Card Number *</label>
-                        <input type="text" id="cardNumber" name="cardNumber" pattern="[0-9]{16}" maxlength="16" placeholder="1234 5678 9012 3456" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="expiry">Expiry Date *</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" pattern="[0-9]{2}/[0-9]{2}" maxlength="5" required>
+            <div id="successMessage" class="success"></div>
+            <div id="errorMessage" class="error" style="display: none;"></div>
+
+            <div id="loading" class="loading">Preparing your order...</div>
+
+            <section id="checkoutContent" class="checkout-layout" style="display: none;">
+                <div class="surface-card checkout-card">
+                    <form id="checkoutForm" class="form-stack" autocomplete="on">
+                        <div class="checkout-section">
+                            <h2>Contact Details</h2>
+                            <div class="checkout-form-grid two-column">
+                                <div class="form-control-group">
+                                    <label for="fullName">Full Name *</label>
+                                    <input type="text" id="fullName" name="fullName" class="form-control" required>
+                                </div>
+                                <div class="form-control-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" class="form-control" required>
+                                </div>
+                                <div class="form-control-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" class="form-control" required>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="cvv">CVV *</label>
-                            <input type="text" id="cvv" name="cvv" pattern="[0-9]{3}" maxlength="3" placeholder="123" required>
+
+                        <div class="checkout-section">
+                            <h2>Shipping Address</h2>
+                            <div class="checkout-form-grid">
+                                <div class="form-control-group">
+                                    <label for="address">Street Address *</label>
+                                    <input type="text" id="address" name="address" class="form-control" required>
+                                </div>
+                                <div class="checkout-form-grid two-column">
+                                    <div class="form-control-group">
+                                        <label for="city">City *</label>
+                                        <input type="text" id="city" name="city" class="form-control" required>
+                                    </div>
+                                    <div class="form-control-group">
+                                        <label for="zipCode">ZIP Code *</label>
+                                        <input type="text" id="zipCode" name="zipCode" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-control-group">
+                                    <label for="country">Country *</label>
+                                    <select id="country" name="country" class="form-control" required>
+                                        <option value="">Select Country</option>
+                                        <option value="Israel">Israel</option>
+                                        <option value="USA">United States</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="checkout-section">
+                            <h2>Payment Details</h2>
+                            <div class="checkout-form-grid">
+                                <div class="form-control-group">
+                                    <label for="cardName">Cardholder Name *</label>
+                                    <input type="text" id="cardName" name="cardName" class="form-control" required>
+                                </div>
+                                <div class="form-control-group">
+                                    <label for="cardNumber">Card Number *</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" class="form-control" pattern="[0-9]{16}" maxlength="16" placeholder="1234567890123456" required>
+                                </div>
+                                <div class="checkout-form-grid two-column">
+                                    <div class="form-control-group">
+                                        <label for="expiry">Expiry Date *</label>
+                                        <input type="text" id="expiry" name="expiry" class="form-control" placeholder="MM/YY" pattern="[0-9]{2}/[0-9]{2}" maxlength="5" required>
+                                    </div>
+                                    <div class="form-control-group">
+                                        <label for="cvv">CVV *</label>
+                                        <input type="text" id="cvv" name="cvv" class="form-control" pattern="[0-9]{3}" maxlength="3" placeholder="123" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkout-helper">
+                            <span class="checkout-alert"><i class="fa-solid fa-lock"></i> Payments are processed securely with 256-bit encryption.</span>
+                            <span>Questions? <a href="/contact.html">Contact our team</a> and we'll be happy to help.</span>
+                        </div>
+
+                        <button type="submit" class="place-order-btn checkout-submit"><i class="fa-solid fa-bag-shopping"></i> Place Order</button>
+                    </form>
                 </div>
 
-                <button type="submit" class="place-order-btn">Place Order</button>
-            </form>
-        </div>
+                <aside class="surface-card summary-card">
+                    <h2>Order Summary</h2>
+                    <div id="orderItems" class="summary-list"></div>
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span id="orderTotal">₪0.00</span>
+                    </div>
+                    <div class="checkout-helper">
+                        <span>Need to adjust quantities? <a href="/cart.html">Return to cart</a></span>
+                        <span>Wishlist saved items? <a href="/wishlist.html">Review favorites</a></span>
+                    </div>
+                </aside>
+            </section>
+        </main>
 
-        <div class="order-summary">
-            <h2>Order Summary</h2>
-            <div id="orderItems"></div>
-            <div class="summary-total">
-                <span>Total:</span>
-                <span id="orderTotal">₪0.00</span>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <h3>ShaniknJewls</h3>
+                    <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="Follow on Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+                        <a href="#" aria-label="Follow on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Explore</h4>
+                    <nav>
+                        <a href="/store.html">Store</a>
+                        <a href="/collection-wedding.html">Wedding Bands</a>
+                        <a href="/collection-hoops.html">Hoop Earrings</a>
+                        <a href="/about.html">About</a>
+                    </nav>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Insider List</h4>
+                    <p>Be first to know about limited releases, styling events, and private previews.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); showSuccess('You are on the list!', false);">
+                        <input type="email" placeholder="Enter your email" aria-label="Email address">
+                        <button type="submit">Join Now</button>
+                    </form>
+                    <div class="footer-note">We respect your inbox</div>
+                </div>
+            </div>
+        </footer>
+
+        <div id="customizationModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="customizationTitle">Customize Your Item</h3>
+                    <button class="modal-close" onclick="closeCustomizationModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="customizationOptions"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeCustomizationModal()">Cancel</button>
+                    <button class="btn-primary" onclick="addCustomizedToCart()">Add to Cart</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script src="/scripts/layout.js"></script>
+        <script src="/scripts/layout.js"></script>
+        <script>
+            let cartItems = [];
+            let products = [];
+            let orderTotal = 0;
 
-    <script>
-        let cartItems = [];
-        let orderTotal = 0;
-        let isAuthenticated = false;
-
-        function scrollToCheckout() {
-            const checkoutContainer = document.querySelector('.checkout-container');
-            if (checkoutContainer) {
-                checkoutContainer.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded - initializing checkout page');
-
-            // Force hide loading after 3 seconds if still visible (fallback)
-            setTimeout(() => {
-                const loadingElement = document.getElementById('loading');
-                if (loadingElement && loadingElement.style.display !== 'none') {
-                    console.log('Force hiding loading indicator after timeout');
-                    loadingElement.style.display = 'none';
-                    document.getElementById('checkoutContent').style.display = 'grid';
+            function scrollToCheckout() {
+                var checkoutSection = document.getElementById('checkoutContent');
+                if (checkoutSection) {
+                    checkoutSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
-            }, 3000);
+            }
 
-            initializeBaseLayout();
-            loadCart();
-        });
+            document.addEventListener('DOMContentLoaded', function() {
+                try {
+                    initializeBaseLayout();
+                } catch (error) {
+                    console.error('Error in initializeBaseLayout:', error);
+                }
 
+                loadProducts()
+                    .then(loadCart)
+                    .catch(function(error) {
+                        console.error('Error during checkout initialization:', error);
+                        showLoadingError();
+                    });
 
-
-
-
-        async function loadCart() {
-            try {
-                console.log('Loading cart...');
-                const response = await fetch('/api/cart');
-                console.log('Cart response status:', response.status);
-
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        console.log('User not authenticated, redirecting to login');
-                        window.location.href = '/login.html';
-                        return;
+                setTimeout(function() {
+                    var loadingElement = document.getElementById('loading');
+                    if (loadingElement && loadingElement.style.display !== 'none') {
+                        showLoadingError();
                     }
-                    throw new Error('Failed to load cart');
+                }, 2000);
+            });
+
+            function showLoadingError() {
+                document.getElementById('loading').style.display = 'none';
+                var html = '';
+                html += '<div class="checkout-empty">';
+                html += '<h2>Unable to load checkout</h2>';
+                html += '<p>There may be a connection issue. Please refresh the page and try again.</p>';
+                html += '<div class="checkout-actions">';
+                html += '<button class="place-order-btn" onclick="location.reload()">';
+                html += '<i class="fa-solid fa-rotate-right"></i> Refresh Page';
+                html += '</button>';
+                html += '<a class="cta-btn secondary" href="/cart.html">';
+                html += '<i class="fa-solid fa-arrow-left"></i> Back to Cart';
+                html += '</a>';
+                html += '</div>';
+                html += '</div>';
+                document.getElementById('checkoutContent').innerHTML = html;
+                document.getElementById('checkoutContent').style.display = 'grid';
+            }
+
+            function showEmptyCart() {
+                var html = '';
+                html += '<div class="checkout-empty">';
+                html += '<h2>Your cart is empty</h2>';
+                html += '<p>Add pieces to your cart before checking out.</p>';
+                html += '<div class="checkout-actions">';
+                html += '<a class="cta-btn primary" href="/store.html">Browse Store</a>';
+                html += '<a class="cta-btn secondary" href="/wishlist.html">View Wishlist</a>';
+                html += '</div>';
+                html += '</div>';
+                document.getElementById('checkoutContent').innerHTML = html;
+                document.getElementById('checkoutContent').style.display = 'grid';
+            }
+
+            async function loadProducts() {
+                try {
+                    var response = await fetch('/api/products');
+                    if(!response.ok){
+                        throw new Error('Failed to load products');
+                    }
+                    products = await response.json();
+                } catch (error) {
+                    console.error('Error loading products:', error);
+                    products = [];
                 }
+            }
 
-                cartItems = await response.json();
-                console.log('Cart items loaded:', cartItems);
+            async function loadCart() {
+                try {
+                    var response = await fetch('/api/cart');
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            window.location.href = '/login.html';
+                            return;
+                        }
+                        throw new Error('Failed to load cart');
+                    }
 
-                if (!cartItems || cartItems.length === 0) {
-                    showEmptyCart();
-                } else {
-                    displayOrderSummary();
+                    cartItems = await response.json();
+
+                    if (!cartItems || cartItems.length === 0) {
+                        showEmptyCart();
+                    } else {
+                        displayOrderSummary();
+                        document.getElementById('checkoutContent').style.display = 'grid';
+                    }
+                } catch (error) {
+                    console.error('Error loading cart:', error);
+                    showError('Failed to load cart');
+                    var html = '';
+                    html += '<div class="checkout-empty">';
+                    html += '<h2>Failed to load cart</h2>';
+                    html += '<p>Please refresh the page or try again later.</p>';
+                    html += '<div class="checkout-actions">';
+                    html += '<button class="place-order-btn" onclick="location.reload()">';
+                    html += '<i class="fa-solid fa-rotate-right"></i> Try Again';
+                    html += '</button>';
+                    html += '</div>';
+                    html += '</div>';
+                    document.getElementById('checkoutContent').innerHTML = html;
                     document.getElementById('checkoutContent').style.display = 'grid';
-                }
-            } catch (error) {
-                console.error('Error loading cart:', error);
-                showError('Failed to load cart');
-            } finally {
-                console.log('Hiding loading indicator');
-                const loadingElement = document.getElementById('loading');
-                if (loadingElement) {
-                    loadingElement.style.display = 'none';
-                } else {
-                    console.error('Loading element not found');
+                } finally {
+                    var loadingElement = document.getElementById('loading');
+                    if (loadingElement) {
+                        loadingElement.style.display = 'none';
+                    }
                 }
             }
-        }
 
-        function showEmptyCart() {
-            document.getElementById('checkoutContent').innerHTML = `
-                <div class="empty-cart">
-                    <h2>Your cart is empty</h2>
-                    <p>Add items to your cart before checking out</p>
-                    <button class="place-order-btn" onclick="window.location.href='/store.html'">Go to Store</button>
-                </div>
-            `;
-            document.getElementById('checkoutContent').style.display = 'block';
-        }
+            function displayOrderSummary() {
+                var itemsContainer = document.getElementById('orderItems');
+                orderTotal = 0;
+                var html = '';
 
-        function displayOrderSummary() {
-            const itemsContainer = document.getElementById('orderItems');
-            orderTotal = 0;
-
-            itemsContainer.innerHTML = cartItems.map(item => {
-                const itemTotal = item.price * item.quantity;
-                orderTotal += itemTotal;
-                return `
-                    <div class="cart-item-mini">
-                        <span>${item.name} <span class="item-qty">x${item.quantity}</span></span>
-                        <span>₪${itemTotal.toFixed(2)}</span>
-                    </div>
-                `;
-            }).join('');
-
-            document.getElementById('orderTotal').textContent = `₪${orderTotal.toFixed(2)}`;
-        }
-
-        document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const submitBtn = e.target.querySelector('.place-order-btn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Processing...';
-
-            const formData = {
-                fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                address: document.getElementById('address').value,
-                city: document.getElementById('city').value,
-                zipCode: document.getElementById('zipCode').value,
-                country: document.getElementById('country').value,
-                cardName: document.getElementById('cardName').value,
-                cardNumber: document.getElementById('cardNumber').value,
-                expiry: document.getElementById('expiry').value,
-                cvv: document.getElementById('cvv').value,
-                items: cartItems,
-                total: orderTotal
-            };
-
-            try {
-                const response = await fetch('/api/checkout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
+                cartItems.forEach(function(item) {
+                    var product = products.find(function(p){ return p.id === item.productId; });
+                    var name = product ? product.name : (item.name || 'Unknown Product');
+                    var price = product ? product.price : (item.price || 0);
+                    var itemTotal = price * item.quantity;
+                    orderTotal += itemTotal;
+                    html += '<div class="summary-line">';
+                    html += '<span>' + name + ' <span class="item-qty">×' + item.quantity + '</span></span>';
+                    html += '<span>₪' + itemTotal.toFixed(2) + '</span>';
+                    html += '</div>';
                 });
 
-                const data = await response.json();
+                itemsContainer.innerHTML = html;
+                document.getElementById('orderTotal').textContent = '₪' + orderTotal.toFixed(2);
+            }
 
-                if (data.success) {
-                    showSuccess('Order placed successfully! Redirecting...');
-                    setTimeout(() => {
-                        window.location.href = '/store.html';
-                    }, 2000);
-                } else {
-                    showError(data.message || 'Failed to place order');
+            document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                var submitBtn = e.target.querySelector('.place-order-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Processing...';
+
+                var formData = {
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    zipCode: document.getElementById('zipCode').value,
+                    country: document.getElementById('country').value,
+                    cardName: document.getElementById('cardName').value,
+                    cardNumber: document.getElementById('cardNumber').value,
+                    expiry: document.getElementById('expiry').value,
+                    cvv: document.getElementById('cvv').value,
+                    items: cartItems,
+                    total: orderTotal
+                };
+
+                try {
+                    var response = await fetch('/api/checkout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    var data = await response.json();
+
+                    if (data.success) {
+                        showSuccess('Order placed successfully! Redirecting...');
+                        setTimeout(function() {
+                            window.location.href = '/store.html';
+                        }, 2000);
+                    } else {
+                        showError(data.message || 'Failed to place order');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
+                    }
+                } catch (error) {
+                    console.error('Error placing order:', error);
+                    showError('Connection error. Please try again.');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Place Order';
+                    submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
                 }
-            } catch (error) {
-                console.error('Error placing order:', error);
-                showError('Connection error. Please try again.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Place Order';
-            }
-        });
+            });
 
-        // Format card number input
-        document.getElementById('cardNumber').addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/\D/g, '');
-        });
+            document.getElementById('cardNumber').addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
 
-        // format expiry date input
-        document.getElementById('expiry').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.slice(0, 2) + '/' + value.slice(2, 4);
-            }
-            e.target.value = value;
-        });
-
-        // format CVV input
-        document.getElementById('cvv').addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/\D/g, '');
-        });
-
-        async function logout() {
-            try {
-                const response = await fetch('/logout', {
-                    method: 'POST'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    window.location.reload();
+            document.getElementById('expiry').addEventListener('input', function(e) {
+                var value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
                 }
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        }
+                e.target.value = value;
+            });
 
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 5000);
-        }
-    </script>
-</body>
+            document.getElementById('cvv').addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+        </script>
+    </body>
 </html>
+
+
+
+
+

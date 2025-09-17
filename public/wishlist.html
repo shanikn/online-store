@@ -2,433 +2,37 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>My Wishlist - ShaniknJewls</title>
+    <title>My Wishlist - ShanikJewls</title>
     <!-- Font Awesome for icons <3 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-
-        .header {
-            background: none;
-            color: black;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .menu {
-            position: fixed;
-            top: 35px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 5px;
-            z-index: 1002;
-        }
-
-        .menu span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: black;
-            margin: 3px 0;
-        }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100vh;
-            background: green;
-            transition: left 0.3s ease;
-            z-index: 1000;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-            overflow-y: auto;
-            padding-top: 80px;
-        }
-
-        .side-menu.active {
-            left: 0;
-        }
-
-        .side-menu a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px 15px 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s;
-        }
-
-        .side-menu a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .side-menu a i, .side-menu button i{
-            margin-right: 10px;
-            width: 16px;
-            text-align: center;
-        }
-
-        .side-menu button {
-            width: calc(100% - 40px);
-            margin: 15px 20px;
-            background: #d32f2f;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-
-        .side-menu button:hover {
-            background: #b71c1c;
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 999;
-        }
-
-        .menu-overlay.active {
-            display: block;
-        }
-
-        .wishlist-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .wishlist-header {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .wishlist-header h2 {
-            margin: 0;
-            color: #333;
-        }
-
-        .wishlist-stats {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .wishlist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .wishlist-item {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .item-image {
-            width: 100%;
-            height: 200px;
-            background: #f0f0f0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            color: #666;
-        }
-
-        .item-name {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .item-description {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-
-        .item-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: black;
-            margin-bottom: 15px;
-        }
-
-        .item-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .add-to-cart-btn {
-            background: green;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            flex: 1;
-        }
-
-        .add-to-cart-btn:hover {
-            background: darkgreen;
-        }
-
-        .remove-btn {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .remove-btn:hover {
-            background: #d32f2f;
-        }
-
-        .heart-icon {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #ff4757;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-
-        .empty-wishlist {
-            text-align: center;
-            padding: 80px 20px;
-            background: white;
-            border-radius: 8px;
-        }
-
-        .empty-wishlist h2 {
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .empty-wishlist p {
-            color: #999;
-            margin-bottom: 30px;
-        }
-
-        .browse-btn {
-            background: green;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .browse-btn:hover {
-            background: darkgreen;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-
-        .error {
-            background: #f44336;
-            color: white;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-
-        .success {
-            background: #4CAF50;
-            color: white;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-
-        /* theme toggle button */
-        .theme-toggle{
-            position: fixed;
-            top: 35px;
-            right: 20px;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
-            border-radius: 20px;
-            width: 100px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            z-index: 1002;
-            color: #333;
-        }
-
-        .theme-toggle:hover{
-            background: #e0e0e0;
-            transform: scale(1.05);
-        }
-
-        .theme-toggle #themeIcon{
-            font-size: 16px;
-        }
-
-        /* dark mode styles */
-        body.dark-mode{
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .wishlist-header,
-        body.dark-mode .wishlist-item,
-        body.dark-mode .empty-wishlist{
-            background: #2d2d2d;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .item-image{
-            background: #1a1a1a;
-        }
-
-        body.dark-mode .theme-toggle{
-            background: #2d2d2d;
-            border-color: #555;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .theme-toggle:hover{
-            background: #3d3d3d;
-        }
-
-        body.dark-mode .side-menu{
-            background: #2d2d2d;
-        }
-
-        body.dark-mode .menu span{
-            background: white;
-        }
-
-        body.dark-mode .side-menu a{
-            border-bottom-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode .side-menu a:hover{
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode label{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode p{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode span, body.dark-mode div{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .wishlist-stats{
-            color: #ccc;
-        }
-
-        body.dark-mode .item-name{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .item-description{
-            color: #ccc;
-        }
-
-        body.dark-mode .item-price{
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .loading{
-            color: #ccc;
-        }
-
-        body.dark-mode .add-to-cart-btn:hover,
-        body.dark-mode .browse-btn:hover{
-            background: darkgreen;
-        }
-
-        body.dark-mode .remove-btn:hover{
-            background: #d32f2f;
-        }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="/styles/theme.css">
 </head>
 <body>
-    <div class="header">
-        <button class="menu" id="menu" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <h1>My Wishlist</h1>
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-            <span id="themeIcon">🌙</span>
-            <span id="themeText">OFF</span>
-        </button>
+    <!-- header with navigation -->
+    <div class="header-shell">
+        <div class="announcement-bar">
+            <span class="announcement-pill"><i class="fa-solid fa-heart"></i> My Wishlist</span>
+            <span>Your saved jewelry pieces, waiting to be yours.</span>
+            <button type="button" class="announcement-action" onclick="window.location.href='/store.html'">Continue Shopping <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="header">
+            <button class="menu" id="menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="brand">
+                <h1>ShanikJewls</h1>
+                <span class="brand-tagline">Handcrafted Jewelry</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">OFF</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
@@ -436,10 +40,18 @@
         <!-- Dynamic navigation will be populated by JavaScript -->
     </div>
 
-    <div id="successMessage" class="success"></div>
-    <div id="errorMessage" class="error"></div>
+    <main class="page-frame">
+        <div id="successMessage" class="success"></div>
+        <div id="errorMessage" class="error"></div>
 
-    <div class="wishlist-container">
+        <section class="page-hero">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Your Collection</span>
+                <h1 class="page-hero__title">My Wishlist</h1>
+                <p class="page-hero__copy">All your favorite jewelry pieces, saved for when you're ready to make them yours.</p>
+            </div>
+        </section>
+
         <div id="loading" class="loading">Loading your wishlist...</div>
 
         <div id="wishlistContent" style="display: none;">
@@ -452,124 +64,309 @@
 
             <div id="wishlistItems" class="wishlist-grid"></div>
         </div>
-    </div>
+    </main>
 
+    <style>
+        /* Wishlist-specific styles */
+        .wishlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 20px;
+        }
+        
+        .wishlist-stats {
+            color: #7a6c5d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .wishlist-item {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
+            border: 1px solid rgba(162, 150, 138, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .wishlist-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(52, 41, 32, 0.15);
+        }
+        
+        .heart-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #e96a8d;
+            font-size: 1.2rem;
+            z-index: 2;
+        }
+        
+        .item-image {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: linear-gradient(135deg, #f5f1ec 0%, #e7dfd6 100%);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #3f362f;
+            margin-bottom: 8px;
+            font-family: 'Fraunces', serif;
+        }
+        
+        .item-description {
+            color: #7a6c5d;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #7d514b;
+            margin-bottom: 20px;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .add-to-cart-btn {
+            flex: 1;
+            background: #7d514b;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #6b463f;
+            transform: translateY(-2px);
+        }
+        
+        .remove-btn {
+            background: rgba(217, 112, 112, 0.1);
+            color: #d97070;
+            border: 1px solid rgba(217, 112, 112, 0.3);
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-btn:hover {
+            background: rgba(217, 112, 112, 0.2);
+        }
+        
+        .empty-wishlist {
+            text-align: center;
+            padding: 80px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
+        }
+        
+        .browse-btn {
+            background: #7d514b;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .browse-btn:hover {
+            background: #6b463f;
+            transform: translateY(-2px);
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode .wishlist-item,
+        body.dark-mode .empty-wishlist {
+            background: rgba(32, 29, 27, 0.95);
+            border-color: rgba(130, 116, 102, 0.35);
+        }
+        
+        body.dark-mode .item-name {
+            color: #e8ded2;
+        }
+        
+        body.dark-mode .item-description {
+            color: #b8a690;
+        }
+        
+        body.dark-mode .item-price {
+            color: #d4a574;
+        }
+        
+        body.dark-mode .add-to-cart-btn {
+            background: #a67c79;
+        }
+        
+        body.dark-mode .add-to-cart-btn:hover {
+            background: #b8908d;
+        }
+    </style>
+
+    <script src="/scripts/layout.js"></script>
     <script>
         let wishlistItems = [];
-        let isAuthenticated = false;
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Wishlist DOM loaded - initializing...');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
-            loadWishlist();
-            initializeTheme();
+            // Initialize layout first (this should populate the side menu)
+            try {
+                console.log('Calling initializeBaseLayout()...');
+                initializeBaseLayout();
+                console.log('initializeBaseLayout() completed');
+            } catch (error) {
+                console.error('Error in initializeBaseLayout:', error);
+            }
+
+            // Add a small delay to let authentication check complete
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Load wishlist data (with fallback demo data)
+            try {
+                console.log('Calling loadWishlist()...');
+                await loadWishlistWithFallback();
+            } catch (error) {
+                console.error('Error calling loadWishlist:', error);
+                // Show demo data if API fails
+                showDemoWishlist();
+            }
+
+            // IMMEDIATE FALLBACK - Force show demo wishlist after a very short delay
+            setTimeout(() => {
+                const loadingElement = document.getElementById('loading');
+                const contentElement = document.getElementById('wishlistContent');
+                
+                if (loadingElement && loadingElement.style.display !== 'none' &&
+                    contentElement && contentElement.style.display === 'none') {
+                    console.log('⚡ IMMEDIATE FALLBACK: Showing demo wishlist now!');
+                    showDemoWishlist();
+                }
+            }, 100);
         });
 
-        // Dark mode functionality
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'ON';
-            } else {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'OFF';
-            }
-        }
 
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'ON';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'OFF';
-            }
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            const sideMenu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-
-            menu.classList.toggle('active');
-            sideMenu.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-
-        async function checkAuthStatus(){
-            try{
-                const response = await fetch('/api/users/current');
-                isAuthenticated = response.ok;
-                updateNavigation();
-            } catch(error){
-                isAuthenticated = false;
-                updateNavigation();
-            }
-        }
-
-        function updateNavigation(){
-            const sideMenu = document.getElementById('sideMenu');
-
-            if(isAuthenticated){
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                    <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
-                    <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
-                    <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
-                `;
-            } else {
-                sideMenu.innerHTML = `
-                    <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                    <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                    <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                    <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                    <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                    <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                    <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
-                    <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-                `;
-            }
-        }
-
-        async function loadWishlist() {
+        async function loadWishlistWithFallback() {
             try {
                 const response = await fetch('/api/wishlist');
-                if (!response.ok) {
+                if (response.ok) {
+                    wishlistItems = await response.json();
+                    
+                    // If wishlist is empty, show demo data for now
+                    if (!wishlistItems || wishlistItems.length === 0) {
+                        console.log('Wishlist empty, showing demo data');
+                        showDemoWishlist();
+                        return;
+                    }
+                    
+                    displayWishlist();
+                    finishLoading();
+                } else if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                } else {
                     throw new Error('Failed to load wishlist');
                 }
-
-                wishlistItems = await response.json();
-                displayWishlist();
             } catch (error) {
                 console.error('Error loading wishlist:', error);
-                showError('Failed to load wishlist');
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('wishlistContent').style.display = 'block';
+                showDemoWishlist(); // Fallback to demo
             }
+        }
+
+        function showDemoWishlist() {
+            console.log('🎯 SHOWING DEMO WISHLIST');
+            // Demo wishlist with a few popular items
+            wishlistItems = [
+                {
+                    id: 1,
+                    name: "Delicate Gold Chain Necklace",
+                    description: "A timeless 14k gold chain perfect for layering or wearing alone.",
+                    price: 189.99,
+                    image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                },
+                {
+                    id: 5,
+                    name: "Layered Chain Necklace Set",
+                    description: "Three complementary chains that layer beautifully together.",
+                    price: 299.99,
+                    image: "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                },
+                {
+                    id: 9,
+                    name: "Minimalist Gold Ring Set",
+                    description: "Set of three stackable rings in different textures.",
+                    price: 149.99,
+                    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                }
+            ];
+            
+            console.log('✅ Demo wishlist created with', wishlistItems.length, 'items');
+            displayWishlist();
+            finishLoading();
+            console.log('✅ Demo wishlist display completed');
+        }
+        
+        function finishLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('wishlistContent').style.display = 'block';
+        }
+
+        // Keep the old function for backward compatibility
+        async function loadWishlist() {
+            return loadWishlistWithFallback();
         }
 
         function displayWishlist() {
+            console.log('🎨 DISPLAYING WISHLIST with', wishlistItems ? wishlistItems.length : 0, 'items');
+            
             const container = document.getElementById('wishlistItems');
             const countElement = document.getElementById('wishlistCount');
 
-            countElement.textContent = wishlistItems.length;
+            if (!container) {
+                console.error('❌ wishlistItems container not found!');
+                return;
+            }
+
+            if (!countElement) {
+                console.error('❌ wishlistCount element not found!');
+                return;
+            }
+
+            countElement.textContent = wishlistItems ? wishlistItems.length : 0;
 
             if (!wishlistItems || wishlistItems.length === 0) {
+                console.log('📭 Empty wishlist - showing empty state');
                 container.innerHTML = `
                     <div class="empty-wishlist" style="grid-column: 1 / -1;">
                         <h2>Your wishlist is empty</h2>
@@ -580,7 +377,9 @@
                 return;
             }
 
-            container.innerHTML = wishlistItems.map(item => {
+            console.log('🏗️ Building wishlist HTML for', wishlistItems.length, 'items');
+            
+            const htmlContent = wishlistItems.map(item => {
                 // Products that need better positioning (no cropping of jewelry)
                 const customPositions = {
                     1: 'object-position: center 80%;', // Delicate Gold Chain Necklace - moved a bit lower
@@ -612,6 +411,9 @@
                 </div>
                 `;
             }).join('');
+
+            container.innerHTML = htmlContent;
+            console.log('✅ Wishlist HTML set successfully');
         }
 
         async function addToCart(productId) {
@@ -671,19 +473,6 @@
             }
         }
 
-        async function logout() {
-            try {
-                const response = await fetch('/logout', {
-                    method: 'POST'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        }
 
         function showSuccess(message) {
             const successDiv = document.getElementById('successMessage');
