@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Store Menu Test</title>
+    <link rel="stylesheet" href="/styles/theme.css">
+</head>
+<body>
+    <h1>Store Menu Test</h1>
+
+    <button id="menu">☰ Hamburger</button>
+    <button onclick="testClick()">Direct Test</button>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu">
+        <a href="/store.html">Store</a>
+        <a href="/profile.html">Profile</a>
+    </nav>
+
+    <script>
+        function testClick() {
+            alert('Direct click works!');
+        }
+
+        console.log('Script loading...');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+
+            const menuBtn = document.getElementById('menu');
+            console.log('Menu button found:', !!menuBtn);
+
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function() {
+                    console.log('Menu clicked!');
+                    alert('Menu clicked!');
+
+                    const sideMenu = document.getElementById('sideMenu');
+                    const overlay = document.getElementById('menuOverlay');
+
+                    if (sideMenu && overlay) {
+                        sideMenu.classList.toggle('active');
+                        overlay.classList.toggle('active');
+                        console.log('Toggled classes');
+                    }
+                });
+                console.log('Event listener added');
+            }
+        });
+    </script>
+</body>
+</html>

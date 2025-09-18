@@ -1307,5 +1307,23 @@
     "username": "admin",
     "activityType": "login",
     "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T00:23:15.352Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T00:25:55.117Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T01:50:29.766Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
   }
 ]

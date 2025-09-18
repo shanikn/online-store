@@ -187,7 +187,10 @@
                 let html = '';
                 products.forEach(function(product){
                     const imageStyle = CUSTOM_POSITIONS[product.id] ? ' style="' + CUSTOM_POSITIONS[product.id] + '"' : '';
-                    html += '<div class="products-card">';
+                    html += '<div class="products-card" data-product-id="' + product.id + '">';
+                    html += '<button class="wishlist-btn wishlist-btn-top" onclick="addToWishlist(' + product.id + ', this)" title="Add to Wishlist" data-product-id="' + product.id + '">';
+                    html += '<i class="fa-regular fa-heart"></i>';
+                    html += '</button>';
                     html += '<div class="product-image">';
                     if (product.image){
                         html += '<img src="' + product.image + '" alt="' + product.name + '"' + imageStyle + '>';
@@ -208,14 +211,14 @@
                     } else {
                         html += '<button class="add-to-cart-btn" onclick="addToCart(' + product.id + ')">Add to cart</button>';
                     }
-                    html += '<button class="wishlist-btn" onclick="addToWishlist(' + product.id + ', this)" title="Add to Wishlist">';
-                    html += '<i class="fa-solid fa-heart"></i>';
-                    html += '</button>';
                     html += '</div>';
                     html += '</div>';
                     html += '</div>';
                 });
                 container.innerHTML = html;
+
+                // Load wishlist status after products are displayed
+                loadWishlistStatus();
             }
 
             function initializeColumns() {
@@ -362,6 +365,49 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
+                }
+            }
+            function checkAuthAndRedirect(targetUrl) {
+                // Check if user is authenticated (using global isAuthenticated from layout.js)
+                if(typeof isAuthenticated !== 'undefined' && isAuthenticated) {
+                    window.location.href = targetUrl;
+                } else {
+                    alert('Please login to access this feature');
+                    window.location.href = '/login.html';
+                }
+            }
+
+            async function loadWishlistStatus(){
+                try{
+                    const response = await fetch('/api/wishlist');
+
+                    if(response.ok){
+                        const wishlistData = await response.json();
+
+                        // Handle both array format and object.items format
+                        const wishlistItems = Array.isArray(wishlistData) ? wishlistData : wishlistData.items;
+
+                        if(wishlistItems && wishlistItems.length > 0){
+                            // Get all product IDs in wishlist
+                            const wishlistProductIds = wishlistItems.map(item => item.productId || item.id);
+
+                            // Update heart icons for products in wishlist
+                            wishlistProductIds.forEach(productId => {
+                                const wishlistBtn = document.querySelector(`[data-product-id="${productId}"]`);
+                                if(wishlistBtn){
+                                    wishlistBtn.classList.add('added');
+                                    wishlistBtn.querySelector('i').className = 'fa-solid fa-heart';
+                                    wishlistBtn.title = 'Remove from Wishlist';
+                                }
+                            });
+
+                            console.log(`Loaded wishlist status for ${wishlistProductIds.length} items`);
+                        }
+                    } else if(response.status === 401) {
+                        console.log('User not authenticated - wishlist status not loaded');
+                    }
+                } catch(error){
+                    console.error('Error loading wishlist status:', error);
                 }
             }
         </script>

@@ -8,6 +8,256 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="/styles/theme.css">
 
+    <style>
+        /* About Page Specific Styles */
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .about-hero {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 60px;
+            align-items: center;
+            margin: 60px 0 80px;
+            padding: 40px 0;
+        }
+
+        .about-hero-content {
+            max-width: 100%;
+        }
+
+        .about-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 700;
+            color: #3e342a;
+            margin: 0 0 20px;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+        }
+
+        .about-subtitle {
+            font-size: 1.2rem;
+            color: #6b5744;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .about-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(52, 41, 32, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .about-image img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(52, 41, 32, 0.2);
+        }
+
+        /* Content Sections */
+        .about-section {
+            margin: 60px 0;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-section h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #3e342a;
+            margin: 0 0 25px;
+            position: relative;
+        }
+
+        .about-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #766156, #5a4f42);
+            border-radius: 2px;
+        }
+
+        .about-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #5a4f42;
+            margin: 0 0 20px;
+        }
+
+        /* Features Grid */
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .about-feature {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(52, 41, 32, 0.1);
+            border: 1px solid rgba(162, 150, 138, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .about-feature:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(52, 41, 32, 0.15);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #766156, #5a4f42);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .about-feature h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #3e342a;
+            margin: 0 0 15px;
+        }
+
+        .about-feature p {
+            font-size: 1rem;
+            color: #6b5744;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Commitment Section */
+        .commitment {
+            background: rgba(244, 240, 234, 0.6);
+            border-radius: 25px;
+            padding: 50px 40px;
+            margin: 80px auto;
+            text-align: center;
+            max-width: 1000px;
+        }
+
+        .cta-message {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #766156, #5a4f42);
+            color: white;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode .about-title {
+            color: #f5efe6;
+        }
+
+        body.dark-mode .about-subtitle {
+            color: #c1b6a8;
+        }
+
+        body.dark-mode .about-section h2 {
+            color: #f5efe6;
+        }
+
+        body.dark-mode .about-section p {
+            color: #b8a690;
+        }
+
+        body.dark-mode .about-feature {
+            background: rgba(32, 29, 27, 0.95);
+            border-color: rgba(130, 116, 102, 0.35);
+        }
+
+        body.dark-mode .about-feature h3 {
+            color: #e8ded2;
+        }
+
+        body.dark-mode .about-feature p {
+            color: #b8a690;
+        }
+
+        body.dark-mode .commitment {
+            background: rgba(28, 25, 23, 0.8);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-hero {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .about-image img {
+                max-width: 280px;
+                height: 280px;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .about-section {
+                margin: 40px 0;
+            }
+
+            .commitment {
+                padding: 35px 25px;
+                margin: 60px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-container {
+                padding: 0 15px;
+            }
+
+            .about-image img {
+                max-width: 250px;
+                height: 250px;
+            }
+
+            .about-feature {
+                padding: 25px 20px;
+            }
+
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+
 </head>
 <body>
     <!-- header with navigation -->
@@ -38,42 +288,73 @@
     </div>
 
     <main class="page-frame">
-        <!-- Beautiful Jewelry Photo -->
-        <div class="jewelry-showcase">
-            <img src="https://i.pinimg.com/1200x/f3/c5/7b/f3c57be1299165a2b216c679189ab117.jpg" alt="Our Craftsmanship">
+        <div class="about-container">
+            <!-- Page Hero Section -->
+            <section class="about-hero">
+                <div class="about-hero-content">
+                    <h1 class="about-title">Our Craft</h1>
+                    <p class="about-subtitle">Handcrafted jewelry made with passion, precision, and years of expertise</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://i.pinimg.com/1200x/f3/c5/7b/f3c57be1299165a2b216c679189ab117.jpg" alt="Our Craftsmanship">
+                </div>
+            </section>
+
+            <!-- Story Section -->
+            <section class="about-section">
+                <h2>Welcome to ShaniknJewls</h2>
+                <p>ShaniknJewls is your premier destination for exquisite gold jewelry and accessories. Founded with a passion for craftsmanship and beauty, we specialize in creating unique gold pieces that celebrate life's most precious moments.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Our Story</h2>
+                <p>What started as a small family business has grown into a trusted name in fine gold jewelry. We believe that every piece of gold jewelry tells a story, and we're honored to be part of yours. Our exclusive focus on gold allows us to perfect our craft and offer the finest quality gold pieces.</p>
+            </section>
+
+            <!-- Features Grid -->
+            <section class="about-section">
+                <h2>What We Offer</h2>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                        <h3>Custom Design</h3>
+                        <p>Personalized jewelry tailored to your unique style and preferences.</p>
+                    </div>
+                    <div class="about-feature">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <h3>Quality Materials</h3>
+                        <p>Only the finest metals and gemstones for lasting beauty.</p>
+                    </div>
+                    <div class="about-feature">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-hammer"></i>
+                        </div>
+                        <h3>Expert Craftsmanship</h3>
+                        <p>Handcrafted by skilled artisans with years of experience.</p>
+                    </div>
+                    <div class="about-feature">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-shield-heart"></i>
+                        </div>
+                        <h3>Lifetime Service</h3>
+                        <p>Comprehensive care and maintenance for your precious pieces.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Commitment Section -->
+            <section class="about-section commitment">
+                <h2>Our Commitment</h2>
+                <p>At ShaniknJewls, we are committed to providing exceptional quality gold jewelry, outstanding customer service, and designs that exceed expectations. Every gold piece is crafted with attention to detail and made to last a lifetime. We use only the finest 14k and 18k gold to ensure lasting beauty and value.</p>
+                <div class="cta-message">
+                    <strong>Visit our store today and discover the perfect piece for you or your loved ones!</strong>
+                </div>
+            </section>
         </div>
-        
-        <h1>Our Craft</h1>
-        <h2>Welcome to ShaniknJewls</h2>
-        <p>ShaniknJewls is your premier destination for exquisite gold jewelry and accessories. Founded with a passion for craftsmanship and beauty, we specialize in creating unique gold pieces that celebrate life's most precious moments.</p>
-
-        <h2>Our Story</h2>
-        <p>What started as a small family business has grown into a trusted name in fine gold jewelry. We believe that every piece of gold jewelry tells a story, and we're honored to be part of yours. Our exclusive focus on gold allows us to perfect our craft and offer the finest quality gold pieces.</p>
-
-        <h2>What We Offer</h2>
-        <div class="features">
-            <div class="feature">
-                <h3>Custom Design</h3>
-                <p>Personalized jewelry tailored to your unique style and preferences.</p>
-            </div>
-            <div class="feature">
-                <h3>Quality Materials</h3>
-                <p>Only the finest metals and gemstones for lasting beauty.</p>
-            </div>
-            <div class="feature">
-                <h3>Expert Craftsmanship</h3>
-                <p>Handcrafted by skilled artisans with years of experience.</p>
-            </div>
-            <div class="feature">
-                <h3>Lifetime Service</h3>
-                <p>Comprehensive care and maintenance for your precious pieces.</p>
-            </div>
-        </div>
-
-        <h2>Our Commitment</h2>
-        <p>At ShaniknJewls, we are committed to providing exceptional quality gold jewelry, outstanding customer service, and designs that exceed expectations. Every gold piece is crafted with attention to detail and made to last a lifetime. We use only the finest 14k and 18k gold to ensure lasting beauty and value.</p>
-
-        <p><strong>Visit our store today and discover the perfect piece for you or your loved ones!</strong></p>
     </main>
 
     <script src="/scripts/layout.js"></script>

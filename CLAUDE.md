@@ -54,6 +54,9 @@ This is a RUNI 2025 FullStack course final project - an online gold jewelry stor
 
 ### Frontend Scripting Notes
 - Pages that load `public/scripts/layout.js` must not redeclare `let isAuthenticated`. Doing so throws a syntax error that prevents `initializeBaseLayout()` from executing, which causes empty side menus and permanent loading spinners.
+- Pages must not redefine functions that exist in `layout.js` (such as `checkAuthStatus`, `updateNavigation`, `toggleMenu`, `toggleTheme`). Duplicate function definitions will cause conflicts and prevent proper functionality.
+- All pages should use `onclick` handlers in HTML elements to call functions from `layout.js`. The layout.js handles moving buttons to floating positions and setting up proper event listeners.
+- The `initializeBaseLayout()` function must be called in the DOMContentLoaded event listener on every page that uses shared layout functionality.
 
 ## Development Commands
 

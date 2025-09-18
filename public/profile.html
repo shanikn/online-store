@@ -1,761 +1,543 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8"/>
-        <title>Profile - ShanikJewls</title>
-        <!-- Font Awesome for icons <3 -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
-        <link rel="stylesheet" href="/styles/theme.css">
-        <style>
-            body{
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                background-color: #f9f9f9;
-            }
+<head>
+    <meta charset="UTF-8"/>
+    <title>Profile - ShanikJewls</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="/styles/theme.css">
+    <style>
+        .page-frame {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px 80px;
+        }
 
-            .header{
-                background: none;
-                color: black;
-                padding: 15px;
-                border-radius: 8px;
-                margin-bottom: 20px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-            }
+        .profile-hero {
+            text-align: center;
+            margin: 60px 0 80px;
+        }
 
-            .header h1{
-                margin: 0;
-            }
+        .profile-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 700;
+            color: #3e342a;
+            margin: 0 0 20px;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+        }
 
-            /* menu button */
-            .menu{
-                position: fixed;
-                top: 35px;
-                left: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 44px;
-                height: 44px;
-                cursor: pointer;
-                background: rgba(255, 255, 255, 0.8);
-                border: none;
-                border-radius: 12px;
-                box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-                backdrop-filter: blur(6px);
-                z-index: 1002;
-                transition: background 0.2s ease, box-shadow 0.2s ease;
-            }
+        .profile-subtitle {
+            font-size: 1.2rem;
+            color: #6b5744;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 700px;
+        }
 
-            .menu i{
-                font-size: 20px;
-                color: #1d1d1d;
-                pointer-events: none;
-            }
+        .profile-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
+            border: 1px solid rgba(162, 150, 138, 0.2);
+            margin-bottom: 40px;
+        }
 
-            .menu:hover{
-                background: rgba(255, 255, 255, 0.95);
-                box-shadow: 0 12px 22px rgba(0,0,0,0.2);
-            }
+        .profile-section h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #5a4f42;
+            margin: 0 0 25px;
+            position: relative;
+            padding-bottom: 12px;
+        }
 
-            /* side menu */
-            .side-menu{
-                position: fixed;
-                top: 0;
-                left: -300px;
-                width: 280px;
-                height: 100vh;
-                background: green;
-                transition: left 0.3s ease;
-                z-index: 1000;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-                overflow-y: auto;
-                padding-top: 80px;
-            }
+        .profile-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #766156, #5a4f42);
+            border-radius: 2px;
+        }
 
-            .side-menu.active{
-                left: 0;
-            }
+        .profile-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
 
-            .side-menu a{
-                display: block;
-                color: white;
-                text-decoration: none;
-                padding: 15px 20px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                transition: background 0.3s;
-            }
+        .info-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #766156;
+        }
 
-            .side-menu a:hover{
-                background: rgba(255, 255, 255, 0.2);
-            }
-
-            .side-menu a i, .side-menu button i{
-                margin-right: 10px;
-                width: 16px;
-                text-align: center;
-            }
-
-            .side-menu button{
-                width: calc(100% - 40px);
-                margin: 15px 20px;
-                background: #d32f2f;
-                color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background 0.3s;
-            }
-
-            .side-menu button:hover{
-                background: #b71c1c;
-            }
-
-            /* overlay */
-            .menu-overlay{
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: none;
-                z-index: 999;
-            }
-
-            .menu-overlay.active{
-                display: block;
-            }
-
-            .container{
-                max-width: 800px;
-                margin: 0 auto;
-            }
-
-            .profile-section{
-                background: white;
-                padding: 30px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                margin-bottom: 30px;
-            }
-
-            .profile-section h2{
-                color: #333;
-                margin-bottom: 20px;
-                border-bottom: 2px solid #4CAF50;
-                padding-bottom: 10px;
-            }
-
-            .profile-info{
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-                margin-bottom: 30px;
-            }
-
-            .info-item{
-                padding: 15px;
-                background: #f8f9fa;
-                border-radius: 6px;
-                border-left: 4px solid #4CAF50;
-            }
-
-            .info-item label{
-                font-weight: bold;
-                color: #666;
-                display: block;
-                margin-bottom: 5px;
-            }
-
-            .info-item span{
-                color: #333;
-                font-size: 16px;
-            }
-
-            .edit-form{
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                margin-bottom: 20px;
-            }
-
-            .form-group{
-                display: flex;
-                flex-direction: column;
-            }
-
-            .form-group label{
-                font-weight: bold;
-                color: #333;
-                margin-bottom: 8px;
-            }
-
-            .form-group input{
-                padding: 12px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 16px;
-            }
-
-            .form-group input:focus{
-                border-color: #4CAF50;
-                outline: none;
-            }
-
-            .btn{
-                background: #4CAF50;
-                color: white;
-                padding: 12px 30px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background 0.3s;
-            }
-
-            .btn:hover{
-                background: #45a049;
-            }
-
-            .btn-secondary{
-                background: #6c757d;
-                margin-left: 10px;
-            }
-
-            .btn-secondary:hover{
-                background: #5a6268;
-            }
-
-            .purchase-item{
-                background: #f8f9fa;
-                padding: 20px;
-                border-radius: 6px;
-                margin-bottom: 15px;
-                border-left: 4px solid #17a2b8;
-            }
-
-            .purchase-header{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 15px;
-            }
-
-            .purchase-id{
-                font-weight: bold;
-                color: #333;
-            }
-
-            .purchase-date{
-                color: #666;
-                font-size: 14px;
-            }
-
-            .purchase-total{
-                font-weight: bold;
-                color: #28a745;
-                font-size: 18px;
-            }
-
-            .purchase-items{
-                margin-top: 10px;
-            }
-
-            .item{
-                padding: 8px 0;
-                border-bottom: 1px solid #eee;
-                display: flex;
-                justify-content: space-between;
-            }
-
-            .item:last-child{
-                border-bottom: none;
-            }
-
-            .success{
-                background: #d4edda;
-                color: #155724;
-                padding: 12px;
-                border-radius: 4px;
-                margin-bottom: 20px;
-                border: 1px solid #c3e6cb;
-                display: none;
-            }
-
-            .error{
-                background: #f8d7da;
-                color: #721c24;
-                padding: 12px;
-                border-radius: 4px;
-                margin-bottom: 20px;
-                border: 1px solid #f5c6cb;
-                display: none;
-            }
-
-            .loading{
-                text-align: center;
-                padding: 50px;
-                color: #666;
-            }
-
-            @media (max-width: 768px) {
-                .profile-info, .edit-form{
-                    grid-template-columns: 1fr;
-                }
-            }
-
-        /* theme toggle button */
-        .theme-toggle{
-            position: fixed;
-            top: 35px;
-            right: 20px;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
-            border-radius: 20px;
-            width: 100px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
+        .info-item label {
             font-weight: bold;
-            transition: all 0.3s ease;
-            z-index: 1002;
+            color: #666;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-item span {
             color: #333;
-        }
-
-        .theme-toggle:hover{
-            background: #e0e0e0;
-            transform: scale(1.05);
-        }
-
-        .theme-toggle #themeIcon{
             font-size: 16px;
         }
 
-        /* dark mode styles */
-        body.dark-mode{
-            background-color: #1a1a1a;
-            color: #e0e0e0;
+        .edit-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        body.dark-mode .profile-container,
-        body.dark-mode .section,
-        body.dark-mode .profile-info,
-        body.dark-mode .purchase-history{
-            background: #2d2d2d;
-            color: #e0e0e0;
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
 
-        body.dark-mode .item{
-            border-bottom-color: #444;
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
         }
 
-        body.dark-mode .form-group input,
-        body.dark-mode .form-group textarea{
-            background: #1a1a1a;
-            border-color: #555;
-            color: #e0e0e0;
+        .form-group input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
         }
 
-        body.dark-mode .theme-toggle{
-            background: #2d2d2d;
-            border-color: #555;
-            color: #e0e0e0;
+        .form-group input:focus {
+            border-color: #766156;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(118, 97, 86, 0.1);
         }
 
-        body.dark-mode .theme-toggle:hover{
-            background: #3d3d3d;
+        .btn {
+            background: linear-gradient(135deg, #766156, #5a4f42);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        body.dark-mode .side-menu{
-            background: #2d2d2d;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(118, 97, 86, 0.3);
         }
 
-        body.dark-mode .menu i{
-            background: white;
+        .btn-secondary {
+            background: linear-gradient(135deg, #9b8a7f, #877a70);
+            margin-left: 15px;
         }
 
-        body.dark-mode label{
-            color: #e0e0e0;
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(155, 138, 127, 0.3);
         }
 
-        body.dark-mode p{
-            color: #e0e0e0;
+        .purchase-item {
+            background: rgba(244, 240, 234, 0.6);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #766156;
+            box-shadow: 0 8px 20px rgba(118, 97, 86, 0.08);
         }
 
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
-            color: #e0e0e0;
+        .purchase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        body.dark-mode span, body.dark-mode div{
-            color: #e0e0e0;
+        .purchase-id {
+            font-weight: bold;
+            color: #333;
         }
 
-        body.dark-mode .profile-section{
-            background: #2d2d2d;
-            color: #e0e0e0;
+        .purchase-date {
+            color: #666;
+            font-size: 14px;
         }
 
-        body.dark-mode .purchase-item{
-            background: #1a1a1a;
-            color: #e0e0e0;
+        .purchase-total {
+            font-weight: bold;
+            color: #766156;
+            font-size: 18px;
         }
 
-        body.dark-mode .info-item{
-            background: #1a1a1a;
-            border-left-color: #4CAF50;
+        .purchase-items {
+            margin-top: 10px;
         }
 
-        body.dark-mode .info-item label{
-            color: #ccc;
+        .item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
         }
 
-        body.dark-mode .info-item span{
-            color: #e0e0e0;
+        .item:last-child {
+            border-bottom: none;
         }
 
-        body.dark-mode .purchase-date{
-            color: #ccc;
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
         }
 
-        body.dark-mode .purchase-id{
-            color: #e0e0e0;
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            display: none;
         }
 
-        body.dark-mode .purchase-total{
-            color: #4CAF50;
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
         }
 
-        body.dark-mode .loading{
-            color: #ccc;
+        @media (max-width: 768px) {
+            .profile-info, .edit-form {
+                grid-template-columns: 1fr;
+            }
         }
 
-        body.dark-mode .btn:hover{
-            background: #45a049;
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1612, #201d19);
+            color: #e8ded2;
         }
 
-        body.dark-mode .btn-secondary:hover{
-            background: #5a6268;
+        body.dark-mode .profile-title {
+            color: #f5efe6;
         }
-        </style>
-    </head>
-    <body>
-        <!-- header with menu -->
+
+        body.dark-mode .profile-subtitle {
+            color: #c1b6a8;
+        }
+
+        body.dark-mode .profile-section {
+            background: rgba(32, 29, 27, 0.95);
+            border-color: rgba(130, 116, 102, 0.35);
+        }
+
+        body.dark-mode .profile-section h2 {
+            color: #e8ded2;
+        }
+
+        body.dark-mode .profile-section h2::after {
+            background: linear-gradient(90deg, #938276, #82746a);
+        }
+
+        body.dark-mode .form-group input {
+            background: rgba(20, 18, 16, 0.9);
+            border-color: rgba(130, 116, 102, 0.3);
+            color: #e8ded2;
+        }
+
+        body.dark-mode .form-group input:focus {
+            background: rgba(20, 18, 16, 1);
+            border-color: #938276;
+            box-shadow: 0 0 0 3px rgba(147, 130, 118, 0.2);
+        }
+
+        body.dark-mode .purchase-item {
+            background: rgba(20, 18, 16, 0.8);
+            border-left-color: #938276;
+        }
+
+        body.dark-mode .info-item {
+            background: rgba(20, 18, 16, 0.8);
+            border-left-color: #938276;
+        }
+
+        body.dark-mode .info-item label {
+            color: #e8ded2;
+        }
+
+        body.dark-mode .info-item span {
+            color: #c1b6a8;
+        }
+
+        body.dark-mode .form-group label {
+            color: #e8ded2;
+        }
+
+        body.dark-mode .purchase-date {
+            color: #c1b6a8;
+        }
+
+        body.dark-mode .purchase-id {
+            color: #e8ded2;
+        }
+
+        body.dark-mode .purchase-total {
+            color: #b8866a;
+        }
+
+        body.dark-mode .loading {
+            color: #c1b6a8;
+        }
+
+        body.dark-mode .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(147, 130, 118, 0.4);
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(155, 138, 127, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-shell">
+        <div class="announcement-bar">
+            <span class="announcement-pill"><i class="fa-solid fa-user"></i> Your Profile</span>
+            <span>Manage your account settings and view your purchase history.</span>
+            <button type="button" class="announcement-action" onclick="scrollToHistory()">View Purchase History <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
         <div class="header">
-            <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
-            <h1>ShanikJewls - Profile</h1>
-            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
-                <span id="themeIcon">ðŸŒ™</span>
-                <span id="themeText">OFF</span>
-            </button>
+            <button class="menu" id="menu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+            <div class="brand">
+                <h1>ShanikJewls</h1>
+                <span class="brand-tagline">Handcrafted Jewelry</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">OFF</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu"></nav>
+
+    <main class="page-frame">
+        <div class="profile-hero">
+            <h1 class="profile-title">Your Profile</h1>
+            <p class="profile-subtitle">Manage your account settings and view your jewelry collection history.</p>
         </div>
 
-        <!-- side menu -->
-        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-        <div class="side-menu" id="sideMenu">
-            <!-- Dynamic navigation will be populated by JavaScript -->
-        </div>
+        <div id="successMessage" class="success"></div>
+        <div id="errorMessage" class="error"></div>
 
-        <div class="container">
-            <div id="successMessage" class="success"></div>
-            <div id="errorMessage" class="error"></div>
-
-            <!-- Profile Information Section -->
-            <div class="profile-section">
-                <h2>Account Information</h2>
-                <div class="profile-info">
-                    <div class="info-item">
-                        <label>Username:</label>
-                        <span id="currentUsername">Loading...</span>
-                    </div>
-                    <div class="info-item">
-                        <label>Email:</label>
-                        <span id="currentEmail">Loading...</span>
-                    </div>
-                    <div class="info-item">
-                        <label>Role:</label>
-                        <span id="currentRole">Loading...</span>
-                    </div>
-                    <div class="info-item">
-                        <label>Member Since:</label>
-                        <span id="memberSince">Loading...</span>
-                    </div>
+        <div class="profile-section">
+            <h2>Account Information</h2>
+            <div class="profile-info">
+                <div class="info-item">
+                    <label>Username:</label>
+                    <span id="currentUsername">Loading...</span>
                 </div>
-            </div>
-
-            <!-- Edit Profile Section -->
-            <div class="profile-section">
-                <h2>Edit Profile</h2>
-                <form id="profileForm">
-                    <div class="edit-form">
-                        <div class="form-group">
-                            <label for="newUsername">New Username:</label>
-                            <input type="text" id="newUsername" name="newUsername" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="newEmail">Email Address:</label>
-                            <input type="email" id="newEmail" name="newEmail" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn">Update Profile</button>
-                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
-                </form>
-            </div>
-
-            <!-- Purchase History Section -->
-            <div class="profile-section">
-                <h2>Order History</h2>
-                <div id="purchaseHistory">
-                    <div class="loading">Loading purchase history...</div>
+                <div class="info-item">
+                    <label>Email:</label>
+                    <span id="currentEmail">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <label>Role:</label>
+                    <span id="currentRole">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <label>Member Since:</label>
+                    <span id="memberSince">Loading...</span>
                 </div>
             </div>
         </div>
 
-        <script>
-            let currentUser = null;
-            let isAuthenticated = false;
-
-            document.addEventListener('DOMContentLoaded', function() {
-                checkAuthStatus();
-                loadUserProfile();
-                loadPurchaseHistory();
-                initializeTheme();
-            });
-
-            // Dark mode functionality
-            function initializeTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                const themeIcon = document.getElementById('themeIcon');
-                const themeText = document.getElementById('themeText');
-                if (savedTheme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    themeIcon.textContent = 'ðŸŒ™';
-                    themeText.textContent = 'ON';
-                } else {
-                    themeIcon.textContent = 'ðŸŒ™';
-                    themeText.textContent = 'OFF';
-                }
-            }
-
-            function toggleTheme() {
-                const body = document.body;
-                const themeIcon = document.getElementById('themeIcon');
-                const themeText = document.getElementById('themeText');
-                body.classList.toggle('dark-mode');
-                if (body.classList.contains('dark-mode')) {
-                    localStorage.setItem('theme', 'dark');
-                    themeIcon.textContent = 'ðŸŒ™';
-                    themeText.textContent = 'ON';
-                } else {
-                    localStorage.setItem('theme', 'light');
-                    themeIcon.textContent = 'ðŸŒ™';
-                    themeText.textContent = 'OFF';
-                }
-            }
-
-            function toggleMenu(){
-                const menu = document.getElementById('menu');
-                const sideMenu = document.getElementById('sideMenu');
-                const overlay = document.getElementById('menuOverlay');
-
-                menu.classList.toggle('active');
-                sideMenu.classList.toggle('active');
-                overlay.classList.toggle('active');
-            }
-
-            async function checkAuthStatus(){
-                try{
-                    const response = await fetch('/api/users/current');
-                    isAuthenticated = response.ok;
-                    updateNavigation();
-                } catch(error){
-                    isAuthenticated = false;
-                    updateNavigation();
-                }
-            }
-
-            function updateNavigation(){
-                const sideMenu = document.getElementById('sideMenu');
-
-                if(isAuthenticated){
-                    sideMenu.innerHTML = `
-                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                        <a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                        <a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                        <a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>
-                        <a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>
-                        <button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
-                    `;
-                } else {
-                    sideMenu.innerHTML = `
-                        <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                        <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                        <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                        <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                        <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                        <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                        <a href="/login.html"><i class="fa-solid fa-user"></i> Login</a>
-                        <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-                    `;
-                }
-            }
-
-            async function loadUserProfile(){
-                try{
-                    // TODO: what do you mean 'for now'? do i need to change it before submitting the project?
-                    // get current user info from cookie (we'll need to add an endpoint for this)
-                    // for now, we'll get it from the username in cookie
-                    const users = await fetch('/api/users/current');
-                    if(!users.ok) throw new Error('Failed to get user info');
-
-                    const userData = await users.json();
-                    currentUser = userData;
-
-                    document.getElementById('currentUsername').textContent = userData.username;
-                    document.getElementById('currentEmail').textContent = userData.email || 'Not set';
-                    document.getElementById('currentRole').textContent = userData.role || 'user';
-                    document.getElementById('memberSince').textContent = new Date(userData.createdAt).toLocaleDateString();
-
-                    // pre-fill the edit form
-                    document.getElementById('newUsername').value = userData.username;
-                    document.getElementById('newEmail').value = userData.email || '';
-                }
-                catch(error){
-                    console.error('Error loading profile:', error);
-                    showError('Failed to load profile information');
-                }
-            }
-
-            async function loadPurchaseHistory(){
-                try{
-                    const response = await fetch('/api/purchases');
-                    if(!response.ok) throw new Error('Failed to load purchases');
-
-                    const purchases = await response.json();
-                    displayPurchases(purchases);
-                }
-                catch(error){
-                    console.error('Error loading purchases:', error);
-                    document.getElementById('purchaseHistory').innerHTML =
-                        '<div class="error">Failed to load purchase history</div>';
-                }
-            }
-
-            function displayPurchases(purchases){
-                const container = document.getElementById('purchaseHistory');
-
-                if(purchases.length === 0){
-                    container.innerHTML = '<p>No purchases yet. <a href="/store.html">Start shopping!</a></p>';
-                    return;
-                }
-
-                container.innerHTML = purchases.map(purchase => `
-                    <div class="purchase-item">
-                        <div class="purchase-header">
-                            <div class="purchase-id">Order #${purchase.id}</div>
-                            <div class="purchase-date">${new Date(purchase.timeStamp).toLocaleDateString()}</div>
-                            <div class="purchase-total">â‚ª${purchase.total.toFixed(2)}</div>
-                        </div>
-                        <div class="purchase-items">
-                            ${purchase.items.map(item => `
-                                <div class="item">
-                                    <span>${item.name} x${item.quantity}</span>
-                                    <span>â‚ª${item.itemTotal.toFixed(2)}</span>
-                                </div>
-                            `).join('')}
-                        </div>
+        <div class="profile-section">
+            <h2>Edit Profile</h2>
+            <form id="profileForm">
+                <div class="edit-form">
+                    <div class="form-group">
+                        <label for="newUsername">New Username:</label>
+                        <input type="text" id="newUsername" name="newUsername" required>
                     </div>
-                `).join('');
+                    <div class="form-group">
+                        <label for="newEmail">Email Address:</label>
+                        <input type="email" id="newEmail" name="newEmail" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Update Profile</button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+            </form>
+        </div>
+
+        <div class="profile-section">
+            <h2>Order History</h2>
+            <div id="purchaseHistory">
+                <div class="loading">Loading purchase history...</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let profileCurrentUser = null;
+
+        function scrollToHistory() {
+            const historySection = document.querySelector('#purchaseHistory');
+            if (historySection) {
+                historySection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        async function loadUserProfile() {
+            try {
+                const response = await fetch('/api/users/current');
+                if (!response.ok) throw new Error('Failed to get user info');
+
+                const userData = await response.json();
+                profileCurrentUser = userData;
+
+                document.getElementById('currentUsername').textContent = userData.username;
+                document.getElementById('currentEmail').textContent = userData.email || 'Not set';
+                document.getElementById('currentRole').textContent = userData.role || 'user';
+                document.getElementById('memberSince').textContent = new Date(userData.createdAt).toLocaleDateString();
+
+                document.getElementById('newUsername').value = userData.username;
+                document.getElementById('newEmail').value = userData.email || '';
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showError('Failed to load profile information');
+            }
+        }
+
+        async function loadPurchaseHistory() {
+            try {
+                const response = await fetch('/api/purchases');
+                if (!response.ok) throw new Error('Failed to load purchases');
+
+                const purchases = await response.json();
+                displayPurchases(purchases);
+            } catch (error) {
+                console.error('Error loading purchases:', error);
+                document.getElementById('purchaseHistory').innerHTML =
+                    '<div class="error">Failed to load purchase history</div>';
+            }
+        }
+
+        function displayPurchases(purchases) {
+            const container = document.getElementById('purchaseHistory');
+
+            if (purchases.length === 0) {
+                container.innerHTML = '<p>No purchases yet. <a href="/store.html">Start shopping!</a></p>';
+                return;
             }
 
-            document.getElementById('profileForm').addEventListener('submit', async function(e){
-                e.preventDefault();
+            container.innerHTML = purchases.map(purchase => `
+                <div class="purchase-item">
+                    <div class="purchase-header">
+                        <div class="purchase-id">Order #${purchase.id}</div>
+                        <div class="purchase-date">${new Date(purchase.timeStamp).toLocaleDateString()}</div>
+                        <div class="purchase-total">₪${purchase.total.toFixed(2)}</div>
+                    </div>
+                    <div class="purchase-items">
+                        ${purchase.items.map(item => `
+                            <div class="item">
+                                <span>${item.name} x${item.quantity}</span>
+                                <span>₪${item.itemTotal.toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
 
-                const newUsername = document.getElementById('newUsername').value;
-                const newEmail = document.getElementById('newEmail').value;
-
-                try{
-                    const response = await fetch('/api/profile', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            newUsername: newUsername,
-                            email: newEmail
-                        })
-                    });
-
-                    const data = await response.json();
-
-                    if(data.success){
-                        showSuccess('Profile updated successfully!');
-                        // reload profile info
-                        loadUserProfile();
-                    } else {
-                        showError(data.message || 'Failed to update profile');
-                    }
-                }
-                catch(error){
-                    console.error('Error updating profile:', error);
-                    showError('Connection error. Please try again.');
-                }
-            });
-
-            function resetForm(){
-                if(currentUser){
-                    document.getElementById('newUsername').value = currentUser.username;
-                    document.getElementById('newEmail').value = currentUser.email || '';
-                }
+        function resetForm() {
+            if (profileCurrentUser) {
+                document.getElementById('newUsername').value = profileCurrentUser.username;
+                document.getElementById('newEmail').value = profileCurrentUser.email || '';
             }
+        }
 
-            async function logout(){
-                try{
-                    const response = await fetch('/logout', {
-                        method: 'POST'
-                    });
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
 
-                    const data = await response.json();
-                    if(data.success){
-                        window.location.reload();
-                    }
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const newUsername = document.getElementById('newUsername').value;
+            const newEmail = document.getElementById('newEmail').value;
+
+            try {
+                const response = await fetch('/api/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        newUsername: newUsername,
+                        email: newEmail
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess('Profile updated successfully!');
+                    loadUserProfile();
+                } else {
+                    showError(data.message || 'Failed to update profile');
                 }
-                catch(error){
-                    console.error('Logout error:', error);
-                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showError('Connection error. Please try again.');
             }
+        });
 
-            function showSuccess(message){
-                const successDiv = document.getElementById('successMessage');
-                successDiv.textContent = message;
-                successDiv.style.display = 'block';
-                setTimeout(() => {
-                    successDiv.style.display = 'none';
-                }, 3000);
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBaseLayout();
+            loadUserProfile();
+            loadPurchaseHistory();
+        });
+    </script>
 
-            function showError(message){
-                const errorDiv = document.getElementById('errorMessage');
-                errorDiv.textContent = message;
-                errorDiv.style.display = 'block';
-                setTimeout(() => {
-                    errorDiv.style.display = 'none';
-                }, 5000);
-            }
-        </script>
-    </body>
+    <script src="/scripts/layout.js"></script>
+</body>
 </html>
-

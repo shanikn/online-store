@@ -6,7 +6,7 @@
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
-       <!-- using the theme.css file i created -->
+        <!-- using the theme.css file i created -->
         <link rel="stylesheet" href="/styles/theme.css">
     </head>
     <body>
@@ -17,14 +17,15 @@
                 <span>Complimentary express delivery on every order.</span>
                 <button type="button" class="announcement-action" onclick="scrollToProducts()">Shop New Arrivals <i class="fa-solid fa-arrow-right"></i></button>
             </div>
+
             <div class="header">
-                <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+                <button class="menu" id="menu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
                 <div class="brand">
                     <h1>ShanikJewls</h1>
                     <span class="brand-tagline">Handcrafted Jewelry</span>
                 </div>
                 <div class="header-actions">
-                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
                         <span id="themeIcon">🌙</span>
                         <span id="themeText">OFF</span>
                     </button>
@@ -33,7 +34,7 @@
         </div>
 
         <!-- Side menu -->
-        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        <div class="menu-overlay" id="menuOverlay"></div>
         <nav class="side-menu" id="sideMenu">
             <!-- Dynamic navigation will be populated by JavaScript -->
         </nav>
@@ -43,16 +44,30 @@
             <section class="toolbar">
                 <div class="toolbar-card">
                     <div class="search-controls">
-                        <input type="text" id="search" placeholder="Search jewelry">
+                        <input type="text" id="search" placeholder="Search jewelry" onkeyup="handleSearchInput(event)">
                         <button class="search-btn" onclick="searchProducts()" aria-label="Search">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
                         </button>
+                        <button class="clear-btn" onclick="clearSearch()" aria-label="Clear search" style="display: none;">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
                         <div class="search-dropdown" id="searchDropdown">
                             <!-- Search suggestions will be populated here -->
                         </div>
+                    </div>
+                    <!-- Cart and wishlist buttons -->
+                    <div class="toolbar-icons">
+                        <a href="#" onclick="checkAuthAndRedirect('/wishlist.html'); return false;" class="icon-btn">
+                            <i class="fas fa-heart"></i>
+                            <span class="badge" id="wishlist-count"></span>
+                        </a>
+                        <a href="#" onclick="checkAuthAndRedirect('/cart.html'); return false;" class="icon-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge" id="cart-count"></span>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -184,8 +199,31 @@
                 </div>
             </section>
 
+            <h1 id="all-items" class="items-title">All Items</h1>
+
             <div id="loading" class="loading">Loading products...</div>
+
             <div id="collectionToolbar" class="collection-toolbar">
+                <div class="filter-controls">
+                    <label for="filterType"><i class="fa-solid fa-filter"></i> Filter:</label>
+                    <select id="filterType" onchange="applyFilters()">
+                        <option value="">All Types</option>
+                        <option value="earrings">Earrings</option>
+                        <option value="bracelets">Bracelets</option>
+                        <option value="necklaces">Necklaces</option>
+                        <option value="rings">Rings</option>
+                        <option value="watches">Watches</option>
+                    </select>
+                </div>
+                <div class="filter-controls">
+                    <label for="sortOption"><i class="fa-solid fa-sort"></i> Sort:</label>
+                    <select id="sortOption" onchange="applySort()">
+                        <option value="price-asc" selected>Price: Ascending</option>
+                        <option value="price-desc">Price: Descending</option>
+                        <option value="name-asc">Name: A-Z</option>
+                    </select>
+                </div>
+
                 <div class="column-selector">
                     <label for="columnSelect">Columns:</label>
                     <select id="columnSelect" onchange="changeColumns()">
@@ -195,6 +233,7 @@
                     </select>
                 </div>
             </div>
+
             <div id="productsContainer" class="products-grid"></div>
         </main>
 
@@ -254,6 +293,38 @@
         <script>
             let allProducts= [];
 
+            function smoothSwapProducts(newHTML) {
+                const container = document.getElementById('productsContainer');
+                if (!container) return;
+
+                // pre-state
+                container.style.willChange = 'opacity, transform';
+                container.style.transition = 'none';
+                container.style.opacity = '0';
+                container.style.transform = 'scale(0.98)';
+
+                // swap + animate in next frame
+                requestAnimationFrame(() => {
+                    container.innerHTML = newHTML;
+
+                    // force reflow so the transition starts
+                    void container.offsetWidth;
+
+                    container.style.transition = 'opacity .6s ease, transform .6s ease';
+                    container.style.opacity = '1';
+                    container.style.transform = 'scale(1)';
+
+                    // cleanup
+                    setTimeout(() => {
+                    container.style.transition = '';
+                    container.style.willChange = '';
+                    }, 300);
+                });
+            }
+
+
+            let filteredProducts= [];
+
             document.addEventListener('DOMContentLoaded', function() {
                 initializeBaseLayout();
                 loadProducts();
@@ -267,7 +338,12 @@
                     }
 
                     allProducts= await response.json();
-                    displayProducts(allProducts);
+                    filteredProducts = [...allProducts];
+                    initializeFilterControls();
+                    applySort();
+
+                    // Load wishlist status after products are displayed
+                    setTimeout(loadWishlistStatus, 100);
                 }
                 catch(error){
                     console.error('Error loading products: ', error);
@@ -278,6 +354,48 @@
                 }
             }
 
+            function initializeFilterControls(){
+                const filterSelect = document.getElementById('filterType');
+                if(filterSelect){
+                    filterSelect.value = '';
+                }
+                const sortSelect = document.getElementById('sortOption');
+                if(sortSelect){
+                    sortSelect.value = 'price-asc';
+                }
+            }
+
+            function applyFilters(){
+                if(!allProducts.length){
+                    return;
+                }
+                const filterSelect = document.getElementById('filterType');
+                const type = filterSelect ? filterSelect.value : '';
+                const normalizedType = type ? type.toLowerCase() : '';
+                filteredProducts = normalizedType ? allProducts.filter(product => (product.type || '').toLowerCase() === normalizedType) : [...allProducts];
+                applySort();
+            }
+
+            function applySort(){
+                if(!filteredProducts.length && !allProducts.length){
+                    return;
+                }
+                const sortSelect = document.getElementById('sortOption');
+                const option = sortSelect ? sortSelect.value : 'price-asc';
+                const productsToRender = [...(filteredProducts.length ? filteredProducts : allProducts)];
+
+                if(option === 'price-desc'){
+                    productsToRender.sort((a, b) => b.price - a.price);
+                } else if(option === 'name-asc'){
+                    productsToRender.sort((a, b) => a.name.localeCompare(b.name));
+                } else {
+                    productsToRender.sort((a, b) => a.price - b.price);
+                }
+
+                filteredProducts = productsToRender;
+                displayProducts(filteredProducts);
+            }
+
             function displayProducts(products){
                 const container= document.getElementById('productsContainer');
 
@@ -286,26 +404,28 @@
                     return;
                 }
 
-                container.innerHTML= products.map(product=> {
-                    // Products that need better positioning (no cropping of jewelry)
+                const newHTML= products.map(product=> {
                     const customPositions = {
                         1: 'object-position: center 80%;', // Delicate Gold Chain Necklace - moved a bit lower
                         2: 'object-position: center 80%;', // Minimalist Gold Hoop Earrings - moved a lot lower
                         5: 'object-position: center 15%;', // Layered Chain Necklace Set - show necklaces
                         9: 'object-position: center 70%;', // Minimalist Gold Ring Set - moved a bit lower
-                        12: 'object-position: center 60%;', // Gold Chain Bracelet - moved a bit lower
-                        13: 'object-position: center 30%;', // Twisted Gold Ring - moved a bit higher
-                        15: 'object-position: center 40%;', // Gold Vintage Ring - moved a bit higher
-                        16: 'object-position: center 60%;', // Radiant Diamond Wedding Band - highlight diamonds
-                        17: 'object-position: center 55%;', // Classic 3-Stone Engagement Ring - focus on stones
-                        18: 'object-position: center 50%;' // Sculpted Gold Wedding Set - balanced view
+                        12: 'object-position: center 60%;',
+                        13: 'object-position: center 30%;',
+                        15: 'object-position: center 40%;',
+                        16: 'object-position: center 60%;',
+                        17: 'object-position: center 55%;',
+                        18: 'object-position: center 50%;'
                     };
                     
                     const imageStyle = customPositions[product.id] ? 
                         `style="${customPositions[product.id]}"` : '';
                     
                     return `
-                        <div class="products-card">
+                        <div class="products-card" data-product-id="${product.id}">
+                            <button class="wishlist-btn wishlist-btn-top" onclick="addToWishlist(${product.id}, this)" title="Add to Wishlist" data-product-id="${product.id}">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
                             <div class="product-image">
                                 ${product.image ? `<img src="${product.image}" alt="${product.name}" ${imageStyle}>` : 'No image available'}
                             </div>
@@ -319,18 +439,24 @@
                                         `<button class="add-to-cart-btn" onclick="openCustomizationModal(${product.id})">Customize & Add</button>` :
                                         `<button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to cart</button>`
                                     }
-                                    <button class="wishlist-btn" onclick="addToWishlist(${product.id}, this)" title="Add to Wishlist">
-                                        <i class="fa-solid fa-heart"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
                     `;
                 }).join('');
+                smoothSwapProducts(newHTML);
+
+                // Load wishlist status after products are displayed
+                loadWishlistStatus();
             }
 
             function showAllProducts(){
-                displayProducts(allProducts);
+                const filterSelect = document.getElementById('filterType');
+                if(filterSelect){
+                    filterSelect.value = '';
+                }
+                filteredProducts = [...allProducts];
+                applySort();
             }
 
             async function addToCart(productId){
@@ -354,6 +480,10 @@
 
                     if(data.success){
                         showSuccess('Item added to cart!');
+                        // Update cart count
+                        if(typeof updateCartAndWishlistCounts === 'function'){
+                            updateCartAndWishlistCounts();
+                        }
                     }
                     else{
                         showError('Failed to add item to cart');
@@ -366,44 +496,121 @@
             }
 
             async function addToWishlist(productId, buttonElement){
+                // Check authentication first
+                if(typeof isAuthenticated !== 'undefined' && !isAuthenticated) {
+                    alert('Please login to manage your wishlist');
+                    window.location.href = '/login.html';
+                    return;
+                }
+
                 try{
-                    const response= await fetch('/api/wishlist/add', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ productId: productId })
-                    });
+                    // Check if item is already in wishlist
+                    const isInWishlist = buttonElement.classList.contains('added');
 
-                    // If user is not authenticated, redirect to login
-                    if(response.status === 401 || response.redirected && response.url.includes('login')){
-                        alert('Please login to add items to your wishlist');
-                        window.location.href = '/login.html';
-                        return;
-                    }
+                    if(isInWishlist) {
+                        // Remove from wishlist
+                        const response = await fetch('/api/wishlist/remove', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({productId: productId})
+                        });
 
-                    const data= await response.json();
-
-                    if(data.success){
-                        // Add visual feedback
-                        if(buttonElement){
-                            buttonElement.classList.add('added');
-
-                            // Remove the added class after animation
-                            setTimeout(() => {
-                                buttonElement.classList.remove('added');
-                            }, 600);
+                        // If user is not authenticated, redirect to login
+                        if(response.status === 401 || response.redirected && response.url.includes('login')){
+                            alert('Please login to manage your wishlist');
+                            window.location.href = '/login.html';
+                            return;
                         }
 
-                        showWishlistSuccess('Item added to wishlist! ❤️');
-                    }
-                    else{
-                        showError('Failed to add item to wishlist');
+                        const data = await response.json();
+
+                        if(data.success){
+                            buttonElement.classList.remove('added');
+                            buttonElement.querySelector('i').className = 'fa-regular fa-heart';
+                            buttonElement.title = 'Add to Wishlist';
+                            showWishlistSuccess('Removed from wishlist');
+                        } else {
+                            showError('Failed to remove from wishlist');
+                        }
+                    } else {
+                        // Add to wishlist
+                        const response= await fetch('/api/wishlist/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ productId: productId })
+                        });
+
+                        // If user is not authenticated, redirect to login
+                        if(response.status === 401 || response.redirected && response.url.includes('login')){
+                            alert('Please login to add items to your wishlist');
+                            window.location.href = '/login.html';
+                            return;
+                        }
+
+                        const data= await response.json();
+
+                        if(data.success){
+                            buttonElement.classList.add('added');
+                            buttonElement.querySelector('i').className = 'fa-solid fa-heart';
+                            buttonElement.title = 'Remove from Wishlist';
+                            showWishlistSuccess('Item added to wishlist! ❤️');
+                        }
+                        else{
+                            showError('Failed to add item to wishlist');
+                        }
                     }
                 }
                 catch(error){
-                    console.error('Error adding item to wishlist', error);
+                    console.error('Error with wishlist', error);
                     showError('Connection error. Please try again.');
+                }
+            }
+
+            function checkAuthAndRedirect(targetUrl) {
+                // Check if user is authenticated (using global isAuthenticated from layout.js)
+                if(typeof isAuthenticated !== 'undefined' && isAuthenticated) {
+                    window.location.href = targetUrl;
+                } else {
+                    alert('Please login to access this feature');
+                    window.location.href = '/login.html';
+                }
+            }
+
+            async function loadWishlistStatus(){
+                try{
+                    const response = await fetch('/api/wishlist');
+
+                    if(response.ok){
+                        const wishlistData = await response.json();
+
+                        // Handle both array format and object.items format
+                        const wishlistItems = Array.isArray(wishlistData) ? wishlistData : wishlistData.items;
+
+                        if(wishlistItems && wishlistItems.length > 0){
+                            // Get all product IDs in wishlist
+                            const wishlistProductIds = wishlistItems.map(item => item.productId || item.id);
+
+                            // Update heart icons for products in wishlist
+                            wishlistProductIds.forEach(productId => {
+                                const wishlistBtn = document.querySelector(`[data-product-id="${productId}"]`);
+                                if(wishlistBtn){
+                                    wishlistBtn.classList.add('added');
+                                    wishlistBtn.querySelector('i').className = 'fa-solid fa-heart';
+                                    wishlistBtn.title = 'Remove from Wishlist';
+                                }
+                            });
+
+                            console.log(`Loaded wishlist status for ${wishlistProductIds.length} items`);
+                        }
+                    } else if(response.status === 401) {
+                        console.log('User not authenticated - wishlist status not loaded');
+                    }
+                } catch(error){
+                    console.error('Error loading wishlist status:', error);
                 }
             }
 
@@ -414,32 +621,125 @@
                     showAllProducts();
                     return;
                 }
+
+                // Hide dropdown when performing search
+                hideSearchDropdown();
+
                 try{
                     const response= await fetch(`/api/products/search?q=${encodeURIComponent(searchTerm)}`);
-                    const products= await response.json();
-                    displayProducts(products);
+
+                    if(response.ok) {
+                        const products= await response.json();
+                        displayProducts(products);
+
+                        // Scroll to products section after search
+                        setTimeout(() => {
+                            const allItemsTitle = document.getElementById('all-items');
+                            if(allItemsTitle) {
+                                allItemsTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 100);
+                    } else {
+                        // Fallback to client-side filtering if API fails
+                        performClientSideSearch(searchTerm);
+                    }
                 }
                 catch(error){
                     console.error('Error searching', error);
-                    showError('Search failed. Please try again.')
+                    // Fallback to client-side filtering
+                    performClientSideSearch(searchTerm);
                 }
+            }
+
+            function performClientSideSearch(searchTerm) {
+                const query = searchTerm.toLowerCase();
+                const filtered = allProducts.filter(product => {
+                    const name = product.name.toLowerCase();
+                    const description = product.description.toLowerCase();
+                    return name.includes(query) || description.includes(query);
+                });
+
+                displayProducts(filtered);
+
+                // Scroll to products section
+                const allItemsTitle = document.getElementById('all-items');
+                if(allItemsTitle) {
+                    allItemsTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            // Filter products without scrolling (for live search)
+            function filterProductsLive(searchTerm) {
+                if(!searchTerm) {
+                    displayProducts(allProducts);
+                    return;
+                }
+
+                const query = searchTerm.toLowerCase();
+                const filtered = allProducts.filter(product => {
+                    const name = product.name.toLowerCase();
+                    const description = product.description.toLowerCase();
+                    return name.includes(query) || description.includes(query);
+                });
+
+                displayProducts(filtered);
             }
 
 
 
 
-            // Live search functionality with dropdown
             let selectedSuggestionIndex = -1;
+            let searchTimeout = null;
 
-            document.getElementById('search').addEventListener('input', function(e){
-                const query = e.target.value.trim();
-                if(query.length > 0){
-                    showSearchSuggestions(query);
-                } else {
-                    hideSearchDropdown();
+            function handleSearchInput(event) {
+                const query = event.target.value.trim();
+                const clearBtn = document.querySelector('.clear-btn');
+
+                // Show/hide clear button
+                if(clearBtn) {
+                    clearBtn.style.display = query.length > 0 ? 'flex' : 'none';
                 }
+
+                // Handle Enter key
+                if(event.key === 'Enter') {
+                    event.preventDefault();
+                    searchProducts();
+                    hideSearchDropdown();
+                    return;
+                }
+
+                // Clear previous timeout
+                if(searchTimeout) {
+                    clearTimeout(searchTimeout);
+                }
+
+                // Debounce search - wait 300ms after user stops typing
+                searchTimeout = setTimeout(() => {
+                    if(query.length > 0) {
+                        // Filter products without scrolling
+                        filterProductsLive(query);
+                        showSearchSuggestions(query);
+                    } else {
+                        showAllProducts();
+                        hideSearchDropdown();
+                    }
+                }, 300);
+
                 selectedSuggestionIndex = -1;
-            });
+            }
+
+            function clearSearch() {
+                const searchInput = document.getElementById('search');
+                const clearBtn = document.querySelector('.clear-btn');
+
+                searchInput.value = '';
+                if(clearBtn) {
+                    clearBtn.style.display = 'none';
+                }
+                hideSearchDropdown();
+                showAllProducts();
+                searchInput.focus();
+            }
 
             document.getElementById('search').addEventListener('keydown', function(e){
                 const dropdown = document.getElementById('searchDropdown');
@@ -495,10 +795,6 @@
                 }, showCartButton ? 8000 : 3000); // Longer timeout when showing buttons
             }
 
-            function hideSuccess() {
-                const successDiv = document.getElementById('successMessage');
-                successDiv.style.display = 'none';
-            }
 
             function showWishlistSuccess(message) {
                 const successDiv = document.getElementById('successMessage');
@@ -533,21 +829,18 @@
                 }, 5000);
             }
 
-            // Dark mode functionality
-            // Search suggestion functions
             function showSearchSuggestions(query) {
                 const queryLower = query.toLowerCase();
                 const filtered = allProducts.filter(product => {
                     const name = product.name.toLowerCase();
                     const description = product.description.toLowerCase();
 
-                    // Check if query matches start of any word in name or description
                     const nameWords = name.split(' ');
                     const descWords = description.split(' ');
 
                     return nameWords.some(word => word.startsWith(queryLower)) ||
                            descWords.some(word => word.startsWith(queryLower));
-                }).slice(0, 4); // Limit to 4 results
+                }).slice(0, 4);
 
                 const dropdown = document.getElementById('searchDropdown');
 
@@ -584,7 +877,6 @@
             }
 
             function selectProduct(productId) {
-                // Find and display the selected product
                 const product = allProducts.find(p => p.id === productId);
                 if(product) {
                     displayProducts([product]);
@@ -593,7 +885,6 @@
                 hideSearchDropdown();
             }
 
-            // Column layout functionality
             function initializeColumns() {
                 const savedColumns = localStorage.getItem('columnCount') || '5';
                 const columnSelect = document.getElementById('columnSelect');
@@ -614,14 +905,11 @@
             function updateGridColumns(columnCount) {
                 const productsGrid = document.getElementById('productsContainer');
 
-                // Remove all existing column classes
                 productsGrid.className = productsGrid.className.replace(/columns-\d+/g, '');
 
-                // Add the new column class
                 productsGrid.classList.add(`columns-${columnCount}`);
             }
 
-            // Customization modal functions
             let currentProductId = null;
 
             function openCustomizationModal(productId) {
@@ -633,10 +921,8 @@
                     return;
                 }
 
-                // Set modal title
                 document.getElementById('customizationTitle').textContent = `Customize ${product.name}`;
 
-                // Generate customization options based on product type
                 const optionsContainer = document.getElementById('customizationOptions');
                 optionsContainer.innerHTML = generateCustomizationOptions(product);
 
@@ -652,10 +938,8 @@
             function generateCustomizationOptions(product) {
                 let options = '';
 
-                // Determine customization type based on product category
-                const productName = product.name.toLowerCase();
+                    const productName = product.name.toLowerCase();
 
-                // Ring sizing options (for rings)
                 if (productName.includes('ring')) {
                     options += `
                         <div class="customization-group">
@@ -674,7 +958,6 @@
                     `;
                 }
 
-                // Engraving options (for bracelets and watches)
                 if (productName.includes('bracelet') || productName.includes('watch')) {
                     options += `
                         <div class="customization-group">
@@ -685,7 +968,6 @@
                     `;
                 }
 
-                // If no specific customization type is found but product is customizable, show general engraving
                 if (options === '' && product.customizable) {
                     options += `
                         <div class="customization-group">
@@ -708,7 +990,6 @@
                 const product = allProducts.find(p => p.id === currentProductId);
                 const customization = {};
 
-                // Collect ring size if applicable
                 const ringSizeSelect = document.getElementById('ringSize');
                 if (ringSizeSelect) {
                     if (!ringSizeSelect.value) {
@@ -718,13 +999,11 @@
                     customization.ringSize = ringSizeSelect.value;
                 }
 
-                // Collect engraving if applicable
                 const engravingInput = document.getElementById('engraving');
                 if (engravingInput) {
                     customization.engraving = engravingInput.value.trim();
                 }
 
-                // Add to cart with customization data
                 try {
                     const response = await fetch('/api/cart/add', {
                         method: 'POST',
@@ -756,6 +1035,10 @@
                         }
                         showSuccess(message);
                         closeCustomizationModal();
+                        // Update cart count
+                        if(typeof updateCartAndWishlistCounts === 'function'){
+                            updateCartAndWishlistCounts();
+                        }
                     } else {
                         showError('Failed to add customized item to cart');
                     }
@@ -765,7 +1048,6 @@
                 }
             }
 
-            // Close modal when clicking outside
             document.getElementById('customizationModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeCustomizationModal();
@@ -773,9 +1055,9 @@
             });
 
             function scrollToProducts() {
-                const productsContainer = document.getElementById('productsContainer');
-                if (productsContainer) {
-                    productsContainer.scrollIntoView({
+                const allItemsTitle = document.getElementById('all-items');
+                if (allItemsTitle) {
+                    allItemsTitle.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
@@ -785,4 +1067,5 @@
     </script>
     </body>
 </html>
+
 

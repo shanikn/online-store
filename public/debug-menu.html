@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Menu</title>
+    <link rel="stylesheet" href="/styles/theme.css">
+</head>
+<body>
+    <h1>Menu Debug Test</h1>
+
+    <!-- Exact same structure as other pages -->
+    <div class="header">
+        <button class="menu" id="menu" aria-label="Toggle menu">☰</button>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu">
+        <a href="/store.html">Store</a>
+        <a href="/profile.html">Profile</a>
+    </nav>
+
+    <button onclick="testToggle()">Manual Toggle Test</button>
+    <button onclick="checkElements()">Check Elements</button>
+
+    <script>
+        function testToggle() {
+            console.log('Manual toggle test...');
+            const menu = document.getElementById('menu');
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+
+            console.log('Elements:', {menu: !!menu, sideMenu: !!sideMenu, overlay: !!overlay});
+
+            if (menu && sideMenu && overlay) {
+                menu.classList.toggle('active');
+                sideMenu.classList.toggle('active');
+                overlay.classList.toggle('active');
+                console.log('Toggled! Menu active:', menu.classList.contains('active'));
+            }
+        }
+
+        function checkElements() {
+            console.log('=== ELEMENT CHECK ===');
+            console.log('menu button:', document.getElementById('menu'));
+            console.log('side menu:', document.getElementById('sideMenu'));
+            console.log('overlay:', document.getElementById('menuOverlay'));
+            console.log('theme toggle:', document.getElementById('themeToggle'));
+        }
+
+        // Simple event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, adding simple listeners...');
+
+            const menuBtn = document.getElementById('menu');
+            const themeBtn = document.getElementById('themeToggle');
+
+            if (menuBtn) {
+                menuBtn.addEventListener('click', testToggle);
+                console.log('Menu listener added');
+            }
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function() {
+                    document.body.classList.toggle('dark-mode');
+                    console.log('Theme toggled');
+                });
+                console.log('Theme listener added');
+            }
+        });
+    </script>
+</body>
+</html>

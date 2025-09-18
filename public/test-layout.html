@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Layout.js</title>
+</head>
+<body>
+    <h1>Testing if layout.js loads</h1>
+    <button onclick="testLayoutJs()">Test Layout Functions</button>
+
+    <script>
+        function testLayoutJs() {
+            console.log('Testing layout.js functions...');
+
+            // Test if functions exist
+            console.log('toggleMenu exists:', typeof toggleMenu);
+            console.log('toggleTheme exists:', typeof toggleTheme);
+            console.log('initializeBaseLayout exists:', typeof initializeBaseLayout);
+
+            alert('Check console for results');
+        }
+    </script>
+
+    <script src="/scripts/layout.js"></script>
+</body>
+</html>
