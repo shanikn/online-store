@@ -548,9 +548,24 @@
 
         async function loadWishlistWithFallback() {
             try {
-                const response = await fetch('/api/wishlist');
+                console.log('🔄 Loading wishlist from server...');
+                // Add timestamp to URL to force cache bypass
+                const timestamp = Date.now();
+                const response = await fetch(`/api/wishlist?t=${timestamp}`, {
+                    method: 'GET',
+                    cache: 'no-cache',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
+                });
+                console.log('📡 Wishlist fetch response status:', response.status);
                 if (response.ok) {
-                    wishlistItems = await response.json() || [];
+                    const newWishlistItems = await response.json() || [];
+                    console.log('📋 Raw wishlist data from server:', newWishlistItems);
+                    wishlistItems = newWishlistItems;
+                    console.log('🎯 Updated wishlistItems to:', wishlistItems);
                     displayWishlist();
                     finishLoading();
                     return;
@@ -696,14 +711,20 @@
         async function removeFromWishlist(productId) {
 
             try {
+                console.log('🗑️ REMOVING PRODUCT:', productId, 'from wishlist');
+                console.log('📋 Current wishlist before removal:', wishlistItems);
+
                 // Use real API endpoint - matching the format used in store.html and collections
                 const response = await fetch('/api/wishlist/remove', {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache, no-store, must-revalidate'
                     },
                     body: JSON.stringify({productId: productId})
                 });
+
+                console.log('🌐 Server response status:', response.status);
 
                 // Handle authentication required response
                 if (response.status === 401 || response.redirected && response.url.includes('login')) {
@@ -713,11 +734,28 @@
                 }
 
                 const data = await response.json();
-                // debug:
-                console.log('Remove response:', data);
+                console.log('📤 Server response data:', data);
+
                 if (data.success) {
+                    console.log('✅ Server confirmed removal, waiting 800ms then reloading...');
+                    // Add longer delay to ensure server has processed the change
+                    await new Promise(resolve => setTimeout(resolve, 800));
+
                     // Reload wishlist from server to ensure consistency
+                    console.log('🔄 Reloading wishlist from server...');
                     await loadWishlist();
+                    console.log('📋 New wishlist after reload:', wishlistItems);
+
+                    // Double-check that the item was actually removed
+                    const itemStillExists = wishlistItems.some(item => item.id === productId || item === productId);
+                    if (itemStillExists) {
+                        console.error('❌ ITEM STILL EXISTS after removal! Trying again...');
+                        // Force a complete page refresh as last resort
+                        window.location.reload();
+                        return;
+                    }
+
+                    console.log('✅ Confirmed item was removed successfully');
                     showWishlistSuccess('Item removed from wishlist');
 
                     // Update badge counts if function exists

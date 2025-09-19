@@ -417,7 +417,9 @@
 
             async function loadWishlistStatus(){
                 try{
-                    const response = await fetch('/api/wishlist');
+                    const response = await fetch('/api/wishlist', {
+                        cache: 'no-cache'
+                    });
 
                     if(response.ok){
                         const wishlistData = await response.json();
@@ -425,9 +427,16 @@
                         // Handle both array format and object.items format
                         const wishlistItems = Array.isArray(wishlistData) ? wishlistData : wishlistData.items;
 
+                        // First, reset all wishlist buttons to default state
+                        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                            btn.classList.remove('added');
+                            btn.querySelector('i').className = 'fa-regular fa-heart';
+                            btn.title = 'Add to Wishlist';
+                        });
+
                         if(wishlistItems && wishlistItems.length > 0){
                             // Get all product IDs in wishlist
-                            const wishlistProductIds = wishlistItems.map(item => item.productId || item.id);
+                            const wishlistProductIds = wishlistItems.map(item => item.productId || item.id || item);
 
                             // Update heart icons for products in wishlist
                             wishlistProductIds.forEach(productId => {

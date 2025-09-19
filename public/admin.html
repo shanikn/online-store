@@ -680,9 +680,26 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeBaseLayout();
             checkAdminAccess();
+
+            // Load all data first
             loadDashboard();
             loadActivities();
             loadProducts();
+
+            // Then restore last active tab or default to dashboard
+            const savedTab = localStorage.getItem('adminActiveTab') || 'dashboard';
+
+            // Just switch the visual tab, don't reload data
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.onclick && btn.onclick.toString().includes(savedTab)) {
+                    btn.classList.add('active');
+                }
+            });
+            document.getElementById(`${savedTab}-tab`).classList.add('active');
         });
 
         async function checkAdminAccess() {
@@ -697,7 +714,7 @@
             }
         }
 
-        function switchTab(tabName) {
+        function switchTab(tabName, skipSave = false) {
             // hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -712,7 +729,21 @@
             document.getElementById(`${tabName}-tab`).classList.add('active');
 
             // mark button as active
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // Find and activate the correct button when called without event
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    if (btn.onclick && btn.onclick.toString().includes(tabName)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+
+            // Save active tab to localStorage unless skipping (on initial load)
+            if (!skipSave) {
+                localStorage.setItem('adminActiveTab', tabName);
+            }
 
             // reload data for the selected tab
             if (tabName === 'activities') {

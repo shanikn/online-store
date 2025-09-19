@@ -397,7 +397,38 @@ app.delete('/api/wishlist/remove', requireAuthAPI, async(req, res)=>{
 });
 
 
+// Migration function to add createdAt to existing users
+async function migrateUserData() {
+    try {
+        const users = await persist.loadUsers();
+        let hasChanges = false;
+
+        const updatedUsers = users.map(user => {
+            if (!user.createdAt) {
+                hasChanges = true;
+                return {
+                    ...user,
+                    role: user.role || 'user',
+                    email: user.email || '',
+                    createdAt: new Date().toISOString()
+                };
+            }
+            return user;
+        });
+
+        if (hasChanges) {
+            await persist.saveUsers(updatedUsers);
+            console.log('✅ Migrated user data - added missing createdAt fields');
+        }
+    } catch (error) {
+        console.error('❌ Error migrating user data:', error);
+    }
+}
+
 // start server
-app.listen(5000, ()=> {
+app.listen(5000, async ()=> {
     console.log("Express App running at http://127.0.0.1:5000/");
+
+    // Run migration on startup
+    await migrateUserData();
 });

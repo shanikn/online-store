@@ -32,6 +32,34 @@ async function checkAuthStatus(){
 }
 
 /**
+ * Helper function to determine if a menu item should be marked as active
+ */
+function isActivePage(href) {
+    const currentPath = window.location.pathname;
+
+    // Handle root/store pages
+    if (href === '/store.html' && (currentPath === '/' || currentPath === '/store.html' || currentPath === '/products.html')) {
+        return true;
+    }
+
+    // Handle collection pages
+    if (href.includes('collection-') && currentPath.includes('collection-')) {
+        return currentPath === href;
+    }
+
+    // For all other pages, exact match
+    return currentPath === href;
+}
+
+/**
+ * Helper function to create menu link with active state
+ */
+function createMenuLink(href, icon, text) {
+    const activeClass = isActivePage(href) ? ' class="active"' : '';
+    return `<a href="${href}"${activeClass}><i class="${icon}"></i> ${text}</a>`;
+}
+
+/**
  * Dynamically updates the side navigation menu based on authentication status
  * Shows different menu options for authenticated vs. non-authenticated users
  */
@@ -53,27 +81,27 @@ function updateNavigation(){
     if(isAuthenticated && !isAuthPage){
         // Build the base menu for authenticated users
         let menuHTML =
-            '<a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>' +
+            createMenuLink('/store.html', 'fa-solid fa-store', 'Store') +
             '<div class="menu-dropdown">' +
             '<a href="javascript:void(0)" onclick="toggleCollections()" class="menu-dropdown-toggle" aria-expanded="false">' +
             '<i class="fa-solid fa-gem"></i> Collections <span class="dropdown-arrow"></span>' +
             '</a>' +
             '<div class="menu-dropdown-content" id="collectionsDropdown">' +
-            '<a href="/collection-hoops.html">Hoop Earrings</a>' +
-            '<a href="/collection-bracelets.html">Bracelets</a>' +
-            '<a href="/collection-wedding.html">Wedding & Engagement</a>' +
+            createMenuLink('/collection-hoops.html', '', 'Hoop Earrings') +
+            createMenuLink('/collection-bracelets.html', '', 'Bracelets') +
+            createMenuLink('/collection-wedding.html', '', 'Wedding & Engagement') +
             '</div>' +
             '</div>' +
-            '<a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>' +
-            '<a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>' +
-            '<a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>' +
-            '<a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>' +
-            '<a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>' +
-            '<a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>';
+            createMenuLink('/cart.html', 'fa-solid fa-shopping-cart', 'Cart') +
+            createMenuLink('/wishlist.html', 'fa-solid fa-heart', 'Wishlist') +
+            createMenuLink('/about.html', 'fa-solid fa-info-circle', 'About') +
+            createMenuLink('/contact.html', 'fa-solid fa-envelope', 'Contact') +
+            createMenuLink('/readme.html', 'fa-solid fa-book', 'README') +
+            createMenuLink('/profile.html', 'fa-solid fa-user', 'Profile');
 
         // Only add Admin link if user is admin
         if(currentUser && currentUser.username === 'admin'){
-            menuHTML += '<a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>';
+            menuHTML += createMenuLink('/admin.html', 'fa-solid fa-cog', 'Admin');
         }
 
         menuHTML += '<button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>';
@@ -82,24 +110,24 @@ function updateNavigation(){
     }
     else{
         sideMenu.innerHTML =
-            '<a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>' +
+            createMenuLink('/store.html', 'fa-solid fa-store', 'Store') +
             '<div class="menu-dropdown">' +
             '<a href="javascript:void(0)" onclick="toggleCollections()" class="menu-dropdown-toggle" aria-expanded="false">' +
             '<i class="fa-solid fa-gem"></i> Collections <span class="dropdown-arrow"></span>' +
             '</a>' +
             '<div class="menu-dropdown-content" id="collectionsDropdown">' +
-            '<a href="/collection-hoops.html">Hoop Earrings</a>' +
-            '<a href="/collection-bracelets.html">Bracelets</a>' +
-            '<a href="/collection-wedding.html">Wedding & Engagement</a>' +
+            createMenuLink('/collection-hoops.html', '', 'Hoop Earrings') +
+            createMenuLink('/collection-bracelets.html', '', 'Bracelets') +
+            createMenuLink('/collection-wedding.html', '', 'Wedding & Engagement') +
             '</div>' +
             '</div>' +
             '<a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>' +
             '<a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>' +
-            '<a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>' +
-            '<a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>' +
-            '<a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>' +
-            '<a href="/login.html"><i class="fa-solid fa-sign-in-alt"></i> Login</a>' +
-            '<a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>';
+            createMenuLink('/about.html', 'fa-solid fa-info-circle', 'About') +
+            createMenuLink('/contact.html', 'fa-solid fa-envelope', 'Contact') +
+            createMenuLink('/readme.html', 'fa-solid fa-book', 'README') +
+            createMenuLink('/login.html', 'fa-solid fa-sign-in-alt', 'Login') +
+            createMenuLink('/register.html', 'fa-solid fa-user-plus', 'Register');
     }
 }
 

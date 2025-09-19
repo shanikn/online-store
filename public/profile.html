@@ -319,77 +319,50 @@
         /* Start Shopping link styling */
         .start-shopping-link {
             display: inline-block;
-            background: linear-gradient(135deg, #b8866a, #9b6c3f);
+            background: linear-gradient(135deg, #b8866a, #9d6c47);
             color: white !important;
-            padding: 16px 32px;
+            padding: 12px 24px;
             text-decoration: none !important;
-            border-radius: 12px;
+            border-radius: 8px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 14px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(184, 134, 106, 0.3);
-            margin-left: 8px;
+            box-shadow: 0 2px 8px rgba(184, 134, 106, 0.2);
+            border: 1px solid rgba(184, 134, 106, 0.3);
         }
 
         .start-shopping-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(184, 134, 106, 0.4);
             background: linear-gradient(135deg, #c4926f, #a67546);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(184, 134, 106, 0.3);
             text-decoration: none !important;
         }
 
-        .start-shopping-link:before {
-            content: '🛍️';
-            margin-right: 8px;
-        }
-
         body.dark-mode .start-shopping-link {
-            background: linear-gradient(135deg, #938276, #82746a);
-            box-shadow: 0 4px 12px rgba(147, 130, 118, 0.3);
+            background: linear-gradient(135deg, #766156, #5a4f42);
+            border-color: rgba(118, 97, 86, 0.4);
+            box-shadow: 0 2px 8px rgba(118, 97, 86, 0.2);
         }
 
         body.dark-mode .start-shopping-link:hover {
-            background: linear-gradient(135deg, #a38c7f, #927d73);
-            box-shadow: 0 8px 20px rgba(147, 130, 118, 0.4);
+            background: linear-gradient(135deg, #877a70, #6b5d54);
+            box-shadow: 0 4px 12px rgba(118, 97, 86, 0.3);
         }
 
         .no-purchases-message {
             text-align: center;
-            padding: 60px 40px;
-            background: linear-gradient(135deg, rgba(248, 245, 240, 0.8), rgba(244, 240, 234, 0.9));
-            border-radius: 20px;
-            border: 1px solid rgba(184, 134, 106, 0.2);
-            box-shadow: 0 12px 24px rgba(107, 87, 68, 0.1);
-            backdrop-filter: blur(8px);
-            margin: 20px 0;
+            padding: 30px 20px;
+            color: #6b5744;
+            font-size: 16px;
         }
 
         .no-purchases-message p {
-            font-family: 'Fraunces', serif;
-            font-size: 22px;
-            font-weight: 600;
-            color: #5a4f42;
-            margin: 0 0 25px;
-            line-height: 1.4;
-            letter-spacing: 0.02em;
-        }
-
-        .no-purchases-message p:before {
-            content: '📦';
-            display: block;
-            font-size: 48px;
-            margin-bottom: 20px;
-            opacity: 0.7;
+            margin: 0 0 15px;
+            font-weight: 500;
         }
 
         body.dark-mode .no-purchases-message {
-            background: linear-gradient(135deg, rgba(32, 29, 27, 0.8), rgba(26, 23, 21, 0.9));
-            border-color: rgba(147, 130, 118, 0.3);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        body.dark-mode .no-purchases-message p {
-            color: #e8ded2;
+            color: #c1b6a8;
         }
     </style>
 </head>
@@ -517,6 +490,8 @@
                 if (!response.ok) throw new Error('Failed to load purchases');
 
                 const purchases = await response.json();
+                // Sort purchases by date, latest first (using timeStamp field)
+                purchases.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
                 displayPurchases(purchases);
             } catch (error) {
                 console.error('Error loading purchases:', error);

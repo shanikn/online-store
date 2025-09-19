@@ -142,6 +142,50 @@
         body.dark-mode .selected-total {
             color: #f1e8dc;
         }
+            .form-error {
+            display: none;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(198, 40, 40, 0.3);
+            background: rgba(198, 40, 40, 0.08);
+            color: #7d1f1f;
+            box-shadow: 0 12px 24px rgba(198, 40, 40, 0.08);
+            scroll-margin-top: 120px;
+        }
+
+        .form-error__icon {
+            font-size: 1.2rem;
+            line-height: 1;
+            color: #d32f2f;
+            flex-shrink: 0;
+        }
+
+        .form-error__content p,
+        .form-error__content ul {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .form-error__content ul {
+            list-style: disc;
+            margin-left: 1.2rem;
+        }
+
+        body.dark-mode .form-error {
+            background: rgba(198, 40, 40, 0.2);
+            border-color: rgba(198, 40, 40, 0.45);
+            color: #ffe6e6;
+            box-shadow: none;
+        }
+
+        body.dark-mode .form-error__icon {
+            color: #ff8a80;
+        }
     </style>
     </head>
     <body>
@@ -249,24 +293,35 @@
                                         <input type="text" id="zipCode" name="zipCode" class="form-control" required>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Packaging Options -->
+                        <div class="checkout-step">
+                            <div class="checkout-step-header">
+                                <div class="step-number">4</div>
+                                <h2 class="step-title">Gift Packaging</h2>
+                            </div>
+                            <div class="checkout-form-grid">
                                 <div class="form-control-group">
-                                    <label for="country">Country *</label>
-                                    <select id="country" name="country" class="form-control" required>
-                                        <option value="">Select Country</option>
-                                        <option value="Israel">Israel</option>
-                                        <option value="USA">United States</option>
-                                        <option value="UK">United Kingdom</option>
-                                        <option value="Canada">Canada</option>
-                                        <option value="Other">Other</option>
+                                    <label for="packaging">Choose Packaging Option</label>
+                                    <select id="packaging" name="packaging" class="form-control">
+                                        <option value="standard">Standard Jewelry Box (Free)</option>
+                                        <option value="premium">Premium Gift Box (+₪15)</option>
+                                        <option value="luxury">Luxury Presentation Box (+₪25)</option>
                                     </select>
+                                </div>
+                                <div class="form-control-group">
+                                    <label for="giftMessage">Gift Message (Optional)</label>
+                                    <textarea id="giftMessage" name="giftMessage" class="form-control" rows="3" placeholder="Add a personal message for the gift recipient..."></textarea>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Step 4: Payment Details -->
+                        <!-- Step 5: Payment Details -->
                         <div class="checkout-step">
                             <div class="checkout-step-header">
-                                <div class="step-number">4</div>
+                                <div class="step-number">5</div>
                                 <h2 class="step-title">Payment Details</h2>
                             </div>
                             <div class="checkout-form-grid">
@@ -276,7 +331,7 @@
                                 </div>
                                 <div class="form-control-group">
                                     <label for="cardNumber">Card Number *</label>
-                                    <input type="text" id="cardNumber" name="cardNumber" class="form-control" pattern="[0-9]{16}" maxlength="16" placeholder="1234567890123456" required>
+                                    <input type="text" id="cardNumber" name="cardNumber" class="form-control" pattern="[0-9]{4}\s[0-9]{4}\s[0-9]{4}\s[0-9]{4}" maxlength="19" placeholder="1234 5678 9012 3456" required>
                                 </div>
                                 <div class="checkout-form-grid two-column">
                                     <div class="form-control-group">
@@ -295,6 +350,8 @@
                             <span class="checkout-alert"><i class="fa-solid fa-lock"></i> Payments are processed securely with 256-bit encryption.</span>
                             <span>Questions? <a href="/contact.html">Contact our team</a> and we'll be happy to help.</span>
                         </div>
+
+                        <div id="formErrorMessage" class="form-error" role="alert" tabindex="-1" aria-live="polite"></div>
 
                         <button type="submit" class="place-order-btn checkout-submit"><i class="fa-solid fa-bag-shopping"></i> Place Order</button>
                     </form>
@@ -389,6 +446,12 @@
                 // Add input formatting for better user experience
                 addInputFormatting();
 
+                // Add packaging option change listener
+                const packagingSelect = document.getElementById('packaging');
+                if (packagingSelect) {
+                    packagingSelect.addEventListener('change', updateSelectedTotal);
+                }
+
                 loadProducts()
                     .then(loadCart)
                     .catch(function(error) {
@@ -472,7 +535,7 @@
                     }
                 } catch (error) {
                     console.error('Error loading cart:', error);
-                    showError('Failed to load cart');
+                    showGlobalError('Failed to load cart');
                     var html = '';
                     html += '<div class="checkout-empty">';
                     html += '<h2>Failed to load cart</h2>';
@@ -519,6 +582,7 @@
 
                 // Full name validation - must have at least first and last name
                 const fullName = document.getElementById('fullName').value.trim();
+                console.log('🔍 Validating fullName:', fullName);
                 if (!fullName) {
                     errors.push('❌ Full name is required');
                 } else {
@@ -532,9 +596,9 @@
                 const email = document.getElementById('email').value.trim();
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!email) {
-                    errors.push('❌ Email address is required');
+                    errors.push('Email address is required');
                 } else if (!emailRegex.test(email)) {
-                    errors.push('❌ Please enter a valid email address');
+                    errors.push('Please enter a valid email address');
                 }
 
                 // Phone number validation - must be numbers only and proper length
@@ -542,51 +606,47 @@
                 const phoneRegex = /^[\d\-\+\(\)\s]+$/; // Allow digits, spaces, hyphens, plus, parentheses
                 const phoneDigitsOnly = phone.replace(/[\D]/g, ''); // Extract only digits
                 if (!phone) {
-                    errors.push('❌ Phone number is required');
+                    errors.push('Phone number is required');
                 } else if (!phoneRegex.test(phone)) {
-                    errors.push('❌ Phone number can only contain numbers, spaces, hyphens, and parentheses');
+                    errors.push('Phone number can only contain numbers, spaces, hyphens, and parentheses');
                 } else if (phoneDigitsOnly.length < 10 || phoneDigitsOnly.length > 15) {
-                    errors.push('❌ Phone number must be between 10-15 digits');
+                    errors.push('Phone number must be between 10-15 digits');
                 }
 
                 // Address validation
                 const address = document.getElementById('address').value.trim();
                 if (!address) {
-                    errors.push('❌ Address is required');
+                    errors.push('Address is required');
                 } else if (address.length < 5) {
-                    errors.push('❌ Please enter a complete address');
+                    errors.push('Please enter a complete address');
                 }
 
                 // City validation
                 const city = document.getElementById('city').value.trim();
                 if (!city) {
-                    errors.push('❌ City is required');
+                    errors.push('City is required');
                 } else if (city.length < 2) {
-                    errors.push('❌ Please enter a valid city name');
+                    errors.push('Please enter a valid city name');
                 }
 
                 // ZIP code validation
                 const zipCode = document.getElementById('zipCode').value.trim();
                 if (!zipCode) {
-                    errors.push('❌ ZIP code is required');
+                    errors.push('ZIP code is required');
                 } else if (zipCode.length < 3) {
-                    errors.push('❌ Please enter a valid ZIP code');
+                    errors.push('Please enter a valid ZIP code');
                 }
 
-                // Country validation
-                const country = document.getElementById('country').value;
-                if (!country) {
-                    errors.push('❌ Please select a country');
-                }
+
 
                 // Card name validation
                 const cardName = document.getElementById('cardName').value.trim();
                 if (!cardName) {
-                    errors.push('❌ Cardholder name is required');
+                    errors.push('Cardholder name is required');
                 } else {
                     const cardNameParts = cardName.split(' ').filter(part => part.length > 0);
                     if (cardNameParts.length < 2) {
-                        errors.push('❌ Please enter full cardholder name (first and last)');
+                        errors.push('Please enter full cardholder name (first and last)');
                     }
                 }
 
@@ -594,18 +654,18 @@
                 const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
                 const cardNumberRegex = /^\d{16}$/;
                 if (!cardNumber) {
-                    errors.push('❌ Card number is required');
+                    errors.push('Card number is required');
                 } else if (!cardNumberRegex.test(cardNumber)) {
-                    errors.push('❌ Card number must be exactly 16 digits');
+                    errors.push('Card number must be exactly 16 digits');
                 }
 
                 // Expiry date validation - MM/YY format
                 const expiry = document.getElementById('expiry').value.trim();
                 const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
                 if (!expiry) {
-                    errors.push('❌ Expiry date is required');
+                    errors.push('Expiry date is required');
                 } else if (!expiryRegex.test(expiry)) {
-                    errors.push('❌ Expiry date must be in MM/YY format');
+                    errors.push('Expiry date must be in MM/YY format');
                 } else {
                     // Check if expiry date is not in the past
                     const [month, year] = expiry.split('/');
@@ -617,7 +677,7 @@
                     const expMonth = parseInt(month);
 
                     if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
-                        errors.push('❌ Card expiry date has passed');
+                        errors.push('Card expiry date has passed');
                     }
                 }
 
@@ -625,11 +685,13 @@
                 const cvv = document.getElementById('cvv').value.trim();
                 const cvvRegex = /^\d{3}$/;
                 if (!cvv) {
-                    errors.push('❌ CVV is required');
+                    errors.push('CVV is required');
                 } else if (!cvvRegex.test(cvv)) {
-                    errors.push('❌ CVV must be exactly 3 digits');
+                    errors.push('CVV must be exactly 3 digits');
                 }
 
+                console.log('🔍 Total validation errors found:', errors.length);
+                console.log('🔍 Validation errors:', errors);
                 return errors;
             }
 
@@ -680,10 +742,12 @@
             document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
 
+                clearFormError();
+
                 // Comprehensive form validation
                 const errors = validateForm();
                 if (errors.length > 0) {
-                    showError(errors.join('<br>'));
+                    showFormError(errors);
                     return;
                 }
 
@@ -692,13 +756,22 @@
                 submitBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Processing...';
 
                 // Fix: Use cartItemId for filtering selected items
+                console.log('Cart items available:', cartItems);
                 const selectedItems = cartItems.filter(item => {
                     const checkboxId = item.cartItemId ? `select-${item.cartItemId}` : `select-${item.productId}`;
                     const checkbox = document.getElementById(checkboxId);
+                    console.log('Checking checkbox:', checkboxId, 'found:', !!checkbox, 'checked:', checkbox?.checked);
                     return checkbox && checkbox.checked;
                 });
 
                 console.log('Selected items:', selectedItems);
+
+                if (selectedItems.length === 0) {
+                    showFormError('Please select at least one item to checkout');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
+                    return;
+                }
 
                 var formData = {
                     fullName: document.getElementById('fullName').value,
@@ -707,7 +780,8 @@
                     address: document.getElementById('address').value,
                     city: document.getElementById('city').value,
                     zipCode: document.getElementById('zipCode').value,
-                    country: document.getElementById('country').value,
+                    packaging: document.getElementById('packaging').value,
+                    giftMessage: document.getElementById('giftMessage').value,
                     cardName: document.getElementById('cardName').value,
                     cardNumber: document.getElementById('cardNumber').value,
                     expiry: document.getElementById('expiry').value,
@@ -739,13 +813,13 @@
                         }, 1000);
                     } else {
                         console.error('Checkout failed:', data.message);
-                        showError(data.message || 'Failed to place order');
+                        showFormError(data.message || 'Failed to place order');
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
                     }
                 } catch (error) {
                     console.error('Error placing order:', error);
-                    showError('Connection error. Please try again.');
+                    showFormError('Connection error. Please try again.');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
                 }
@@ -801,17 +875,28 @@
                         }
                     }
                 });
-                document.getElementById('selectedTotal').textContent = `₪${total.toFixed(2)}`;
-                document.getElementById('orderTotal').textContent = `₪${total.toFixed(2)}`;
-                orderTotal = total;
 
-                updateOrderSummary(selectedItems);
+                // Add packaging cost
+                const packagingSelect = document.getElementById('packaging');
+                let packagingCost = 0;
+                if (packagingSelect) {
+                    const packagingValue = packagingSelect.value;
+                    if (packagingValue === 'premium') packagingCost = 15;
+                    else if (packagingValue === 'luxury') packagingCost = 25;
+                }
+
+                const finalTotal = total + packagingCost;
+                document.getElementById('selectedTotal').textContent = `₪${finalTotal.toFixed(2)}`;
+                document.getElementById('orderTotal').textContent = `₪${finalTotal.toFixed(2)}`;
+                orderTotal = finalTotal;
+
+                updateOrderSummary(selectedItems, packagingCost);
             }
 
-            function updateOrderSummary(selectedItems) {
+            function updateOrderSummary(selectedItems, packagingCost = 0) {
                 const itemsContainer = document.getElementById('orderItems');
                 let html = '';
-                
+
                 selectedItems.forEach(item => {
                     const product = products.find(p => p.id === item.productId);
                     if (product) {
@@ -822,7 +907,21 @@
                         html += `</div>`;
                     }
                 });
-                
+
+                // Add packaging line if there's a cost
+                if (packagingCost > 0) {
+                    const packagingSelect = document.getElementById('packaging');
+                    let packagingName = 'Packaging';
+                    if (packagingSelect) {
+                        const selectedOption = packagingSelect.options[packagingSelect.selectedIndex];
+                        packagingName = selectedOption.text.split(' (+')[0]; // Get name without price
+                    }
+                    html += `<div class="summary-line">`;
+                    html += `<span>${packagingName}</span>`;
+                    html += `<span>₪${packagingCost.toFixed(2)}</span>`;
+                    html += `</div>`;
+                }
+
                 itemsContainer.innerHTML = html;
             }
 
@@ -844,22 +943,63 @@
                 }
             }
 
-            function showError(message) {
-                const errorDiv = document.getElementById('errorMessage');
-                if (errorDiv) {
-                    errorDiv.textContent = message;
-                    errorDiv.style.display = 'block';
-                    errorDiv.style.background = 'rgba(244, 67, 54, 0.1)';
-                    errorDiv.style.color = '#c62828';
-                    errorDiv.style.padding = '16px';
-                    errorDiv.style.borderRadius = '8px';
-                    errorDiv.style.border = '1px solid rgba(244, 67, 54, 0.3)';
-                    errorDiv.style.marginBottom = '20px';
-
-                    setTimeout(() => {
-                        errorDiv.style.display = 'none';
-                    }, 5000);
+            function showGlobalError(message) {
+                const errorDiv = document.getElementById("errorMessage");
+                if (!errorDiv) {
+                    return;
                 }
+
+                errorDiv.textContent = message;
+                errorDiv.style.display = "block";
+                errorDiv.style.background = "rgba(244, 67, 54, 0.1)";
+                errorDiv.style.color = "#c62828";
+                errorDiv.style.padding = "16px";
+                errorDiv.style.borderRadius = "8px";
+                errorDiv.style.border = "1px solid rgba(244, 67, 54, 0.3)";
+                errorDiv.style.marginBottom = "20px";
+
+                errorDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                setTimeout(() => {
+                    errorDiv.style.display = "none";
+                }, 5000);
+            }
+
+            function clearFormError() {
+                const formError = document.getElementById("formErrorMessage");
+                if (!formError) {
+                    return;
+                }
+
+                formError.style.display = "none";
+                formError.innerHTML = "";
+            }
+
+            function showFormError(message) {
+                const formError = document.getElementById("formErrorMessage");
+                if (!formError) {
+                    return;
+                }
+
+                const messages = Array.isArray(message)
+                    ? message
+                    : String(message).split("<br>").filter(Boolean);
+
+                if (!messages.length) {
+                    clearFormError();
+                    return;
+                }
+
+                const listMarkup = messages.length > 1
+                    ? "<ul>" + messages.map(function(msg){ return "<li>" + msg + "</li>"; }).join("") + "</ul>"
+                    : "<p>" + messages[0] + "</p>";
+
+                formError.innerHTML =
+                    "<span class=\"form-error__icon\" aria-hidden=\"true\"><i class=\"fa-solid fa-triangle-exclamation\"></i></span>" +
+                    "<div class=\"form-error__content\">" + listMarkup + "</div>";
+                formError.style.display = "flex";
+                formError.focus({ preventScroll: true });
+                formError.scrollIntoView({ behavior: "smooth", block: "center" });
             }
         </script>
     </body>
