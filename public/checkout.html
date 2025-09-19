@@ -7,6 +7,142 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="/styles/theme.css">
+        <style>
+        .cart-item {
+            display: grid;
+            grid-template-columns: auto 100px 1fr;
+            gap: 20px;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(162, 150, 138, 0.15);
+            align-items: center;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f8f8f8;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #3f362f;
+        }
+
+        .item-description {
+            color: #7a6c5d;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #7d514b;
+            font-size: 1.1rem;
+        }
+
+        .quantity-display {
+            font-size: 0.9rem;
+            color: #7a6c5d;
+        }
+
+        /* Enhanced checkout step separation */
+        .checkout-step {
+            position: relative;
+            padding-bottom: 32px;
+            margin-bottom: 48px;
+        }
+
+        .checkout-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: -24px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(162, 150, 138, 0.3) 0%, transparent 100%);
+            border-radius: 2px;
+        }
+
+        .checkout-step-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4c4136 0%, #7d514b 100%);
+            color: #f2ede6;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-family: 'Fraunces', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 1.6rem;
+            color: #3b2a1a;
+            margin: 0;
+        }
+
+        .selected-total-box {
+            background: rgba(125, 81, 75, 0.08);
+            border: 1px solid rgba(125, 81, 75, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .selected-total {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #7d514b;
+        }
+
+        body.dark-mode .checkout-step:not(:last-child)::after {
+            background: linear-gradient(90deg, rgba(130, 116, 102, 0.4) 0%, transparent 100%);
+        }
+
+        body.dark-mode .step-number {
+            background: linear-gradient(135deg, #6a6a6a 0%, #7a7a7a 100%);
+            color: #fff8ef;
+        }
+
+        body.dark-mode .step-title {
+            color: #f5ede2;
+        }
+
+        body.dark-mode .selected-total-box {
+            background: rgba(130, 116, 102, 0.15);
+            border-color: rgba(130, 116, 102, 0.25);
+        }
+
+        body.dark-mode .selected-total {
+            color: #f1e8dc;
+        }
+    </style>
     </head>
     <body>
         <!-- header with navigation -->
@@ -56,8 +192,26 @@
             <section id="checkoutContent" class="checkout-layout" style="display: none;">
                 <div class="surface-card checkout-card">
                     <form id="checkoutForm" class="form-stack" autocomplete="on">
-                        <div class="checkout-section">
-                            <h2>Contact Details</h2>
+                        <!-- Step 1: Item Selection -->
+                        <div class="checkout-step">
+                            <div class="checkout-step-header">
+                                <div class="step-number">1</div>
+                                <h2 class="step-title">Select Items</h2>
+                            </div>
+                            <div id="cartItemsSelection"></div>
+                            <div class="selected-total-box">
+                                <div class="selected-total">
+                                    Selected Total: <span id="selectedTotal">₪0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Contact Details -->
+                        <div class="checkout-step">
+                            <div class="checkout-step-header">
+                                <div class="step-number">2</div>
+                                <h2 class="step-title">Contact Details</h2>
+                            </div>
                             <div class="checkout-form-grid two-column">
                                 <div class="form-control-group">
                                     <label for="fullName">Full Name *</label>
@@ -74,8 +228,12 @@
                             </div>
                         </div>
 
-                        <div class="checkout-section">
-                            <h2>Shipping Address</h2>
+                        <!-- Step 3: Shipping Address -->
+                        <div class="checkout-step">
+                            <div class="checkout-step-header">
+                                <div class="step-number">3</div>
+                                <h2 class="step-title">Shipping Address</h2>
+                            </div>
                             <div class="checkout-form-grid">
                                 <div class="form-control-group">
                                     <label for="address">Street Address *</label>
@@ -105,8 +263,12 @@
                             </div>
                         </div>
 
-                        <div class="checkout-section">
-                            <h2>Payment Details</h2>
+                        <!-- Step 4: Payment Details -->
+                        <div class="checkout-step">
+                            <div class="checkout-step-header">
+                                <div class="step-number">4</div>
+                                <h2 class="step-title">Payment Details</h2>
+                            </div>
                             <div class="checkout-form-grid">
                                 <div class="form-control-group">
                                     <label for="cardName">Cardholder Name *</label>
@@ -302,6 +464,7 @@
                         showEmptyCart();
                     } else {
                         displayOrderSummary();
+                        displayCartSelection();
                         document.getElementById('checkoutContent').style.display = 'grid';
                     }
                 } catch (error) {
@@ -355,6 +518,15 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Processing...';
 
+                // Fix: Use cartItemId for filtering selected items
+                const selectedItems = cartItems.filter(item => {
+                    const checkboxId = item.cartItemId ? `select-${item.cartItemId}` : `select-${item.productId}`;
+                    const checkbox = document.getElementById(checkboxId);
+                    return checkbox && checkbox.checked;
+                });
+
+                console.log('Selected items:', selectedItems);
+
                 var formData = {
                     fullName: document.getElementById('fullName').value,
                     email: document.getElementById('email').value,
@@ -367,7 +539,7 @@
                     cardNumber: document.getElementById('cardNumber').value,
                     expiry: document.getElementById('expiry').value,
                     cvv: document.getElementById('cvv').value,
-                    items: cartItems,
+                    items: selectedItems,
                     total: orderTotal
                 };
 
@@ -382,12 +554,18 @@
 
                     var data = await response.json();
 
+                    console.log('Checkout response:', data);
                     if (data.success) {
                         showSuccess('Order placed successfully! Redirecting...');
+                        // Store order total for thank you page
+                        localStorage.setItem('lastOrderTotal', orderTotal.toFixed(2));
+                        console.log('Redirecting to pay.html with total:', orderTotal.toFixed(2));
                         setTimeout(function() {
-                            window.location.href = '/store.html';
+                            console.log('Executing redirect now...');
+                            window.location.href = '/pay.html?total=' + orderTotal.toFixed(2);
                         }, 2000);
                     } else {
+                        console.error('Checkout failed:', data.message);
                         showError(data.message || 'Failed to place order');
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
@@ -415,12 +593,51 @@
             document.getElementById('cvv').addEventListener('input', function(e) {
                 e.target.value = e.target.value.replace(/\D/g, '');
             });
+
+            function displayCartSelection() {
+                const container = document.getElementById('cartItemsSelection');
+                
+                const cartItemsHtml = cartItems.map(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    if (!product) return '';
+
+                    // Fix: Use cartItemId for checkbox ID
+                    const checkboxId = item.cartItemId ? item.cartItemId : item.productId;
+                    return `
+                        <div class="cart-item">
+                            <input type="checkbox" id="select-${checkboxId}" checked onchange="updateSelectedTotal()">
+                            <div class="item-image">
+                                <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
+                            </div>
+                            <div class="item-details">
+                                <div class="item-name">${product.name}</div>
+                                <div class="item-description">${product.description}</div>
+                                <div class="item-price">₪${product.price.toFixed(2)}</div>
+                                <div class="quantity-display">Quantity: ${item.quantity}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                container.innerHTML = cartItemsHtml;
+                updateSelectedTotal();
+            }
+
+            function updateSelectedTotal() {
+                let total = 0;
+                cartItems.forEach(item => {
+                    // Fix: Use cartItemId for checkbox ID
+                    const checkboxId = item.cartItemId ? `select-${item.cartItemId}` : `select-${item.productId}`;
+                    const checkbox = document.getElementById(checkboxId);
+                    if (checkbox && checkbox.checked) {
+                        const product = products.find(p => p.id === item.productId);
+                        if (product) total += product.price * item.quantity;
+                    }
+                });
+                document.getElementById('selectedTotal').textContent = `₪${total.toFixed(2)}`;
+                orderTotal = total;
+                document.getElementById('orderTotal').textContent = `₪${total.toFixed(2)}`;
+            }
         </script>
     </body>
 </html>
-
-
-
-
-
-

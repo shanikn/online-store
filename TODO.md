@@ -10,7 +10,7 @@ This document captures all the beautiful possibilities and improvements for our 
 - [ ] **Cleanup Checkout & Wishlist Alerts**
   - Remove the red fallback container/alert styling so the pages stay consistent with the new theme
 
-- [ ] **Filtering**
+- [x] **Filtering**
   - Filter by product type- rings, necklaces, braceltes, watches...
   
 - [ ] **Personalization Engine**

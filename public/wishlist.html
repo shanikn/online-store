@@ -257,7 +257,7 @@
             }
 
             // Add a small delay to let authentication check complete
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 50));
 
             // Load wishlist data (with fallback demo data)
             try {
@@ -453,31 +453,38 @@
             }
 
             try {
-                // only for the demo, simulating the API call
-                // TODO:  remove these comments before submitting?
-                // (in a real app, there would be an API endpoint for this instead)
-                wishlistItems = wishlistItems.filter(item => item.id !== productId);
-                displayWishlist();
-                showSuccess('Item removed from wishlist');
-
-                // TODO: do i need this? uncomment this?
-                // Uncomment when you implement the actual API
-                /*
-                const response = await fetch(`/api/wishlist/remove/${productId}`, {
-                    method: 'DELETE'
+                // Use real API endpoint - matching the format used in store.html and collections
+                const response = await fetch('/api/wishlist/remove', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({productId: productId})
                 });
+
+                // Handle authentication required response
+                if (response.status === 401 || response.redirected && response.url.includes('login')) {
+                    alert('Please login to manage your wishlist');
+                    window.location.href = '/login.html';
+                    return;
+                }
 
                 const data = await response.json();
                 if (data.success) {
+                    // Reload wishlist from server to ensure consistency
                     await loadWishlist();
                     showSuccess('Item removed from wishlist');
+
+                    // Update badge counts if function exists
+                    if(typeof updateCartAndWishlistCounts === 'function'){
+                        updateCartAndWishlistCounts();
+                    }
                 } else {
-                    showError('Failed to remove item');
+                    showError('Failed to remove item from wishlist');
                 }
-                */
             } catch (error) {
                 console.error('Error removing item from wishlist:', error);
-                showError('Failed to remove item');
+                showError('Failed to remove item from wishlist');
             }
         }
 

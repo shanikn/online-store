@@ -86,7 +86,7 @@ module.exports = {
     async removeFromCart(req, res) {
         try {
             const username = getCurrentUser(req);
-            const cartItemId = parseFloat(req.params.cartItemId); // Use cartItemId instead of productId
+            const cartItemId = parseFloat(req.body.itemId); // Use cartItemId from request body
 
             let cart = await persist.loadCart(username);
 
@@ -112,23 +112,48 @@ module.exports = {
     async updateCart(req, res) {
         try {
             const username = getCurrentUser(req);
-            const { productId, quantity } = req.body;
+            const { itemId, quantity } = req.body;
+
+            console.log(`[DEBUG] Updating cart - itemId: ${itemId}, quantity: ${quantity}`);
 
             let cart = await persist.loadCart(username);
-            const item = cart.find(item => item.productId === productId);
+
+            // Find item by cartItemId (preferred) or fallback to productId for older items
+            let item;
+            const itemIdAsNumber = parseFloat(itemId);
+
+            // First try to find by cartItemId
+            item = cart.find(cartItem => cartItem.cartItemId === itemIdAsNumber);
+
+            // Fallback: if not found by cartItemId, try by productId (for older cart items)
+            if (!item) {
+                item = cart.find(cartItem => cartItem.productId === itemIdAsNumber);
+                console.log(`[DEBUG] Item not found by cartItemId, trying productId: ${itemIdAsNumber}`);
+            }
+
+            console.log(`[DEBUG] Found item:`, item);
 
             if (item) {
                 if (quantity === 0) {
-                    cart = cart.filter(item => item.productId !== productId);
+                    // Remove item if quantity is 0
+                    cart = cart.filter(cartItem =>
+                        cartItem.cartItemId !== itemIdAsNumber && cartItem.productId !== itemIdAsNumber
+                    );
                 } else {
                     item.quantity = quantity;
                 }
 
                 await persist.saveCart(username, cart);
-                await persist.logActivity(username, 'update-cart', { productId, quantity });
+                await persist.logActivity(username, 'update-cart', {
+                    cartItemId: item.cartItemId,
+                    productId: item.productId,
+                    quantity
+                });
 
+                console.log(`[DEBUG] Cart updated successfully`);
                 res.json({ success: true });
             } else {
+                console.log(`[DEBUG] Item not found in cart for itemId: ${itemId}`);
                 res.status(400).json({ error: 'Item not found in cart' });
             }
         } catch (error) {

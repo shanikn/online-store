@@ -137,6 +137,10 @@ app.get('/profile.html', requireAuth, (req, res)=> {
     res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });
 
+app.get('/checkout.html', requireAuth, (req, res)=> {
+    res.sendFile(path.join(__dirname, 'public', 'checkout.html'));
+});
+
 
 
 
@@ -245,36 +249,11 @@ app.get('/api/cart', requireAuthAPI, async(req, res)=> {
 });
 
 
-app.delete('/api/cart/remove/:cartItemId', requireAuthAPI, cartServer.removeFromCart);
+app.delete('/api/cart/remove', requireAuthAPI, cartServer.removeFromCart);
 
 
 // update cart quantity (also for when clearing cart after purchase- resetting quanitity to 0)
-app.put('/api/cart/update', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        const { productId, quantity }= req.body;
-
-        let cart= await persist.loadCart(username);
-        const item= cart.find(item=> item.productId===productId);
-
-        if(item){
-            if(quantity===0){
-                cart= cart.filter(item=> item.productId!==productId);
-            }
-            else{
-                item.quantity= quantity;
-            }
-        }
-
-        await persist.saveCart(username, cart);
-        res.json({ success: true});
-
-    }
-    catch(error){
-        console.error('Error updating cart:', error);
-        res.status(500).json({ error: 'Failed to update cart' });
-    }
-});
+app.put('/api/cart/update', requireAuthAPI, cartServer.updateCart);
 
 
 // clear whole cart (like after purchase)
@@ -432,6 +411,28 @@ app.post('/api/wishlist/add', requireAuthAPI, async(req, res)=>{
     catch(error){
         console.error('Error adding to wishlist:', error);
         res.status(500).json({ error: 'Failed to add to wishlist' });
+    }
+});
+
+app.delete('/api/wishlist/remove', requireAuthAPI, async(req, res)=>{
+    try{
+        const username= getCurrentUser(req);
+        const { productId }= req.body;
+
+        const wishlists= await persist.loadData('wishlists.json', {});
+        if(!wishlists[username]){
+            wishlists[username]=[];
+        }
+
+        // Remove the productId from the user's wishlist
+        wishlists[username] = wishlists[username].filter(id => id !== productId);
+        await persist.saveData('wishlists.json', wishlists);
+
+        res.json({ success: true });
+    }
+    catch(error){
+        console.error('Error removing from wishlist:', error);
+        res.status(500).json({ error: 'Failed to remove from wishlist' });
     }
 });
 

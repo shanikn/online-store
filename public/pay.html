@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Payment Successful - ShanikJewls</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="/styles/theme.css">
+    <style>
+        /* Thank you page specific styles */
+        .thank-you-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 20px 80px;
+            text-align: center;
+        }
+
+        .thank-you-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 40px rgba(125, 111, 98, 0.15);
+            border: 1px solid rgba(184, 134, 106, 0.1);
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #4CAF50;
+            margin-bottom: 24px;
+            animation: checkmark 0.6s ease-in-out;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .thank-you-title {
+            font-family: 'Fraunces', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #2f2721;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .thank-you-subtitle {
+            font-size: 18px;
+            color: #6b5d54;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .order-details {
+            background: rgba(184, 134, 106, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 32px 0;
+            text-align: left;
+        }
+
+        .order-details h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 18px;
+            color: #2f2721;
+            margin-bottom: 16px;
+        }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .order-info strong {
+            color: #2f2721;
+        }
+
+        .order-info span {
+            color: #6b5d54;
+        }
+
+        .next-steps {
+            background: rgba(76, 175, 80, 0.05);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 32px 0;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 18px;
+            color: #2e7d32;
+            margin-bottom: 16px;
+        }
+
+        .next-steps ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #4a4039;
+        }
+
+        .next-steps li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .thank-you-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .thank-you-btn {
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .thank-you-btn.primary {
+            background: linear-gradient(135deg, #b8866a 0%, #7d514b 100%);
+            color: white;
+            box-shadow: 0 10px 20px rgba(125, 81, 75, 0.2);
+        }
+
+        .thank-you-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(125, 81, 75, 0.3);
+        }
+
+        .thank-you-btn.secondary {
+            background: transparent;
+            color: #b8866a;
+            border: 2px solid #b8866a;
+        }
+
+        .thank-you-btn.secondary:hover {
+            background: #b8866a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .contact-info {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(184, 134, 106, 0.15);
+            color: #8b7f77;
+            font-size: 14px;
+        }
+
+        .contact-info a {
+            color: #b8866a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode .thank-you-card {
+            background: rgba(39, 36, 33, 0.95);
+            border-color: rgba(140, 128, 116, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .thank-you-title {
+            color: #f2ebe0;
+        }
+
+        body.dark-mode .thank-you-subtitle {
+            color: #c2b5a8;
+        }
+
+        body.dark-mode .order-details {
+            background: rgba(90, 90, 90, 0.1);
+        }
+
+        body.dark-mode .order-details h3 {
+            color: #f2ebe0;
+        }
+
+        body.dark-mode .order-info strong {
+            color: #f2ebe0;
+        }
+
+        body.dark-mode .order-info span {
+            color: #c2b5a8;
+        }
+
+        body.dark-mode .next-steps {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        body.dark-mode .next-steps h3 {
+            color: #81c784;
+        }
+
+        body.dark-mode .next-steps ul {
+            color: #d0d0d0;
+        }
+
+        body.dark-mode .thank-you-btn.primary {
+            background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .thank-you-btn.secondary {
+            color: #9a9a9a;
+            border-color: #9a9a9a;
+        }
+
+        body.dark-mode .thank-you-btn.secondary:hover {
+            background: #9a9a9a;
+            color: #1a1612;
+        }
+
+        body.dark-mode .contact-info {
+            color: #a39891;
+        }
+
+        body.dark-mode .contact-info a {
+            color: #9a9a9a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with navigation -->
+    <div class="header-shell">
+        <div class="announcement-bar">
+            <span class="announcement-pill"><i class="fa-solid fa-check-circle"></i> Order Complete</span>
+            <span>Your payment has been processed successfully.</span>
+            <button type="button" class="announcement-action" onclick="window.location.href='/store.html'">Continue Shopping <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+
+        <div class="header">
+            <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+            <div class="brand">
+                <h1>ShanikJewls</h1>
+                <span class="brand-tagline">Handcrafted Jewelry</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">OFF</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu">
+        <!-- Dynamic navigation will be populated by JavaScript -->
+    </nav>
+
+    <div class="thank-you-container">
+        <div class="thank-you-card">
+            <div class="success-icon">
+                <i class="fa-solid fa-check-circle"></i>
+            </div>
+
+            <h1 class="thank-you-title">Payment Successful!</h1>
+            <p class="thank-you-subtitle">
+                Thank you for your purchase. Your order has been confirmed and we're preparing your beautiful jewelry pieces for shipment.
+            </p>
+
+            <div class="order-details">
+                <h3><i class="fa-solid fa-receipt"></i> Order Summary</h3>
+                <div class="order-info">
+                    <strong>Order Number:</strong>
+                    <span id="orderNumber">#SJ-2024-001</span>
+                </div>
+                <div class="order-info">
+                    <strong>Order Date:</strong>
+                    <span id="orderDate">-</span>
+                </div>
+                <div class="order-info">
+                    <strong>Payment Method:</strong>
+                    <span>Credit Card (**** **** **** 1234)</span>
+                </div>
+                <div class="order-info">
+                    <strong>Total Amount:</strong>
+                    <span id="orderTotal">₪0.00</span>
+                </div>
+            </div>
+
+            <div class="next-steps">
+                <h3><i class="fa-solid fa-truck"></i> What Happens Next?</h3>
+                <ul>
+                    <li><strong>Order Confirmation:</strong> You'll receive an email confirmation within the next few minutes</li>
+                    <li><strong>Processing:</strong> We'll carefully prepare and package your items (1-2 business days)</li>
+                    <li><strong>Shipping:</strong> Your order will be shipped with tracking information provided</li>
+                    <li><strong>Delivery:</strong> Complimentary express delivery (3-5 business days)</li>
+                    <li><strong>Support:</strong> Questions? Our team is here to help at any time</li>
+                </ul>
+            </div>
+
+            <div class="thank-you-actions">
+                <a href="/store.html" class="thank-you-btn primary">
+                    <i class="fa-solid fa-store"></i>
+                    Continue Shopping
+                </a>
+                <a href="/profile.html" class="thank-you-btn secondary">
+                    <i class="fa-solid fa-user"></i>
+                    View Profile
+                </a>
+            </div>
+
+            <div class="contact-info">
+                <p>Need assistance? Contact us at <a href="/contact.html">support@shanikjewls.com</a> or call us at +972-50-123-4567</p>
+                <p>Follow your order status and manage your account in your <a href="/profile.html">customer profile</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include layout.js for shared functionality -->
+    <script src="/scripts/layout.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBaseLayout();
+            loadOrderDetails();
+        });
+
+        function loadOrderDetails() {
+            // Generate a random order number
+            const orderNumber = '#SJ-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9999) + 1).padStart(3, '0');
+            document.getElementById('orderNumber').textContent = orderNumber;
+
+            // Set current date
+            const orderDate = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('orderDate').textContent = orderDate;
+
+            // Try to get order total from URL params or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const total = urlParams.get('total') || localStorage.getItem('lastOrderTotal') || '0.00';
+            document.getElementById('orderTotal').textContent = '₪' + parseFloat(total).toFixed(2);
+
+            // Clean up stored total
+            localStorage.removeItem('lastOrderTotal');
+        }
+
+        // Function to be called from checkout when redirecting here
+        function setOrderTotal(total) {
+            localStorage.setItem('lastOrderTotal', total);
+        }
+    </script>
+</body>
+</html>

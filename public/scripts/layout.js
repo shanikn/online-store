@@ -46,8 +46,13 @@ function updateNavigation(){
         return;
     }
 
-    if(isAuthenticated){
-        sideMenu.innerHTML =
+    // Check if we're on the login or register page - these should always show non-auth menu
+    const currentPath = window.location.pathname;
+    const isAuthPage = currentPath === '/login.html' || currentPath === '/register.html';
+
+    if(isAuthenticated && !isAuthPage){
+        // Build the base menu for authenticated users
+        let menuHTML =
             '<a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>' +
             '<div class="menu-dropdown">' +
             '<a href="javascript:void(0)" onclick="toggleCollections()" class="menu-dropdown-toggle" aria-expanded="false">' +
@@ -59,14 +64,21 @@ function updateNavigation(){
             '<a href="/collection-wedding.html">Wedding & Engagement</a>' +
             '</div>' +
             '</div>' +
-            '<a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>' +
-            '<a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>' +
+            '<a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart <span id="cart-count" class="badge">0</span></a>' +
+            '<a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist <span id="wishlist-count" class="badge">0</span></a>' +
             '<a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>' +
             '<a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>' +
             '<a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>' +
-            '<a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>' +
-            '<a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>' +
-            '<button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>';
+            '<a href="/profile.html"><i class="fa-solid fa-user"></i> Profile</a>';
+
+        // Only add Admin link if user is admin
+        if(currentUser && currentUser.username === 'admin'){
+            menuHTML += '<a href="/admin.html"><i class="fa-solid fa-cog"></i> Admin</a>';
+        }
+
+        menuHTML += '<button onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>';
+
+        sideMenu.innerHTML = menuHTML;
     }
     else{
         sideMenu.innerHTML =
@@ -270,32 +282,42 @@ function initializeBaseLayout(){
 
     // Move hamburger menu button out of header
     if(menuButton && menuButton.parentElement !== document.body){
+        // Preserve onclick attribute if it exists
+        const onclickAttr = menuButton.getAttribute('onclick');
         if(overlay && overlay.parentElement){
             overlay.parentElement.insertBefore(menuButton, overlay);
         } else {
             document.body.insertBefore(menuButton, document.body.firstChild);
         }
+        // Restore onclick if it was present
+        if(onclickAttr){
+            menuButton.setAttribute('onclick', onclickAttr);
+        }
     }
 
     // Move theme toggle button out of header to be a floating button
     if(themeToggle && themeToggle.parentElement !== document.body){
+        // Preserve onclick attribute if it exists
+        const onclickAttr = themeToggle.getAttribute('onclick');
         document.body.appendChild(themeToggle);
+        // Restore onclick if it was present
+        if(onclickAttr){
+            themeToggle.setAttribute('onclick', onclickAttr);
+        }
     }
 
     // Add event listeners for menu and theme buttons
     console.log('Adding event listeners:', {menuButton: !!menuButton, themeToggle: !!themeToggle});
     if(menuButton){
-        console.log('Adding click listener to menu button');
-        menuButton.addEventListener('click', toggleMenu);
-        // Also add backup event listener
+        console.log('Setting menu button onclick handler');
+        // Ensure onclick is set after moving the button
         menuButton.onclick = toggleMenu;
     } else {
         console.error('Menu button not found!');
     }
     if(themeToggle){
-        console.log('Adding click listener to theme toggle');
-        themeToggle.addEventListener('click', toggleTheme);
-        // Also add backup event listener
+        console.log('Setting theme toggle onclick handler');
+        // Ensure onclick is set after moving the button
         themeToggle.onclick = toggleTheme;
     } else {
         console.error('Theme toggle not found!');
@@ -466,11 +488,11 @@ function updateBadge(badgeId, count){
         badge.textContent = numCount;
         console.log(`Updating badge ${badgeId} with count ${numCount}`); // Debug log
 
-        // Force remove the :empty state by setting content first
-        badge.innerHTML = numCount.toString();
+        // Update badge content and let CSS handle visibility
+        badge.textContent = numCount > 0 ? numCount.toString() : '';
 
-        // Always show badge for debugging
-        badge.style.cssText = 'position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; background: #b8866a; color: white; display: flex !important; align-items: center; justify-content: center; border-radius: 10px; font-size: 11px; font-weight: 700; z-index: 1000; visibility: visible !important; opacity: 1 !important;';
+        // Remove any inline styles and let CSS classes handle styling
+        badge.removeAttribute('style');
         badge.classList.remove('hidden');
         console.log(`=== BADGE UPDATE ===`);
         console.log(`Badge ${badgeId}: count=${numCount}, element found=${!!badge}`);
@@ -505,13 +527,13 @@ window.debugElements = function() {
 
     if(cartBadge) {
         cartBadge.innerHTML = '5';
-        cartBadge.style.cssText = 'position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; background: red; color: white; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 11px; font-weight: 700; z-index: 1000;';
+        // Let CSS handle all styling
         console.log('Forced cart badge styling');
     }
 
     if(wishlistBadge) {
         wishlistBadge.innerHTML = '3';
-        wishlistBadge.style.cssText = 'position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; background: red; color: white; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 11px; font-weight: 700; z-index: 1000;';
+        // Let CSS handle all styling
         console.log('Forced wishlist badge styling');
     }
 

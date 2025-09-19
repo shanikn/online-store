@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="/styles/theme.css">
         <style>
-            /* Cart-specific styles */
+            /* cart styles */
             .cart-container {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -22,12 +22,6 @@
                 margin-top: 40px;
             }
 
-            @media (max-width: 768px) {
-                .cart-grid {
-                    grid-template-columns: 1fr;
-                    gap: 30px;
-                }
-            }
 
             .cart-items {
                 background: rgba(255, 255, 255, 0.95);
@@ -230,7 +224,7 @@
                 box-shadow: 0 8px 16px rgba(125, 81, 75, 0.3);
             }
 
-            /* Dark mode styles */
+            /* dark mode styles */
             body.dark-mode .cart-items,
             body.dark-mode .cart-summary,
             body.dark-mode .empty-cart {
@@ -288,7 +282,7 @@
             </div>
         </div>
 
-        <!-- Side menu -->
+        <!-- side menu -->
         <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
         <nav class="side-menu" id="sideMenu">
             <!-- Dynamic navigation will be populated by JavaScript -->
@@ -446,17 +440,17 @@
                                 <div class="item-price">₪${product.price.toFixed(2)}</div>
                                 ${customizationHtml}
                                 <div class="quantity-controls">
-                                    <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})">
+                                    <button class="quantity-btn" onclick="updateQuantity('${item.cartItemId || item.productId}', ${item.quantity - 1})">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                     <span class="quantity-display">${item.quantity}</span>
-                                    <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">
+                                    <button class="quantity-btn" onclick="updateQuantity('${item.cartItemId || item.productId}', ${item.quantity + 1})">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
                             <div>
-                                <button class="remove-btn" onclick="removeFromCart('${item.id}')" title="Remove item">
+                                <button class="remove-btn" onclick="removeFromCart('${item.cartItemId || item.productId}')" title="Remove item">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -504,22 +498,29 @@
             }
 
             async function updateQuantity(itemId, newQuantity) {
+                console.log('updateQuantity called with itemId:', itemId, 'newQuantity:', newQuantity);
+
                 if (newQuantity < 1) {
                     removeFromCart(itemId);
                     return;
                 }
 
                 try {
+                    console.log('Sending update request with data:', { itemId, quantity: newQuantity });
                     const response = await fetch('/api/cart/update', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ itemId, quantity: newQuantity })
                     });
 
+                    console.log('Update response status:', response.status);
                     if (response.ok) {
+                        console.log('Update successful, reloading cart...');
                         await loadCart();
                         showSuccess('Quantity updated!', false);
                     } else {
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('Update failed:', errorData);
                         showError('Failed to update quantity');
                     }
                 } catch (error) {
@@ -529,17 +530,24 @@
             }
 
             async function removeFromCart(itemId) {
+                console.log('removeFromCart called with itemId:', itemId);
+
                 try {
+                    console.log('Sending remove request with data:', { itemId });
                     const response = await fetch('/api/cart/remove', {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ itemId })
                     });
 
+                    console.log('Remove response status:', response.status);
                     if (response.ok) {
+                        console.log('Remove successful, reloading cart...');
                         await loadCart();
                         showSuccess('Item removed from cart!', false);
                     } else {
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('Remove failed:', errorData);
                         showError('Failed to remove item');
                     }
                 } catch (error) {

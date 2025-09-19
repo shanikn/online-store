@@ -8,44 +8,53 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="/styles/theme.css">
         <style>
-            /* Login-specific styles */
+            /* Login-specific styles matching store theme */
             .login-container {
                 min-height: calc(100vh - 200px);
                 display: flex;
-                align-items: flex-start;
+                align-items: center;
                 justify-content: center;
-                padding: 60px 20px 40px;
+                padding: 120px 20px 40px;
+                background: linear-gradient(to bottom, rgba(251, 247, 240, 0.5), rgba(255, 255, 255, 0.8));
             }
 
             .login-form-card {
-                background: transparent;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
                 width: 100%;
-                max-width: 440px;
-                padding: 48px 40px;
+                max-width: 480px;
+                padding: 56px 48px;
+                border-radius: 24px;
+                box-shadow: 0 20px 40px rgba(125, 111, 98, 0.15);
+                border: 1px solid rgba(184, 134, 106, 0.1);
             }
 
             .login-title {
-                font-size: 32px;
+                font-family: 'Fraunces', serif;
+                font-size: 36px;
                 font-weight: 700;
                 text-align: center;
-                margin-bottom: 16px;
-                color: var(--text-primary);
+                margin-bottom: 12px;
+                color: #2f2721;
+                letter-spacing: -0.5px;
             }
 
             .login-subtitle {
                 text-align: center;
-                color: var(--text-secondary);
-                margin-bottom: 32px;
-                font-size: 14px;
+                color: #6b5d54;
+                margin-bottom: 36px;
+                font-size: 15px;
             }
 
             .login-subtitle a {
-                color: var(--accent-gold);
+                color: #b8866a;
                 text-decoration: none;
-                font-weight: 500;
+                font-weight: 600;
+                transition: color 0.3s ease;
             }
 
             .login-subtitle a:hover {
+                color: #7d514b;
                 text-decoration: underline;
             }
 
@@ -58,52 +67,55 @@
             .form-group {
                 display: flex;
                 flex-direction: column;
-                gap: 8px;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                font-size: 13px;
+                font-weight: 600;
+                color: #6b5d54;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
 
             .form-group input {
                 width: 100%;
-                padding: 14px 16px;
+                padding: 16px 18px;
                 font-size: 15px;
-                border: none;
-                border-bottom: 2px solid rgba(162, 150, 138, 0.3);
-                border-radius: 0;
-                transition: all 0.2s ease;
-                background: transparent;
+                border: 1px solid rgba(184, 134, 106, 0.2);
+                border-radius: 12px;
+                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.7);
+                font-family: inherit;
             }
 
             .form-group input:focus {
                 outline: none;
-                border-bottom-color: var(--accent-gold);
+                border-color: #b8866a;
+                background: white;
+                box-shadow: 0 0 0 3px rgba(184, 134, 106, 0.1);
             }
 
             .form-group input::placeholder {
-                color: var(--text-secondary);
-                opacity: 0.7;
+                color: #a39891;
+                opacity: 0.8;
             }
 
-            input[type="text"]::placeholder,
-            input[type="password"]::placeholder {
-                color: #6c757d;
-            }
-
-            input[type="text"]:focus, input[type="password"]:focus{
-                outline: none;
-                border-bottom-color: #3b82f6;
-                background: rgba(59, 130, 246, 0.02);
-            }
 
             .checkbox-group {
                 display: flex;
                 align-items: center;
-                gap: 8px;
-                margin-top: 8px;
+                gap: 10px;
+                margin-top: 12px;
+                margin-bottom: 8px;
             }
 
             input[type="checkbox"] {
-                width: 18px;
-                height: 18px;
+                width: 20px;
+                height: 20px;
                 cursor: pointer;
+                accent-color: #b8866a;
             }
 
             .checkbox-group label {
@@ -111,29 +123,30 @@
                 font-size: 14px;
                 cursor: pointer;
                 user-select: none;
+                color: #6b5d54;
+                font-weight: 500;
             }
 
             .submit-btn {
-                background: transparent;
-                color: #3b82f6;
-                border: 1px solid #3b82f6;
-                padding: 10px 24px;
-                border-radius: 25px;
-                font-size: 14px;
+                background: linear-gradient(135deg, #b8866a 0%, #7d514b 100%);
+                color: white;
+                border: none;
+                padding: 16px 48px;
+                border-radius: 30px;
+                font-size: 15px;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.3s ease;
-                margin-top: 24px;
-                width: auto;
-                min-width: 120px;
-                align-self: center;
+                margin-top: 28px;
+                width: 100%;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                box-shadow: 0 10px 20px rgba(125, 81, 75, 0.2);
             }
 
             .submit-btn:hover {
-                background: #3b82f6;
-                color: white;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                transform: translateY(-2px);
+                box-shadow: 0 12px 24px rgba(125, 81, 75, 0.3);
             }
 
             .submit-btn:active {
@@ -142,150 +155,115 @@
 
             .footer-text {
                 text-align: center;
-                margin-top: 24px;
+                margin-top: 32px;
                 font-size: 14px;
-                color: #6c757d;
+                color: #8b7f77;
             }
 
             .footer-text a {
-                color: #3b82f6;
+                color: #b8866a;
                 text-decoration: none;
-                font-weight: 500;
+                font-weight: 600;
             }
 
             .footer-text a:hover {
+                color: #7d514b;
                 text-decoration: underline;
             }
 
             #error {
-                background: #fee;
-                border: 1px solid #fcc;
-                color: #c00;
-                padding: 12px;
-                border-radius: 8px;
+                background: rgba(220, 53, 69, 0.1);
+                border: 1px solid rgba(220, 53, 69, 0.2);
+                color: #dc3545;
+                padding: 14px 16px;
+                border-radius: 12px;
                 font-size: 14px;
-                margin-top: 16px;
+                margin-top: 20px;
                 text-align: center;
+                font-weight: 500;
             }
 
             .caps-lock-warning{
-                color: blue;
+                color: #b8866a;
                 padding: 8px 12px;
-                border-radius: 4px;
-                font-size: 14px;
-                margin-top: 5px;
+                border-radius: 8px;
+                font-size: 13px;
+                margin-top: 8px;
                 display: none;
-                font-size: small;
-            }
-
-            /* theme toggle button */
-            .theme-toggle{
-                position: fixed;
-                top: 35px;
-                right: 20px;
-                background: #f0f0f0;
-                border: 2px solid #ddd;
-                border-radius: 20px;
-                width: 100px;
-                height: 40px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                font-size: 14px;
-                font-weight: bold;
-                transition: all 0.3s ease;
-                z-index: 1002;
-                color: #333;
-            }
-
-            .theme-toggle:hover{
-                background: #e0e0e0;
-                transform: scale(1.05);
-            }
-
-            .theme-toggle #themeIcon{
-                font-size: 16px;
+                background: rgba(184, 134, 106, 0.1);
+                border: 1px solid rgba(184, 134, 106, 0.2);
             }
 
             /* dark mode styles */
             body.dark-mode{
-                background-color: #0f0f0f;
+                background: linear-gradient(to bottom, #1a1612, #0f0d0a);
                 color: #e0e0e0;
-                display: flex;
-                align-items: flex-start;
-                justify-content: center;
-                padding-top: 80px;
             }
 
-            body.dark-mode .form-container {
-                background: transparent;
+            body.dark-mode .login-container {
+                background: linear-gradient(to bottom, rgba(26, 22, 18, 0.5), rgba(15, 13, 10, 0.8));
             }
 
-            body.dark-mode h1 {
-                color: #ffffff;
+            body.dark-mode .login-form-card {
+                background: rgba(39, 36, 33, 0.95);
+                border-color: rgba(140, 128, 116, 0.2);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             }
 
-            body.dark-mode .subtitle {
-                color: #9ca3af;
+            body.dark-mode .login-title {
+                color: #f2ebe0;
+            }
+
+            body.dark-mode .login-subtitle {
+                color: #c2b5a8;
+            }
+
+            body.dark-mode .form-group label {
+                color: #c2b5a8;
             }
 
             body.dark-mode input[type="text"],
             body.dark-mode input[type="password"] {
-                background: transparent;
-                border-bottom-color: #374151;
+                background: rgba(0, 0, 0, 0.3);
+                border-color: rgba(140, 128, 116, 0.3);
                 color: #e0e0e0;
             }
 
             body.dark-mode input[type="text"]:focus,
             body.dark-mode input[type="password"]:focus {
-                border-bottom-color: #3b82f6;
-                background: rgba(59, 130, 246, 0.05);
+                border-color: #7a7a7a;
+                background: rgba(0, 0, 0, 0.5);
+                box-shadow: 0 0 0 3px rgba(122, 122, 122, 0.15);
+            }
+
+            body.dark-mode .checkbox-group label {
+                color: #c2b5a8;
             }
 
             body.dark-mode .footer-text {
-                color: #9ca3af;
+                color: #a39891;
             }
 
             body.dark-mode #error {
-                background: #2a1a1a;
-                border-color: #4a2a2a;
+                background: rgba(220, 53, 69, 0.15);
+                border-color: rgba(220, 53, 69, 0.3);
                 color: #ff9999;
             }
 
-            body.dark-mode .theme-toggle{
-                background: #2d2d2d;
-                border-color: #555;
-                color: #e0e0e0;
+            body.dark-mode .login-subtitle a,
+            body.dark-mode .footer-text a {
+                color: #8a8a8a;
             }
 
-            body.dark-mode .theme-toggle:hover{
-                background: #3d3d3d;
-            }
-
-            body.dark-mode a{
-                color: #66b3ff;
+            body.dark-mode .login-subtitle a:hover,
+            body.dark-mode .footer-text a:hover {
+                color: #b0b0b0;
             }
 
             body.dark-mode .caps-lock-warning{
-                color: #66b3ff;
-            }
-
-            body.dark-mode label{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode p{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode h1, body.dark-mode h2, body.dark-mode h3{
-                color: #e0e0e0;
-            }
-
-            body.dark-mode span, body.dark-mode div{
-                color: #e0e0e0;
+                color: #9a9a9a;
+                background: rgba(154, 154, 154, 0.15);
+                border-color: rgba(154, 154, 154, 0.3);
             }
 
             /* password visibility toggle */
@@ -298,161 +276,48 @@
 
             .password-container input {
                 flex: 1;
-                padding-right: 40px;
+                padding-right: 48px;
             }
 
             .password-toggle{
                 position: absolute;
-                right: 0;
+                right: 12px;
                 top: 50%;
                 transform: translateY(-50%);
                 cursor: pointer;
                 font-size: 18px;
-                color: #666;
+                color: #a39891;
                 user-select: none;
-                padding: 5px;
+                padding: 8px;
                 background: transparent;
                 border: none;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                transition: color 0.3s ease;
             }
 
             .password-toggle:hover{
-                color: #3b82f6;
+                color: #b8866a;
             }
 
             body.dark-mode .password-toggle{
-                color: #9ca3af;
+                color: #8b7f77;
             }
 
             body.dark-mode .password-toggle:hover{
-                color: #3b82f6;
-            }
-
-            /* navigation menu styles - SIMPLE LIKE OTHER SCREENS */
-            .menu {
-                position: fixed;
-                top: 35px;
-                left: 20px;
-                display: flex;
-                flex-direction: column;
-                cursor: pointer;
-                background: none;
-                border: none;
-                padding: 5px;
-                z-index: 1002;
-            }
-
-            .menu i {
-                display: block;
-                width: 25px;
-                height: 3px;
-                background: black;
-                margin: 3px 0;
-                transition: 0.3s;
-            }
-
-            .side-menu {
-                position: fixed;
-                top: 0;
-                left: -300px;
-                width: 280px;
-                height: 100vh;
-                background: linear-gradient(180deg, #D4AF37 0%, #B8860B 100%);
-                transition: left 0.3s ease;
-                z-index: 1000;
-                padding-top: 80px;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-                overflow-y: auto;
-            }
-
-            .side-menu.active {
-                left: 0;
-            }
-
-            .side-menu a {
-                display: block;
-                color: white;
-                text-decoration: none;
-                padding: 15px 20px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                transition: background 0.3s;
-            }
-
-            .side-menu a:hover {
-                background: rgba(255, 255, 255, 0.2);
-            }
-
-            .side-menu a i, .side-menu button i{
-                margin-right: 10px;
-                width: 16px;
-                text-align: center;
-            }
-
-            .side-menu button {
-                width: calc(100% - 40px);
-                margin: 15px 20px;
-                background: #d32f2f;
-                color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background 0.3s;
-            }
-
-            .side-menu button:hover {
-                background: #b71c1c;
-            }
-
-            .menu-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: none;
-                z-index: 999;
-            }
-
-            .menu-overlay.active {
-                display: block;
-            }
-
-            /* dark mode navigation */
-            body.dark-mode .menu i{
-                background: white;
-            }
-
-            body.dark-mode .side-menu{
-                background: linear-gradient(180deg, #B8860B 0%, #8B7355 100%);
-            }
-
-            body.dark-mode .side-menu a{
-                border-bottom-color: rgba(255, 255, 255, 0.1);
-            }
-
-            body.dark-mode .side-menu a:hover{
-                background: rgba(255, 255, 255, 0.1);
-            }
-
-            body.dark-mode .side-menu a{
-                color: white !important;
+                color: #9a9a9a;
             }
 
             /* dark mode button */
             body.dark-mode .submit-btn {
-                color: #3b82f6;
-                border-color: #3b82f6;
-                background: transparent;
+                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+                color: #f0f0f0;
+                box-shadow: 0 10px 20px rgba(106, 106, 106, 0.2);
             }
 
             body.dark-mode .submit-btn:hover {
-                background: #3b82f6;
-                color: white;
+                box-shadow: 0 12px 24px rgba(106, 106, 106, 0.3);
             }
         </style>
     </head>
@@ -480,7 +345,7 @@
         </div>
 
         <!-- Side menu -->
-        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        <div class="menu-overlay" id="menuOverlay"></div>
         <nav class="side-menu" id="sideMenu">
             <!-- Dynamic navigation will be populated by JavaScript -->
         </nav>
@@ -551,32 +416,14 @@
                 capsLockWarning.style.display = 'none';
             });
 
-            // on page load - check if username was saved and initialize theme
+            // on page load - check if username was saved
             window.onload = function() {
                 const savedUsername = localStorage.getItem('rememberedUsername');
                 if (savedUsername) {
                     document.getElementById('username').value = savedUsername;
                     document.getElementById('rememberMe').checked = true;
                 }
-                initializeTheme();
             };
-
-            // dark mode functionality
-            function initializeTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                const themeIcon = document.getElementById('themeIcon');
-                const themeText = document.getElementById('themeText');
-
-                if (savedTheme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'ON';
-                } else {
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'OFF';
-                }
-            }
-
 
             // password visibility toggle
             function togglePasswordVisibility(inputId, toggleElement) {
@@ -645,26 +492,7 @@
             });
         });
 
-        // navigation functions
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavigation();
-        });
-
-        function updateNavigation() {
-            const sideMenu = document.getElementById('sideMenu');
-
-            // login page shows non-authenticated navigation
-            sideMenu.innerHTML = `
-                <a href="/store.html"><i class="fa-solid fa-store"></i> Store</a>
-                <a href="/login.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>
-                <a href="/login.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
-                <a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>
-                <a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-                <a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>
-                <a href="/login.html"><i class="fa-solid fa-sign-in-alt"></i> Login</a>
-                <a href="/register.html"><i class="fa-solid fa-user-plus"></i> Register</a>
-            `;
-        }
+        // Navigation will be handled by layout.js
 
     </script>
     </body>

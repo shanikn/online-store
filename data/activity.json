@@ -1325,5 +1325,96 @@
     "username": "admin",
     "activityType": "login",
     "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T12:57:54.678Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T13:03:57.018Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T20:25:57.707Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 6
+    }
+  },
+  {
+    "timestamp": "2025-09-18T20:29:51.230Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 11,
+      "customization": {
+        "ringSize": "5"
+      }
+    }
+  },
+  {
+    "timestamp": "2025-09-18T20:31:54.359Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-18T20:55:51.682Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 4
+    }
+  },
+  {
+    "timestamp": "2025-09-18T21:08:21.012Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 14
+    }
+  },
+  {
+    "timestamp": "2025-09-18T21:16:55.263Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T21:18:28.328Z",
+    "username": "shani",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-18T21:18:49.823Z",
+    "username": "shani",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 6
+    }
+  },
+  {
+    "timestamp": "2025-09-18T21:19:03.061Z",
+    "username": "shani",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-18T21:19:31.033Z",
+    "username": "shani",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 23
+    }
   }
 ]

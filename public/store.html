@@ -19,13 +19,13 @@
             </div>
 
             <div class="header">
-                <button class="menu" id="menu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+                <button class="menu" id="menu" aria-label="Toggle menu" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
                 <div class="brand">
                     <h1>ShanikJewls</h1>
                     <span class="brand-tagline">Handcrafted Jewelry</span>
                 </div>
                 <div class="header-actions">
-                    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" onclick="toggleTheme()">
                         <span id="themeIcon">🌙</span>
                         <span id="themeText">OFF</span>
                     </button>
@@ -58,12 +58,8 @@
                             <!-- Search suggestions will be populated here -->
                         </div>
                     </div>
-                    <!-- Cart and wishlist buttons -->
+                    <!-- Cart button -->
                     <div class="toolbar-icons">
-                        <a href="#" onclick="checkAuthAndRedirect('/wishlist.html'); return false;" class="icon-btn">
-                            <i class="fas fa-heart"></i>
-                            <span class="badge" id="wishlist-count"></span>
-                        </a>
                         <a href="#" onclick="checkAuthAndRedirect('/cart.html'); return false;" class="icon-btn">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="badge" id="cart-count"></span>
@@ -342,8 +338,8 @@
                     initializeFilterControls();
                     applySort();
 
-                    // Load wishlist status after products are displayed
-                    setTimeout(loadWishlistStatus, 100);
+                    // Load wishlist status after products are displayed - single call with proper timing
+                    setTimeout(loadWishlistStatus, 150);
                 }
                 catch(error){
                     console.error('Error loading products: ', error);
@@ -446,8 +442,15 @@
                 }).join('');
                 smoothSwapProducts(newHTML);
 
-                // Load wishlist status after products are displayed
-                loadWishlistStatus();
+                // Load wishlist status after products are displayed - only if not already loading
+                if (!window.wishlistStatusLoading) {
+                    window.wishlistStatusLoading = true;
+                    setTimeout(() => {
+                        loadWishlistStatus().finally(() => {
+                            window.wishlistStatusLoading = false;
+                        });
+                    }, 150);
+                }
             }
 
             function showAllProducts(){
@@ -591,23 +594,23 @@
                         const wishlistItems = Array.isArray(wishlistData) ? wishlistData : wishlistData.items;
 
                         if(wishlistItems && wishlistItems.length > 0){
-                            // Get all product IDs in wishlist
+                            // Get all product IDs in wishlist - handle both productId and id formats
                             const wishlistProductIds = wishlistItems.map(item => item.productId || item.id);
 
                             // Update heart icons for products in wishlist
                             wishlistProductIds.forEach(productId => {
                                 const wishlistBtn = document.querySelector(`[data-product-id="${productId}"]`);
+
                                 if(wishlistBtn){
                                     wishlistBtn.classList.add('added');
                                     wishlistBtn.querySelector('i').className = 'fa-solid fa-heart';
                                     wishlistBtn.title = 'Remove from Wishlist';
                                 }
                             });
-
-                            console.log(`Loaded wishlist status for ${wishlistProductIds.length} items`);
                         }
                     } else if(response.status === 401) {
-                        console.log('User not authenticated - wishlist status not loaded');
+                        // User not authenticated - this is expected for non-logged-in users
+                        return;
                     }
                 } catch(error){
                     console.error('Error loading wishlist status:', error);

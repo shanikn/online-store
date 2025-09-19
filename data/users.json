@@ -3,7 +3,8 @@
     "username": "admin",
     "password": "admin",
     "role": "admin",
-    "createdAt": "2025-09-13T18:53:04.664Z"
+    "createdAt": "2025-09-13T18:53:04.664Z",
+    "email": "shanik867@gmail.com"
   },
   {
     "username": "testuser_1757978266665",
@@ -88,5 +89,9 @@
     "password": "testpass123",
     "role": "user",
     "createdAt": "2025-09-15T23:30:29.477Z"
+  },
+  {
+    "username": "shani",
+    "password": "123456"
   }
 ]
