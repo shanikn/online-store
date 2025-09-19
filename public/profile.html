@@ -315,6 +315,82 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(155, 138, 127, 0.4);
         }
+
+        /* Start Shopping link styling */
+        .start-shopping-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #b8866a, #9b6c3f);
+            color: white !important;
+            padding: 16px 32px;
+            text-decoration: none !important;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(184, 134, 106, 0.3);
+            margin-left: 8px;
+        }
+
+        .start-shopping-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(184, 134, 106, 0.4);
+            background: linear-gradient(135deg, #c4926f, #a67546);
+            text-decoration: none !important;
+        }
+
+        .start-shopping-link:before {
+            content: '🛍️';
+            margin-right: 8px;
+        }
+
+        body.dark-mode .start-shopping-link {
+            background: linear-gradient(135deg, #938276, #82746a);
+            box-shadow: 0 4px 12px rgba(147, 130, 118, 0.3);
+        }
+
+        body.dark-mode .start-shopping-link:hover {
+            background: linear-gradient(135deg, #a38c7f, #927d73);
+            box-shadow: 0 8px 20px rgba(147, 130, 118, 0.4);
+        }
+
+        .no-purchases-message {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, rgba(248, 245, 240, 0.8), rgba(244, 240, 234, 0.9));
+            border-radius: 20px;
+            border: 1px solid rgba(184, 134, 106, 0.2);
+            box-shadow: 0 12px 24px rgba(107, 87, 68, 0.1);
+            backdrop-filter: blur(8px);
+            margin: 20px 0;
+        }
+
+        .no-purchases-message p {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #5a4f42;
+            margin: 0 0 25px;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
+        }
+
+        .no-purchases-message p:before {
+            content: '📦';
+            display: block;
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        body.dark-mode .no-purchases-message {
+            background: linear-gradient(135deg, rgba(32, 29, 27, 0.8), rgba(26, 23, 21, 0.9));
+            border-color: rgba(147, 130, 118, 0.3);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .no-purchases-message p {
+            color: #e8ded2;
+        }
     </style>
 </head>
 <body>
@@ -423,7 +499,9 @@
                 document.getElementById('currentUsername').textContent = userData.username;
                 document.getElementById('currentEmail').textContent = userData.email || 'Not set';
                 document.getElementById('currentRole').textContent = userData.role || 'user';
-                document.getElementById('memberSince').textContent = new Date(userData.createdAt).toLocaleDateString();
+                document.getElementById('memberSince').textContent = userData.createdAt
+                    ? new Date(userData.createdAt).toLocaleDateString()
+                    : 'Not available';
 
                 document.getElementById('newUsername').value = userData.username;
                 document.getElementById('newEmail').value = userData.email || '';
@@ -451,7 +529,12 @@
             const container = document.getElementById('purchaseHistory');
 
             if (purchases.length === 0) {
-                container.innerHTML = '<p>No purchases yet. <a href="/store.html">Start shopping!</a></p>';
+                container.innerHTML = `
+                    <div class="no-purchases-message">
+                        <p>No purchases yet.</p>
+                        <a href="/store.html" class="start-shopping-link">Start Shopping!</a>
+                    </div>
+                `;
                 return;
             }
 

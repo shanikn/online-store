@@ -395,36 +395,68 @@
             }
 
             async function addToWishlist(productId, buttonElement){
+                // Check authentication first
+                if(typeof isAuthenticated !== 'undefined' && !isAuthenticated) {
+                    alert('Please login to manage your wishlist');
+                    window.location.href = '/login.html';
+                    return;
+                }
                 try{
-                    const response = await fetch('/api/wishlist/add', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ productId: productId })
-                    });
-
-                    if(response.status === 401 || (response.redirected && response.url.indexOf('login') !== -1)){
-                        alert('Please login to add items to your wishlist');
-                        window.location.href = '/login.html';
-                        return;
-                    }
-
-                    const data = await response.json();
-
-                    if(data.success){
-                        if(buttonElement){
-                            buttonElement.classList.add('added');
-                            setTimeout(function(){ buttonElement.classList.remove('added'); }, 600);
+                    // Check if item is already in wishlist
+                    const isInWishlist = buttonElement.classList.contains('added');
+                    if(isInWishlist) {
+                        // Remove from wishlist
+                        const response = await fetch('/api/wishlist/remove', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({productId: productId})
+                        });
+                        // If user is not authenticated, redirect to login
+                        if(response.status === 401 || response.redirected && response.url.includes('login')){
+                            alert('Please login to manage your wishlist');
+                            window.location.href = '/login.html';
+                            return;
                         }
-                        showWishlistSuccess('Item added to wishlist! ❤️');
-                    }
-                    else{
-                        showError('Failed to add item to wishlist');
+                        const data = await response.json();
+                        if(data.success){
+                            buttonElement.classList.remove('added');
+                            buttonElement.querySelector('i').className = 'fa-regular fa-heart';
+                            buttonElement.title = 'Add to Wishlist';
+                            showWishlistSuccess('Removed from wishlist');
+                        } else {
+                            showError('Failed to remove from wishlist');
+                        }
+                    } else {
+                        // Add to wishlist
+                        const response= await fetch('/api/wishlist/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ productId: productId })
+                        });
+                        // If user is not authenticated, redirect to login
+                        if(response.status === 401 || response.redirected && response.url.includes('login')){
+                            alert('Please login to add items to your wishlist');
+                            window.location.href = '/login.html';
+                            return;
+                        }
+                        const data= await response.json();
+                        if(data.success){
+                            buttonElement.classList.add('added');
+                            buttonElement.querySelector('i').className = 'fa-solid fa-heart';
+                            buttonElement.title = 'Remove from Wishlist';
+                            showWishlistSuccess('Item added to wishlist! ❤️');
+                        }
+                        else{
+                            showError('Failed to add item to wishlist');
+                        }
                     }
                 }
                 catch(error){
-                    console.error('Error adding item to wishlist', error);
+                    console.error('Error with wishlist', error);
                     showError('Connection error. Please try again.');
                 }
             }

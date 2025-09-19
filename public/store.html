@@ -25,7 +25,7 @@
                     <span class="brand-tagline">Handcrafted Jewelry</span>
                 </div>
                 <div class="header-actions">
-                    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" onclick="toggleTheme()">
+                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
                         <span id="themeIcon">🌙</span>
                         <span id="themeText">OFF</span>
                     </button>
@@ -58,8 +58,12 @@
                             <!-- Search suggestions will be populated here -->
                         </div>
                     </div>
-                    <!-- Cart button -->
+                    <!-- Cart and wishlist buttons -->
                     <div class="toolbar-icons">
+                        <a href="#" onclick="checkAuthAndRedirect('/wishlist.html'); return false;" class="icon-btn">
+                            <i class="fas fa-heart"></i>
+                            <span class="badge" id="wishlist-count"></span>
+                        </a>
                         <a href="#" onclick="checkAuthAndRedirect('/cart.html'); return false;" class="icon-btn">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="badge" id="cart-count"></span>
@@ -442,15 +446,10 @@
                 }).join('');
                 smoothSwapProducts(newHTML);
 
-                // Load wishlist status after products are displayed - only if not already loading
-                if (!window.wishlistStatusLoading) {
-                    window.wishlistStatusLoading = true;
-                    setTimeout(() => {
-                        loadWishlistStatus().finally(() => {
-                            window.wishlistStatusLoading = false;
-                        });
-                    }, 150);
-                }
+                // Load wishlist status after products are displayed with simple timing
+                setTimeout(() => {
+                    loadWishlistStatus();
+                }, 150);
             }
 
             function showAllProducts(){

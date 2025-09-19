@@ -727,15 +727,17 @@
         async function loadDashboard() {
             try {
                 // load statistics
-                const [activitiesRes, productsRes, usersRes] = await Promise.all([
+                const [activitiesRes, productsRes, usersRes, salesRes] = await Promise.all([
                     fetch('/api/admin/activities'),
                     fetch('/api/products'),
-                    fetch('/api/users').catch(() => ({ json: () => [] }))
+                    fetch('/api/users').catch(() => ({ json: () => [] })),
+                    fetch('/api/admin/sales')
                 ]);
 
                 activities = await activitiesRes.json();
                 products = await productsRes.json();
                 users = await usersRes.json().catch(() => []);
+                const salesData = await salesRes.json();
 
                 // update stats
                 document.getElementById('totalUsers').textContent = users.length || '3';
@@ -748,8 +750,8 @@
                 ).length;
                 document.getElementById('todayActivities').textContent = todayActivities;
 
-                // calculate total sales (fake data for now)
-                document.getElementById('totalSales').textContent = '₪12,345';
+                // display real sales data
+                document.getElementById('totalSales').textContent = `₪${salesData.totalSales}`;
 
                 // show recent activities
                 displayRecentActivities(activities.slice(0, 5));

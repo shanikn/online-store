@@ -183,7 +183,7 @@ module.exports = {
             let cart = await persist.loadCart(username);
 
             // Find the item in cart by productId
-            const item = cart.find(item => item.productId === productId);
+            const item = cart.find(item => item.cartItemId === cartItemId);
 
             if (item) {
                 // Update the customization
@@ -203,4 +203,5 @@ module.exports = {
             res.status(500).json({ error: 'Failed to update customization' });
         }
     }
+
 };

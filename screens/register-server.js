@@ -15,7 +15,13 @@ module.exports = {
             }
 
             // add new user
-            const newUser = { username, password };
+            const newUser = {
+                username,
+                password,
+                email: req.body.email,
+                role: 'user',
+                createdAt: new Date().toISOString()
+            };
             users.push(newUser);
 
             // save updated users

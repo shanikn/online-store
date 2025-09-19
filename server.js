@@ -5,8 +5,13 @@ const path= require('path');
 const persist= require('./persist_module');
 // const cors = require('cors'); // For React conversion later 
 
+
+function getCurrentUser(req) {
+    return req.cookies.userToken || null;
+}
+
+
 // screen modules imports 
-// TODO:(uncomment after implementing them)
 const loginServer = require('./screens/login-server');
 const storeServer = require('./screens/store-server');
 const adminServer = require('./screens/admin-server');
@@ -27,7 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
-
 
 // helper functions
 
@@ -148,106 +152,11 @@ app.get('/checkout.html', requireAuth, (req, res)=> {
 // Public API - no auth required for browsing products
 app.get('/api/products', storeServer.getProducts);
 
-
-app.post('/api/cart/add', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        const { productId, customization }= req.body;
-
-        console.log(`[DEBUG] Adding to cart - Username: ${username}, ProductId: ${productId} (type: ${typeof productId}), Customization:`, customization);
-
-        // get the user cart
-        const cart= await persist.loadCart(username);
-        console.log(`[DEBUG] Current cart before add:`, cart);
-
-        // For customizable items, always add as new item since each customization is unique
-        if(customization && Object.keys(customization).length > 0) {
-            cart.push({
-                productId,
-                quantity: 1,
-                customization,
-                addedAt: new Date().toISOString()
-            });
-            console.log(`[DEBUG] Added new customized item to cart`);
-        } else {
-            // add the new item to cart (if item already exists, add 1 to quantity)
-            const existingItem= cart.find(item=> item.productId === productId && !item.customization);
-            if(existingItem){
-                existingItem.quantity+=1;
-                console.log(`[DEBUG] Updated existing item quantity to ${existingItem.quantity}`);
-            }
-            else{
-                cart.push({ productId, quantity: 1, addedAt: new Date().toISOString() });
-                console.log(`[DEBUG] Added new item to cart`);
-            }
-        }
-
-        // save the cart
-        await persist.saveCart(username, cart);
-        console.log(`[DEBUG] Cart after save:`, cart);
-
-        // log activity
-        await persist.logActivity(username, 'add-to-cart', { productId, customization });
-        res.json({ success: true });
-    }
-    catch(error){
-        console.error('Error adding to cart: ', error);
-        res.status(500).json({ error: 'Failed to add to cart' });
-    }
-});
+// add item to cart
+app.post('/api/cart/add', requireAuthAPI, cartServer.addToCart);
 
 // get user cart
-app.get('/api/cart', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-
-        // First call our cart server to get cart with cartItemIds (migration happens there)
-        let cart = await persist.loadCart(username);
-
-        // Migration: Add cartItemId to existing items that don't have it
-        let cartUpdated = false;
-        cart = cart.map(item => {
-            if (!item.cartItemId) {
-                item.cartItemId = Date.now() + Math.random();
-                cartUpdated = true;
-                console.log(`[DEBUG] Added cartItemId ${item.cartItemId} to existing item with productId ${item.productId}`);
-            }
-            return item;
-        });
-
-        // Save the cart if we added any cartItemIds
-        if (cartUpdated) {
-            await persist.saveCart(username, cart);
-            console.log(`[DEBUG] Updated cart with cartItemIds for ${username}`);
-        }
-
-        // Enrich cart items with product details
-        const products = await persist.loadProducts();
-        const enrichedCart = cart.map(cartItem => {
-            const product = products.find(p => p.id === cartItem.productId);
-            if (!product) {
-                console.warn(`Product with ID ${cartItem.productId} not found`);
-                return null;
-            }
-            return {
-                ...cartItem,
-                name: product.name,
-                description: product.description,
-                price: product.price,
-                image: product.image,
-                customizable: product.customizable
-            };
-        }).filter(item => item !== null); // Remove null items (products not found)
-
-        console.log(`[DEBUG] Loading enriched cart for ${username}:`, enrichedCart);
-        res.json(enrichedCart);
-    }
-    catch(error){
-        console.error('Error loading cart:', error);
-        res.status(500).json({ error: 'Failed to load cart' });
-    }
-});
-
+app.get('/api/cart', requireAuthAPI, cartServer.getCart);
 
 app.delete('/api/cart/remove', requireAuthAPI, cartServer.removeFromCart);
 
@@ -257,17 +166,8 @@ app.put('/api/cart/update', requireAuthAPI, cartServer.updateCart);
 
 
 // clear whole cart (like after purchase)
-app.delete('/api/cart/clear', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        await persist.saveCart(username, []);
-        res.json({ success: true });
-    }
-    catch(error){
-        console.error('Error clearing cart:', error);
-        res.status(500).json({ error: 'Failed to clear cart' });
-    }
-});
+app.delete('/api/cart/clear', requireAuthAPI, cartServer.clearCart);
+
 
 // update cart item customization
 app.put('/api/cart/update-customization', requireAuthAPI, cartServer.updateCustomization);
@@ -300,6 +200,37 @@ app.get('/api/purchases', requireAuthAPI, async(req, res)=> {
     catch(error){
         console.error('Error loading purchases:', error);
         res.status(500).json({ error: 'Failed to load purchases' });
+    }
+});
+
+
+// get sales data for admin dashboard
+app.get('/api/admin/sales', requireAuthAPI, async(req, res)=> {
+    try{
+        const allPurchases= await persist.loadData('purchases.json', {});
+
+        let totalSales = 0;
+        let totalOrders = 0;
+
+        // calculate total sales across all users
+        Object.values(allPurchases).forEach(userPurchases => {
+            if(Array.isArray(userPurchases)){
+                userPurchases.forEach(purchase => {
+                    totalSales += purchase.total || 0;
+                    totalOrders++;
+                });
+            }
+        });
+
+        res.json({
+            totalSales: totalSales.toFixed(2),
+            totalOrders,
+            currency: '₪'
+        });
+    }
+    catch(error){
+        console.error('Error loading sales data:', error);
+        res.status(500).json({ error: 'Failed to load sales data' });
     }
 });
 
@@ -349,28 +280,36 @@ app.post('/api/contact', requireAuthAPI, async(req, res)=> {
     }
 });
 
-
 app.put('/api/profile', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        const { newUsername, email }= req.body;
+    try {
+        const oldUsername = getCurrentUser(req);
+        const { newUsername, email } = req.body;
+        
+        // migrate user data
+        const cart = await persist.loadCart(oldUsername);
+        const wishlist = await persist.loadData('wishlists.json', {});
+        const purchases = await persist.getPurchases(oldUsername);
+    
+        await persist.saveCart(newUsername, cart);
+        if (wishlist[oldUsername]) {
+            wishlist[newUsername] = wishlist[oldUsername];
+            delete wishlist[oldUsername];
+            await persist.saveData('wishlists.json', wishlist);
+        }        
 
-        const users= await persist.loadUsers();
-        const userIndex= users.findIndex(u=> u.username===username);
-
-        if(userIndex!==-1){
-            users[userIndex]= {...users[userIndex], username: newUsername, email };
-            await persist.saveUsers(users);
-        }
-
+        // update users and set new cookie
+        const users = await persist.loadUsers();
+        const userIndex = users.findIndex(u => u.username === oldUsername);
+        users[userIndex] = {...users[userIndex], username: newUsername, email};
+        await persist.saveUsers(users);
+        
+        res.cookie('userToken', newUsername, {maxAge: 12*24*60*60*1000});
         res.json({ success: true });
-    }
-    catch(error){
+    } catch (error) {
         console.error('Error updating profile:', error);
         res.status(500).json({ error: 'Failed to update profile' });
     }
 });
-
 
 app.get('/api/wishlist', requireAuthAPI, async(req, res)=> {
     try{
@@ -401,9 +340,19 @@ app.post('/api/wishlist/add', requireAuthAPI, async(req, res)=>{
             wishlists[username]=[];
         }
 
-        if(!wishlists[username].includes(productId)){
-            wishlists[username].push(productId);
+        // Convert productId to number for consistency
+        const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
+
+        // Check if the product is already in the wishlist (comparing numbers)
+        const alreadyExists = wishlists[username].some(id => {
+            const numId = typeof id === 'string' ? parseInt(id) : id;
+            return numId === numProductId;
+        });
+
+        if(!alreadyExists){
+            wishlists[username].push(numProductId);
             await persist.saveData('wishlists.json', wishlists);
+            console.log(`[DEBUG] Added product ${numProductId} to ${username}'s wishlist`);
         }
 
         res.json({ success: true });
@@ -425,8 +374,19 @@ app.delete('/api/wishlist/remove', requireAuthAPI, async(req, res)=>{
         }
 
         // Remove the productId from the user's wishlist
-        wishlists[username] = wishlists[username].filter(id => id !== productId);
+        // Convert both to numbers for comparison to handle type mismatches
+        console.log(`[DEBUG] Removing product ${productId} (type: ${typeof productId}) from ${username}'s wishlist`);
+        console.log(`[DEBUG] Wishlist before removal:`, wishlists[username]);
+
+        wishlists[username] = wishlists[username].filter(id => {
+            const numId = typeof id === 'string' ? parseInt(id) : id;
+            const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
+            console.log(`[DEBUG] Comparing ${numId} !== ${numProductId} = ${numId !== numProductId}`);
+            return numId !== numProductId;
+        });
+
         await persist.saveData('wishlists.json', wishlists);
+        console.log(`[DEBUG] Wishlist after removal:`, wishlists[username]);
 
         res.json({ success: true });
     }

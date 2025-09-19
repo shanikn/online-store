@@ -8,16 +8,15 @@ module.exports = {
     async getActivities(req, res) {
         try {
             const usernameFilter = req.query.username || '';
-            const activities = await persist.loadActivity();
+            const activities = await persist.getActivities(usernameFilter);
 
-            let filtered = activities;
-            if (usernameFilter) {
-                filtered = activities.filter(activity =>
-                    activity.username.toLowerCase().startsWith(usernameFilter.toLowerCase())
-                );
-            }
+            // Transform activities to match frontend expectations
+            const transformedActivities = activities.map(activity => ({
+                ...activity,
+                activity: activity.activityType // Map activityType to activity field
+            }));
 
-            res.json(filtered);
+            res.json(transformedActivities);
         } catch (error) {
             console.error('Error loading activities:', error);
             res.status(500).json({ error: 'Failed to load activities' });

@@ -386,6 +386,9 @@
                     console.error('Error in initializeBaseLayout:', error);
                 }
 
+                // Add input formatting for better user experience
+                addInputFormatting();
+
                 loadProducts()
                     .then(loadCart)
                     .catch(function(error) {
@@ -511,8 +514,178 @@
                 document.getElementById('orderTotal').textContent = '₪' + orderTotal.toFixed(2);
             }
 
+            function validateForm() {
+                const errors = [];
+
+                // Full name validation - must have at least first and last name
+                const fullName = document.getElementById('fullName').value.trim();
+                if (!fullName) {
+                    errors.push('❌ Full name is required');
+                } else {
+                    const nameParts = fullName.split(' ').filter(part => part.length > 0);
+                    if (nameParts.length < 2) {
+                        errors.push('❌ Please enter both first and last name');
+                    }
+                }
+
+                // Email validation - must be valid email format
+                const email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email) {
+                    errors.push('❌ Email address is required');
+                } else if (!emailRegex.test(email)) {
+                    errors.push('❌ Please enter a valid email address');
+                }
+
+                // Phone number validation - must be numbers only and proper length
+                const phone = document.getElementById('phone').value.trim();
+                const phoneRegex = /^[\d\-\+\(\)\s]+$/; // Allow digits, spaces, hyphens, plus, parentheses
+                const phoneDigitsOnly = phone.replace(/[\D]/g, ''); // Extract only digits
+                if (!phone) {
+                    errors.push('❌ Phone number is required');
+                } else if (!phoneRegex.test(phone)) {
+                    errors.push('❌ Phone number can only contain numbers, spaces, hyphens, and parentheses');
+                } else if (phoneDigitsOnly.length < 10 || phoneDigitsOnly.length > 15) {
+                    errors.push('❌ Phone number must be between 10-15 digits');
+                }
+
+                // Address validation
+                const address = document.getElementById('address').value.trim();
+                if (!address) {
+                    errors.push('❌ Address is required');
+                } else if (address.length < 5) {
+                    errors.push('❌ Please enter a complete address');
+                }
+
+                // City validation
+                const city = document.getElementById('city').value.trim();
+                if (!city) {
+                    errors.push('❌ City is required');
+                } else if (city.length < 2) {
+                    errors.push('❌ Please enter a valid city name');
+                }
+
+                // ZIP code validation
+                const zipCode = document.getElementById('zipCode').value.trim();
+                if (!zipCode) {
+                    errors.push('❌ ZIP code is required');
+                } else if (zipCode.length < 3) {
+                    errors.push('❌ Please enter a valid ZIP code');
+                }
+
+                // Country validation
+                const country = document.getElementById('country').value;
+                if (!country) {
+                    errors.push('❌ Please select a country');
+                }
+
+                // Card name validation
+                const cardName = document.getElementById('cardName').value.trim();
+                if (!cardName) {
+                    errors.push('❌ Cardholder name is required');
+                } else {
+                    const cardNameParts = cardName.split(' ').filter(part => part.length > 0);
+                    if (cardNameParts.length < 2) {
+                        errors.push('❌ Please enter full cardholder name (first and last)');
+                    }
+                }
+
+                // Card number validation - must be 16 digits
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                const cardNumberRegex = /^\d{16}$/;
+                if (!cardNumber) {
+                    errors.push('❌ Card number is required');
+                } else if (!cardNumberRegex.test(cardNumber)) {
+                    errors.push('❌ Card number must be exactly 16 digits');
+                }
+
+                // Expiry date validation - MM/YY format
+                const expiry = document.getElementById('expiry').value.trim();
+                const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+                if (!expiry) {
+                    errors.push('❌ Expiry date is required');
+                } else if (!expiryRegex.test(expiry)) {
+                    errors.push('❌ Expiry date must be in MM/YY format');
+                } else {
+                    // Check if expiry date is not in the past
+                    const [month, year] = expiry.split('/');
+                    const currentDate = new Date();
+                    const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
+                    const currentMonth = currentDate.getMonth() + 1;
+
+                    const expYear = parseInt(year);
+                    const expMonth = parseInt(month);
+
+                    if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+                        errors.push('❌ Card expiry date has passed');
+                    }
+                }
+
+                // CVV validation - must be 3 digits
+                const cvv = document.getElementById('cvv').value.trim();
+                const cvvRegex = /^\d{3}$/;
+                if (!cvv) {
+                    errors.push('❌ CVV is required');
+                } else if (!cvvRegex.test(cvv)) {
+                    errors.push('❌ CVV must be exactly 3 digits');
+                }
+
+                return errors;
+            }
+
+            // Add input formatting for better UX
+            function addInputFormatting() {
+                // Phone number formatting - allow only numbers, spaces, hyphens, plus, parentheses
+                const phoneInput = document.getElementById('phone');
+                phoneInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/[^\d\-\+\(\)\s]/g, '');
+                    e.target.value = value;
+                });
+
+                // Card number formatting - add spaces every 4 digits
+                const cardNumberInput = document.getElementById('cardNumber');
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    value = value.substring(0, 16); // Limit to 16 digits
+                    value = value.replace(/(\d{4})(?=\d)/g, '$1 '); // Add space every 4 digits
+                    e.target.value = value;
+                });
+
+                // Expiry date formatting - MM/YY format
+                const expiryInput = document.getElementById('expiry');
+                expiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    e.target.value = value;
+                });
+
+                // CVV formatting - only digits, max 3
+                const cvvInput = document.getElementById('cvv');
+                cvvInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    value = value.substring(0, 3); // Limit to 3 digits
+                    e.target.value = value;
+                });
+
+                // ZIP code formatting - remove non-alphanumeric characters
+                const zipInput = document.getElementById('zipCode');
+                zipInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/[^a-zA-Z0-9]/g, '');
+                    e.target.value = value;
+                });
+            }
+
             document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
+
+                // Comprehensive form validation
+                const errors = validateForm();
+                if (errors.length > 0) {
+                    showError(errors.join('<br>'));
+                    return;
+                }
 
                 var submitBtn = e.target.querySelector('.place-order-btn');
                 submitBtn.disabled = true;
@@ -563,7 +736,7 @@
                         setTimeout(function() {
                             console.log('Executing redirect now...');
                             window.location.href = '/pay.html?total=' + orderTotal.toFixed(2);
-                        }, 2000);
+                        }, 1000);
                     } else {
                         console.error('Checkout failed:', data.message);
                         showError(data.message || 'Failed to place order');
@@ -578,17 +751,7 @@
                 }
             });
 
-            document.getElementById('cardNumber').addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/\D/g, '');
-            });
 
-            document.getElementById('expiry').addEventListener('input', function(e) {
-                var value = e.target.value.replace(/\D/g, '');
-                if (value.length >= 2) {
-                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
-                }
-                e.target.value = value;
-            });
 
             document.getElementById('cvv').addEventListener('input', function(e) {
                 e.target.value = e.target.value.replace(/\D/g, '');
@@ -624,19 +787,79 @@
             }
 
             function updateSelectedTotal() {
-                let total = 0;
+                let total = 0;  
+                const selectedItems = [];
+
                 cartItems.forEach(item => {
-                    // Fix: Use cartItemId for checkbox ID
                     const checkboxId = item.cartItemId ? `select-${item.cartItemId}` : `select-${item.productId}`;
                     const checkbox = document.getElementById(checkboxId);
                     if (checkbox && checkbox.checked) {
                         const product = products.find(p => p.id === item.productId);
-                        if (product) total += product.price * item.quantity;
+                        if (product) {
+                            total += product.price * item.quantity;
+                            selectedItems.push(item);
+                        }
                     }
                 });
                 document.getElementById('selectedTotal').textContent = `₪${total.toFixed(2)}`;
-                orderTotal = total;
                 document.getElementById('orderTotal').textContent = `₪${total.toFixed(2)}`;
+                orderTotal = total;
+
+                updateOrderSummary(selectedItems);
+            }
+
+            function updateOrderSummary(selectedItems) {
+                const itemsContainer = document.getElementById('orderItems');
+                let html = '';
+                
+                selectedItems.forEach(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    if (product) {
+                        const itemTotal = product.price * item.quantity;
+                        html += `<div class="summary-line">`;
+                        html += `<span>${product.name} <span class="item-qty">×${item.quantity}</span></span>`;
+                        html += `<span>₪${itemTotal.toFixed(2)}</span>`;
+                        html += `</div>`;
+                    }
+                });
+                
+                itemsContainer.innerHTML = html;
+            }
+
+            function showSuccess(message) {
+                const successDiv = document.getElementById('successMessage');
+                if (successDiv) {
+                    successDiv.textContent = message;
+                    successDiv.style.display = 'block';
+                    successDiv.style.background = 'rgba(76, 175, 80, 0.1)';
+                    successDiv.style.color = '#2e7d32';
+                    successDiv.style.padding = '16px';
+                    successDiv.style.borderRadius = '8px';
+                    successDiv.style.border = '1px solid rgba(76, 175, 80, 0.3)';
+                    successDiv.style.marginBottom = '20px';
+
+                    setTimeout(() => {
+                        successDiv.style.display = 'none';
+                    }, 5000);
+                }
+            }
+
+            function showError(message) {
+                const errorDiv = document.getElementById('errorMessage');
+                if (errorDiv) {
+                    errorDiv.textContent = message;
+                    errorDiv.style.display = 'block';
+                    errorDiv.style.background = 'rgba(244, 67, 54, 0.1)';
+                    errorDiv.style.color = '#c62828';
+                    errorDiv.style.padding = '16px';
+                    errorDiv.style.borderRadius = '8px';
+                    errorDiv.style.border = '1px solid rgba(244, 67, 54, 0.3)';
+                    errorDiv.style.marginBottom = '20px';
+
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                    }, 5000);
+                }
             }
         </script>
     </body>

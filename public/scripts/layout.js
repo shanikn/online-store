@@ -64,8 +64,8 @@ function updateNavigation(){
             '<a href="/collection-wedding.html">Wedding & Engagement</a>' +
             '</div>' +
             '</div>' +
-            '<a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart <span id="cart-count" class="badge">0</span></a>' +
-            '<a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist <span id="wishlist-count" class="badge">0</span></a>' +
+            '<a href="/cart.html"><i class="fa-solid fa-shopping-cart"></i> Cart</a>' +
+            '<a href="/wishlist.html"><i class="fa-solid fa-heart"></i> Wishlist</a>' +
             '<a href="/about.html"><i class="fa-solid fa-info-circle"></i> About</a>' +
             '<a href="/contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>' +
             '<a href="/readme.html"><i class="fa-solid fa-book"></i> README</a>' +
@@ -445,6 +445,7 @@ window.updateCartAndWishlistCounts = async function updateCartAndWishlistCounts(
 
             // Always update with real server data
             updateBadge('cart-count', cartCount);
+
             localStorage.setItem('cartCount', cartCount);
             console.log(`Updated cart badge to: ${cartCount}`);
         } else if(cartResponse.status === 401) {
@@ -486,7 +487,6 @@ function updateBadge(badgeId, count){
     if(badge){
         const numCount = parseInt(count) || 0;
         badge.textContent = numCount;
-        console.log(`Updating badge ${badgeId} with count ${numCount}`); // Debug log
 
         // Update badge content and let CSS handle visibility
         badge.textContent = numCount > 0 ? numCount.toString() : '';
@@ -494,11 +494,6 @@ function updateBadge(badgeId, count){
         // Remove any inline styles and let CSS classes handle styling
         badge.removeAttribute('style');
         badge.classList.remove('hidden');
-        console.log(`=== BADGE UPDATE ===`);
-        console.log(`Badge ${badgeId}: count=${numCount}, element found=${!!badge}`);
-        console.log(`Badge element:`, badge);
-    } else {
-        console.log(`Badge element ${badgeId} not found`); // Debug log
     }
 }
 

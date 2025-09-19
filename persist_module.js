@@ -113,10 +113,15 @@ async function logActivity(username, activityType, details={}){
 // whats usernameFilter? (the default is null)
 async function getActivities(usernameFilter= null){
     const activities= await loadData('activity.json', []);
+    let filteredActivities;
     if(usernameFilter){
-        return activities.filter(a=> a.username.startsWith(usernameFilter));
+        filteredActivities = activities.filter(a=> a.username.startsWith(usernameFilter));
+    } else {
+        filteredActivities = activities;
     }
-    return activities;
+
+    // Sort by timestamp descending (latest first)
+    return filteredActivities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 }
 
 
