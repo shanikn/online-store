@@ -8,7 +8,7 @@ module.exports = {
     async processCheckout(req, res) {
         try {
             const username = getCurrentUser(req);
-            const { items, total, fullName, email, phone, address, city, zipCode, packaging, giftMessage, cardName, cardNumber, expiry, cvv } = req.body;
+            const { items, total, fullName, email, phone, address, city, zipCode, country, packaging, giftMessage, cardName, cardNumber, expiry, cvv } = req.body;
 
             // Validate required fields
             if (!items || items.length === 0) {

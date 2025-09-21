@@ -50,10 +50,6 @@
 
                     <form action="/register" method="POST" autocomplete="on" class="auth-form">
                         <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Email" required>
-                        </div>
-
-                        <div class="form-group">
                             <input type="text" id="username" name="username" placeholder="Username" required>
                         </div>
 
@@ -120,7 +116,6 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm').value;
-            const email = document.getElementById('email').value;
 
             const remember = document.getElementById('rememberMe').checked;
 
@@ -132,20 +127,11 @@
                 return;
             }
 
-            // email validation check (email must include @...)
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(!emailRegex.test(email)){
-                document.getElementById('error').style.display = 'block';
-                document.getElementById('error').textContent = 'Enter a valid email address';
-                // stop (before sending to the server)
-                return;
-            }
-
             // send POST request to the server
             fetch('/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'}, 
-                body: JSON.stringify({ username, password, email, remember }) 
+                body: JSON.stringify({ username, password, remember }) 
             })
 
             // handle server response

@@ -2,415 +2,77 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>About This Project - ShanikJewls</title>
-    <!-- Font Awesome for icons <3 -->
+    <title>Project README - ShanikJewls</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="/styles/theme.css">
     <style>
-        /* README Page - Matching Store Theme */
         .page-frame {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 28px 80px;
         }
-
-        .readme-hero {
-            text-align: center;
-            margin: 60px 0 80px;
-        }
-
-        .readme-title {
-            font-family: 'Fraunces', serif;
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            font-weight: 700;
-            color: #3e342a;
-            margin: 0 0 20px;
-            line-height: 1.2;
-            letter-spacing: 0.02em;
-        }
-
-        .readme-subtitle {
-            font-size: 1.2rem;
-            color: #6b5744;
-            line-height: 1.6;
-            margin: 0;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
+        
         .container {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 24px;
-            padding: 50px;
-            box-shadow: 0 18px 36px rgba(52, 41, 32, 0.1);
-            border: 1px solid rgba(162, 150, 138, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 30px rgba(52, 41, 32, 0.1);
             margin: 40px 0;
         }
-
-        .container h1 {
+        
+        h1, h2 {
             font-family: 'Fraunces', serif;
             color: #3e342a;
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
-            font-weight: 700;
-            position: relative;
         }
-
-        .container h1::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #766156, #5a4f42);
-            border-radius: 2px;
-        }
-
-        h2 {
-            font-family: 'Fraunces', serif;
-            color: #5a4f42;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin: 40px 0 20px;
-            position: relative;
-            padding-bottom: 8px;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #766156, #5a4f42);
-            border-radius: 2px;
-        }
-
-        .project-info {
-            background: linear-gradient(135deg, rgba(244, 240, 234, 0.95), rgba(255, 255, 255, 0.98));
-            border: 2px solid rgba(118, 97, 86, 0.2);
-            color: #3e342a;
-            padding: 40px;
-            border-radius: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 15px 30px rgba(118, 97, 86, 0.15);
-        }
-
-        .project-info h2 {
-            margin-top: 0;
-            color: #5a4f42;
-            font-size: 1.8rem;
-        }
-
-        .project-info h2::after {
-            background: linear-gradient(90deg, #766156, #5a4f42);
-        }
-
-        .highlight {
-            background: rgba(244, 240, 234, 0.8);
-            padding: 25px;
-            border-left: 4px solid #766156;
-            margin: 30px 0;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(118, 97, 86, 0.1);
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid rgba(162, 150, 138, 0.2);
-            box-shadow: 0 8px 20px rgba(52, 41, 32, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 25px rgba(52, 41, 32, 0.12);
-        }
-
-        .feature-card h4 {
-            color: #5a4f42;
-            margin-top: 0;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
+        
+        h1 { font-size: 2.2rem; text-align: center; margin-bottom: 30px; }
+        h2 { font-size: 1.4rem; margin: 25px 0 15px; border-bottom: 2px solid #766156; padding-bottom: 5px; }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 25px 0;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 8px 20px rgba(52, 41, 32, 0.08);
-            border-radius: 12px;
-            overflow: hidden;
+            margin: 15px 0;
         }
-
+        
         th, td {
-            padding: 16px;
+            padding: 10px;
             text-align: left;
-            border-bottom: 1px solid rgba(162, 150, 138, 0.2);
+            border-bottom: 1px solid #ddd;
         }
-
+        
         th {
-            background: linear-gradient(135deg, #766156, #5a4f42);
+            background: #766156;
             color: white;
             font-weight: 600;
-            font-size: 0.95rem;
         }
-
-        tr:hover {
-            background: rgba(244, 240, 234, 0.5);
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
+        
         code {
-            background: rgba(118, 97, 86, 0.1);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            color: #5a4f42;
-            font-size: 0.9em;
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #333;
         }
-
-        ol {
-            padding-left: 24px;
-        }
-
-        ol li {
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .back-link a {
-            background: linear-gradient(135deg, #766156, #5a4f42);
-            color: white;
-            padding: 16px 32px;
-            text-decoration: none;
-            border-radius: 12px;
-            display: inline-block;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .back-link a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(118, 97, 86, 0.3);
-        }
-
-        .personal-section {
-            background: rgba(244, 240, 234, 0.6);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-        }
-
-        p {
-            line-height: 1.7;
-            color: #6b5744;
-            margin-bottom: 16px;
-        }
-
-        ul {
-            padding-left: 24px;
-        }
-
-        ul li {
-            margin-bottom: 8px;
-            line-height: 1.6;
-            color: #6b5744;
-        }
-
-        strong {
-            color: #5a4f42;
-            font-weight: 600;
-        }
-
-        /* Ensure all text elements have proper colors */
-        .project-info p {
-            color: #6b5744;
-            line-height: 1.6;
-        }
-
-        .project-info strong {
-            color: #5a4f42;
-            font-weight: 600;
-        }
-
-        .feature-card p {
-            color: #6b5744;
-            line-height: 1.6;
-        }
-
-        .personal-section p {
-            color: #5a4f42;
-        }
-
-        .personal-section strong {
-            color: #3e342a;
-        }
-
-        td {
-            color: #6b5744;
-        }
-
-        /* dark mode styles */
-        body.dark-mode {
-            background: linear-gradient(135deg, #1a1612, #201d19);
-            color: #e8ded2;
-        }
-
-        body.dark-mode .readme-title {
-            color: #f5efe6;
-        }
-
-        body.dark-mode .readme-subtitle {
-            color: #c1b6a8;
-        }
-
-        body.dark-mode .container {
-            background: rgba(32, 29, 27, 0.95);
-            border-color: rgba(130, 116, 102, 0.35);
-        }
-
-        body.dark-mode .container h1 {
-            color: #f5efe6;
-        }
-
-        body.dark-mode .container h1::after {
-            background: linear-gradient(90deg, #938276, #82746a);
-        }
-
-        body.dark-mode h2 {
-            color: #e8ded2;
-        }
-
-        body.dark-mode h2::after {
-            background: linear-gradient(90deg, #938276, #82746a);
-        }
-
-        body.dark-mode .project-info {
-            background: linear-gradient(135deg, rgba(32, 29, 27, 0.95), rgba(20, 18, 16, 0.98));
-            border-color: rgba(130, 116, 102, 0.4);
-            color: #e8ded2;
-        }
-
-        body.dark-mode .project-info h2 {
-            color: #f5efe6;
-        }
-
-        body.dark-mode .project-info h2::after {
-            background: linear-gradient(90deg, #938276, #82746a);
-        }
-
-        body.dark-mode .project-info p {
-            color: #c1b6a8;
-        }
-
-        body.dark-mode .project-info strong {
-            color: #e8ded2;
-        }
-
-        body.dark-mode p {
-            color: #b8a690;
-        }
-
-        body.dark-mode .highlight {
-            background: rgba(20, 18, 16, 0.8);
-            border-left-color: #938276;
-        }
-
-        body.dark-mode .feature-card {
-            background: rgba(32, 29, 27, 0.95);
-            border-color: rgba(130, 116, 102, 0.35);
-        }
-
-        body.dark-mode .feature-card h4 {
-            color: #e8ded2;
-        }
-
-        body.dark-mode .feature-card p {
-            color: #b8a690;
-        }
-
-        body.dark-mode .personal-section {
-            background: rgba(20, 18, 16, 0.8);
-        }
-
-        body.dark-mode .personal-section p {
-            color: #b8a690;
-        }
-
-        body.dark-mode .personal-section strong {
-            color: #e8ded2;
-        }
-
-        body.dark-mode table {
-            background: rgba(32, 29, 27, 0.95);
-        }
-
-        body.dark-mode th {
-            background: linear-gradient(135deg, #938276, #82746a);
-        }
-
-        body.dark-mode td {
-            color: #b8a690;
-            border-bottom-color: rgba(130, 116, 102, 0.3);
-        }
-
-        body.dark-mode tr:hover {
-            background: rgba(20, 18, 16, 0.5);
-        }
-
-        body.dark-mode code {
-            background: rgba(147, 130, 118, 0.2);
-            color: #e8ded2;
-        }
-
-        body.dark-mode ul li {
-            color: #b8a690;
-        }
-
-        body.dark-mode strong {
-            color: #e8ded2;
-        }
+        
+        ul { padding-left: 20px; }
+        li { margin-bottom: 5px; }
+        
+        /* Dark mode */
+        body.dark-mode .container { background: rgba(32, 29, 27, 0.95); }
+        body.dark-mode h1, body.dark-mode h2 { color: #f5efe6; }
+        body.dark-mode th { background: #938276; }
+        body.dark-mode td { color: #b8a690; }
+        body.dark-mode code { background: #444; color: #e8e8e8; }
     </style>
 </head>
 <body>
-    <!-- header with navigation -->
     <div class="header-shell">
-        <div class="announcement-bar">
-            <span class="announcement-pill"><i class="fa-solid fa-book-open"></i> Project Documentation</span>
-            <span>Learn about the development journey and features of ShanikJewls.</span>
-            <button type="button" class="announcement-action" onclick="scrollToSection()">Read About Features <i class="fa-solid fa-arrow-right"></i></button>
-        </div>
         <div class="header">
             <button class="menu" id="menu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
             <div class="brand">
                 <h1>ShanikJewls</h1>
-                <span class="brand-tagline">Handcrafted Jewelry</span>
+                <span class="brand-tagline">Project README</span>
             </div>
             <div class="header-actions">
                 <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
@@ -421,289 +83,201 @@
         </div>
     </div>
 
-    <!-- Side menu -->
     <div class="menu-overlay" id="menuOverlay"></div>
-    <nav class="side-menu" id="sideMenu">
-        <!-- Dynamic navigation will be populated by JavaScript -->
-    </nav>
+    <nav class="side-menu" id="sideMenu"></nav>
 
     <main class="page-frame">
-        <div class="readme-hero">
-            <h1 class="readme-title">Project Documentation</h1>
-            <p class="readme-subtitle">Complete details about the ShanikJewls online jewelry store project, from conception to completion.</p>
-        </div>
-
         <div class="container">
-        <div class="project-info">
-            <h2>ShanikJewls - My Online Jewelry Store</h2>
-            <p><strong>Created by:</strong> Shani Knobel</p>
-            <p><strong>For:</strong> RUNI 2025 FullStack Development Course</p>
-            <p><strong>Built with:</strong> Node.js, Express, HTML, CSS, JavaScript</p>
-        </div>
+            <h1>ShanikJewls - Project README</h1>
+            <p><strong>Student:</strong> Shani Knobel<br>
+            <strong>Course:</strong> RUNI 2025 FullStack Development</p>
 
-        <h1>Project Overview</h1>
+            <h2>1. Store Name</h2>
+            <p><strong>ShanikJewls</strong> - An online jewelry store specializing in handcrafted pieces.</p>
 
-        <h2>About This Project ✨</h2>
-        <p>ShanikJewls is where my three greatest passions collide: the art of jewelry making, the beauty of web design, and the logic of coding! 💎 This isn't just a project for my FullStack course - it's a digital expression of my love for handcrafted gold jewelry and the endless possibilities of technology.</p>
+            <h2>2. What Am I Selling?</h2>
+            <p>I'm selling handcrafted jewelry items including:</p>
+            <ul>
+                <li>Gold earrings (drops, hoops, studs)</li>
+                <li>Bracelets (tennis, chain, bangles)</li>
+                <li>Rings with customizable sizing</li>
+                <li>Watches with engraving options</li>
+                <li>Wedding jewelry collections</li>
+            </ul>
+            <p>Many items support customization like ring sizing and custom engraving.</p>
 
-        <p>Every line of code I wrote was inspired by the way light catches on a perfectly polished piece of gold. The color palette wasn't just chosen - it was <em>felt</em>. Those warm creams and elegant golds aren't just CSS variables; they're the digital embodiment of the jewelry pieces I dream of creating.</p>
+            <h2>3. Additional Pages Added</h2>
+            <p>I added 7 extra pages beyond the core requirements:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Page</th>
+                        <th>Purpose</th>
+                        <th>How to Use</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wishlist</td>
+                        <td>Save favorite items</td>
+                        <td>Click heart icon on products, view saved items in wishlist page</td>
+                    </tr>
+                    <tr>
+                        <td>Profile</td>
+                        <td>Manage account info</td>
+                        <td>Edit personal details, view purchase history</td>
+                    </tr>
+                    <tr>
+                        <td>About</td>
+                        <td>Brand story</td>
+                        <td>Learn about the jewelry craftsmanship and company values</td>
+                    </tr>
+                    <tr>
+                        <td>Contact</td>
+                        <td>Customer support</td>
+                        <td>Submit inquiries through contact form</td>
+                    </tr>
+                    <tr>
+                        <td>Collection - Bracelets</td>
+                        <td>Bracelet showcase</td>
+                        <td>Browse bracelet-specific products with filtering</td>
+                    </tr>
+                    <tr>
+                        <td>Collection - Hoops</td>
+                        <td>Hoop earrings</td>
+                        <td>View hoop earring collection</td>
+                    </tr>
+                    <tr>
+                        <td>Collection - Wedding</td>
+                        <td>Wedding jewelry</td>
+                        <td>Browse wedding-specific jewelry items</td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <div class="highlight">
-            <strong>💍 From the heart:</strong> Building this site taught me that coding is just another form of craftsmanship - each function carefully shaped, each design element thoughtfully placed, just like setting a stone in gold. This project works for both casual browsers and jewelry enthusiasts who want the full shopping experience with personalization!
-        </div>
+            <h2>4. Was the Project Hard to Do?</h2>
+            <p>The project had several challenging parts:</p>
+            <ul>
+                <li><strong>Data Structure:</strong> Setting up individual user files instead of combined files took time to get right</li>
+                <li><strong>Session Management:</strong> Implementing different cookie expiration times for "remember me" vs normal login was tricky</li>
+                <li><strong>Product Customization:</strong> Building the modal system for ring sizing and engraving required careful state management</li>
+                <li><strong>Search Functionality:</strong> Creating live search with dropdown results and keyboard navigation was complex</li>
+                <li><strong>Admin Features:</strong> The activity filtering and product management required good planning</li>
+            </ul>
+            <p>Overall it was challenging but manageable. The modular structure helped keep things organized.</p>
 
-        <h2>Main Features</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h4>Shopping Cart</h4>
-                <p>Add items to cart, update quantities, and proceed to checkout.</p>
+            <h2>5. All Routes My App Supports</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Method</th>
+                        <th>Purpose</th>
+                        <th>Auth Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>/api/auth/register</td><td>POST</td><td>Register new user</td><td>No</td></tr>
+                    <tr><td>/api/auth/login</td><td>POST</td><td>User login</td><td>No</td></tr>
+                    <tr><td>/api/auth/logout</td><td>POST</td><td>User logout</td><td>Yes</td></tr>
+                    <tr><td>/api/products</td><td>GET</td><td>Get products (with optional search)</td><td>No</td></tr>
+                    <tr><td>/api/cart</td><td>GET</td><td>Get user cart</td><td>Yes</td></tr>
+                    <tr><td>/api/cart</td><td>POST</td><td>Add item to cart</td><td>Yes</td></tr>
+                    <tr><td>/api/cart/:productId</td><td>PUT</td><td>Update cart item</td><td>Yes</td></tr>
+                    <tr><td>/api/cart/:productId</td><td>DELETE</td><td>Remove from cart</td><td>Yes</td></tr>
+                    <tr><td>/api/checkout</td><td>POST</td><td>Create checkout session</td><td>Yes</td></tr>
+                    <tr><td>/api/pay</td><td>POST</td><td>Process payment</td><td>Yes</td></tr>
+                    <tr><td>/api/my-items</td><td>GET</td><td>Get purchase history</td><td>Yes</td></tr>
+                    <tr><td>/api/wishlist</td><td>GET</td><td>Get user wishlist</td><td>Yes</td></tr>
+                    <tr><td>/api/wishlist</td><td>POST</td><td>Add to wishlist</td><td>Yes</td></tr>
+                    <tr><td>/api/wishlist/:productId</td><td>DELETE</td><td>Remove from wishlist</td><td>Yes</td></tr>
+                    <tr><td>/api/profile</td><td>GET</td><td>Get user profile</td><td>Yes</td></tr>
+                    <tr><td>/api/profile</td><td>PUT</td><td>Update profile</td><td>Yes</td></tr>
+                    <tr><td>/api/contact</td><td>POST</td><td>Submit contact form</td><td>No</td></tr>
+                    <tr><td>/api/admin/activities</td><td>GET</td><td>Get activity logs</td><td>Admin</td></tr>
+                    <tr><td>/api/admin/products</td><td>POST</td><td>Add product</td><td>Admin</td></tr>
+                    <tr><td>/api/admin/products/:id</td><td>DELETE</td><td>Delete product</td><td>Admin</td></tr>
+                    <tr><td>/api/admin/sales</td><td>GET</td><td>Get sales data</td><td>Admin</td></tr>
+                    <tr><td>/api/users</td><td>GET</td><td>Get users list</td><td>Admin</td></tr>
+                </tbody>
+            </table>
+
+            <h2>6. How I Tested the Project</h2>
+            <p>I used <code>node-fetch</code> to create automated tests in <code>test.js</code>. The testing approach:</p>
+            
+            <h3>Test Setup</h3>
+            <ul>
+                <li>Created test user accounts automatically</li>
+                <li>Used cookies to maintain sessions across test requests</li>
+                <li>Tested both success and error scenarios</li>
+            </ul>
+
+            <h3>Test Categories</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Tests</th>
+                        <th>What I Tested</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authentication</td>
+                        <td>4 tests</td>
+                        <td>Registration, login, logout, invalid credentials</td>
+                    </tr>
+                    <tr>
+                        <td>Products</td>
+                        <td>3 tests</td>
+                        <td>Get all products, search functionality, admin add/delete</td>
+                    </tr>
+                    <tr>
+                        <td>Cart Operations</td>
+                        <td>6 tests</td>
+                        <td>Add/remove items, update quantities, customization</td>
+                    </tr>
+                    <tr>
+                        <td>Purchase Flow</td>
+                        <td>4 tests</td>
+                        <td>Checkout creation, payment processing, order completion</td>
+                    </tr>
+                    <tr>
+                        <td>Admin Features</td>
+                        <td>3 tests</td>
+                        <td>Activity logs, username filtering, product management</td>
+                    </tr>
+                    <tr>
+                        <td>Extra Features</td>
+                        <td>4 tests</td>
+                        <td>Wishlist operations, profile updates, contact form</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Running Tests:</strong> Use <code>npm test</code> to run all tests. Each test prints pass/fail status with details.</p>
+
+            <p><strong>Manual Testing:</strong> I also tested the UI manually by:</p>
+            <ul>
+                <li>Creating accounts and testing login/logout</li>
+                <li>Adding items to cart with different customizations</li>
+                <li>Completing full purchase flows</li>
+                <li>Testing search functionality</li>
+                <li>Verifying admin panel features</li>
+                <li>Testing all extra pages functionality</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/store.html" style="background: #766156; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px;">← Back to Store</a>
             </div>
-            <div class="feature-card">
-                <h4>Wishlist System</h4>
-                <p>Save items for later using the heart button on products.</p>
-            </div>
-            <div class="feature-card">
-                <h4>Product Customization</h4>
-                <p>Add custom engravings to bracelets and select ring sizes for rings.</p>
-            </div>
-            <div class="feature-card">
-                <h4>User Authentication</h4>
-                <p>Login system with session management and "remember me" option.</p>
-            </div>
-            <div class="feature-card">
-                <h4>Admin Dashboard</h4>
-                <p>Administrative interface for managing products and viewing user activity.</p>
-            </div>
-            <div class="feature-card">
-                <h4>Search Functionality</h4>
-                <p>Live search with dropdown results for finding products quickly.</p>
-            </div>
         </div>
-
-        <h2>User Roles</h2>
-        <ul>
-            <li><strong>Guest Users:</strong> Can browse products and search the catalog</li>
-            <li><strong>Registered Users:</strong> Full access to cart, wishlist, and product customization</li>
-            <li><strong>Admin:</strong> Product management and activity monitoring (login: admin/admin)</li>
-        </ul>
-
-        <h2>Requirements Compliance</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Requirement</th>
-                    <th>Implementation</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Modular Server Architecture</td>
-                    <td>Separate screen modules in /screens/ directory</td>
-                    <td>✅ Complete</td>
-                </tr>
-                <tr>
-                    <td>Authentication System</td>
-                    <td>Cookie-based with "remember me" functionality</td>
-                    <td>✅ Complete</td>
-                </tr>
-                <tr>
-                    <td>Shopping Cart</td>
-                    <td>Full cart management with persistence</td>
-                    <td>✅ Complete</td>
-                </tr>
-                <tr>
-                    <td>Admin Panel</td>
-                    <td>User activity tracking and product management</td>
-                    <td>✅ Complete</td>
-                </tr>
-                <tr>
-                    <td>DOS Protection</td>
-                    <td>Rate limiting middleware</td>
-                    <td>✅ Complete</td>
-                </tr>
-                <tr>
-                    <td>Automated Testing</td>
-                    <td>Node-fetch test suite covering all routes</td>
-                    <td>✅ Complete</td>
-                </tr>
-                <tr>
-                    <td>Additional Pages</td>
-                    <td>4+ functional pages (About, Contact, Wishlist, Profile)</td>
-                    <td>✅ Complete</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Technology Stack</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Component</th>
-                    <th>Technology</th>
-                    <th>Purpose</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Backend Framework</td>
-                    <td>Node.js + Express.js</td>
-                    <td>Server and API implementation</td>
-                </tr>
-                <tr>
-                    <td>Data Persistence</td>
-                    <td>JSON Files + Custom Module</td>
-                    <td>Data storage with async/await operations</td>
-                </tr>
-                <tr>
-                    <td>Authentication</td>
-                    <td>Cookie-based Sessions</td>
-                    <td>User login with remember me functionality</td>
-                </tr>
-                <tr>
-                    <td>Frontend</td>
-                    <td>HTML5, CSS3, Vanilla JavaScript</td>
-                    <td>User interface and interactions</td>
-                </tr>
-                <tr>
-                    <td>Testing</td>
-                    <td>Node-fetch</td>
-                    <td>Automated testing of server routes</td>
-                </tr>
-                <tr>
-                    <td>Security</td>
-                    <td>Rate Limiting</td>
-                    <td>DOS attack protection</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>File Structure</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Directory/File</th>
-                    <th>Purpose</th>
-                    <th>Lines of Code</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>server.js</td>
-                    <td>Main server entry point</td>
-                    <td>~300</td>
-                </tr>
-                <tr>
-                    <td>persist_module.js</td>
-                    <td>Data persistence layer</td>
-                    <td>~150</td>
-                </tr>
-                <tr>
-                    <td>/screens/</td>
-                    <td>Screen-specific server modules</td>
-                    <td>~400</td>
-                </tr>
-                <tr>
-                    <td>/public/</td>
-                    <td>Frontend HTML pages</td>
-                    <td>~2000</td>
-                </tr>
-                <tr>
-                    <td>test.js</td>
-                    <td>Automated test suite</td>
-                    <td>~200</td>
-                </tr>
-                <tr>
-                    <td>/data/</td>
-                    <td>JSON data files</td>
-                    <td>N/A</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Testing Results</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Test Category</th>
-                    <th>Tests Count</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Authentication Tests</td>
-                    <td>4</td>
-                    <td>✅ All Pass</td>
-                </tr>
-                <tr>
-                    <td>Cart Operations</td>
-                    <td>6</td>
-                    <td>✅ All Pass</td>
-                </tr>
-                <tr>
-                    <td>Product Management</td>
-                    <td>3</td>
-                    <td>✅ All Pass</td>
-                </tr>
-                <tr>
-                    <td>Admin Functions</td>
-                    <td>3</td>
-                    <td>✅ All Pass</td>
-                </tr>
-                <tr>
-                    <td>Additional Features</td>
-                    <td>2</td>
-                    <td>✅ All Pass</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Setup Instructions</h2>
-        <div class="highlight">
-            <strong>Installation:</strong>
-            <ol>
-                <li>Extract project files</li>
-                <li>Run <code>npm install</code></li>
-                <li>Run <code>node server.js</code></li>
-                <li>Access at <code>http://localhost:5000</code></li>
-                <li>Default admin: username "admin", password "admin"</li>
-            </ol>
-        </div>
-
-        <h2>Personal Reflection 💎</h2>
-        <div class="personal-section">
-            <p><strong>This project has been pure joy!</strong> Combining my love for beautiful jewelry with coding has been like discovering that two of my favorite things were always meant to be together. Every time I see the golden theme colors blend perfectly, or watch a product card animate smoothly, I get the same excitement I feel when admiring a perfectly crafted piece of jewelry.</p>
-
-            <p>The most amazing part was realizing that writing clean, elegant code is just like crafting jewelry - both require patience, attention to detail, and a passion for creating something beautiful that brings joy to others. When I implemented the customization features for ring sizing and engraving, I could almost feel the craftsmanship flowing through my keyboard! 🥰</p>
-        </div>
-
-        <div class="back-link">
-            <a href="/store.html">Visit Store</a>
-        </div>
-    </div>
     </main>
 
+    <script src="/scripts/layout.js"></script>
     <script>
-        function scrollToSection() {
-            const featuresSection = document.querySelector('h2');
-            if (featuresSection) {
-                featuresSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
-    </script>
-
-    <script>
-        // Navigation functions are handled by layout.js
         document.addEventListener('DOMContentLoaded', function() {
             initializeBaseLayout();
         });
     </script>
-
-    <!-- Include layout.js for shared functionality -->
-    <script src="/scripts/layout.js"></script>
 </body>
 </html>

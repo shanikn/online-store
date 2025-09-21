@@ -38,12 +38,9 @@ module.exports = {
             res.clearCookie('userToken', { path: '/' });
             res.clearCookie('userToken', { path: '/', domain: 'localhost' });
 
-            // and log the logout itself in activity.json
-            if (username) {
-                await persist.logActivity(username, 'logout');
-            }
+            // logout completed (no need to log normal logout behavior)
 
-            res.json({ success: true });
+            res.json({ success: true, redirect: '/store.html' });
         } catch (error) {
             console.error('Logout error:', error);
             res.status(500).json({ success: false, message: 'Server error' });

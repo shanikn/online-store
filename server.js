@@ -3,7 +3,7 @@ const express= require('express');
 const cookieParser= require('cookie-parser');
 const path= require('path');
 const persist= require('./persist_module');
-// const cors = require('cors'); // For React conversion later 
+// const cors = require('cors'); // For React conversion later
 
 
 function getCurrentUser(req) {
@@ -11,13 +11,14 @@ function getCurrentUser(req) {
 }
 
 
-// screen modules imports 
+// screen modules imports
 const loginServer = require('./screens/login-server');
 const storeServer = require('./screens/store-server');
 const adminServer = require('./screens/admin-server');
 const cartServer = require('./screens/cart-server');
 const checkoutServer = require('./screens/checkout-server');
 const registerServer = require('./screens/register-server');
+// const myItemsServer = require('./screens/my-items-server'); // Not currently used
 
 
 // app startup
@@ -59,10 +60,7 @@ function requireAuthAPI(req, res, next){
     }
 }
 
-// get user from cookies
-function getCurrentUser(req){
-    return req.cookies.userToken || null;
-}
+// Note: getCurrentUser is already defined above, removing duplicate
 
 
 // more helper functions- rate limiting functions
@@ -121,11 +119,6 @@ app.get('/store.html', (req, res)=> {
     res.sendFile(path.join(__dirname, 'public', 'store.html'));
 });
 
-// protected html pages (cart, admin, profile)
-app.get('/products.html', (req, res)=> {
-    res.sendFile(path.join(__dirname, 'public', 'store.html')); // products and store are the same page
-});
-
 
 app.get('/cart.html', requireAuth, (req, res)=> {
     res.sendFile(path.join(__dirname, 'public', 'cart.html'));
@@ -143,6 +136,10 @@ app.get('/profile.html', requireAuth, (req, res)=> {
 
 app.get('/checkout.html', requireAuth, (req, res)=> {
     res.sendFile(path.join(__dirname, 'public', 'checkout.html'));
+});
+
+app.get('/my-items.html', requireAuth, (req, res)=> {
+    res.sendFile(path.join(__dirname, 'public', 'my-items.html'));
 });
 
 
@@ -194,7 +191,7 @@ app.post('/api/checkout', requireAuthAPI, checkoutServer.processCheckout);
 app.get('/api/purchases', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
-        const purchases= await persist.getPurchases(username);
+        const purchases = await persist.getPurchases(username);
         res.json(purchases);
     }
     catch(error){
@@ -325,7 +322,7 @@ app.get('/api/wishlist', requireAuthAPI, async(req, res)=> {
     }
     catch(error){
         console.error('Error loading wishlist:', error);
-        res.status(500).json({ error: 'Failed to load wishlist '});
+        res.status(500).json({ error: 'Failed to load wishlist' });
     }
 });
 

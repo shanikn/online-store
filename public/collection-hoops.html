@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>Hoop Earrings Collection - ShaniknJewls</title>
+        <title>Hoop Earrings Collection - ShanikJewls</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
@@ -78,7 +78,7 @@
         <footer class="site-footer">
             <div class="footer-inner">
                 <div class="footer-brand">
-                    <h3>ShaniknJewls</h3>
+                    <h3>ShanikJewls</h3>
                     <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
                     <div class="footer-socials">
                         <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -260,6 +260,11 @@
 
                     if(data.success){
                         showSuccess('Item added to cart!');
+                        
+                        // Update cart count badge immediately
+                        if(typeof window.updateCartAndWishlistCounts === 'function'){
+                            window.updateCartAndWishlistCounts();
+                        }
                     }
                     else{
                         showError('Failed to add item to cart');
@@ -307,6 +312,11 @@
                             buttonElement.querySelector('i').className = 'fa-regular fa-heart';
                             buttonElement.title = 'Add to Wishlist';
                             showWishlistSuccess('Removed from wishlist');
+                            
+                            // Update wishlist count badge immediately
+                            if(typeof window.updateCartAndWishlistCounts === 'function'){
+                                window.updateCartAndWishlistCounts();
+                            }
                         } else {
                             showError('Failed to remove from wishlist');
                         }
@@ -334,6 +344,11 @@
                             buttonElement.querySelector('i').className = 'fa-solid fa-heart';
                             buttonElement.title = 'Remove from Wishlist';
                             showWishlistSuccess('Added to wishlist! ❤️');
+                            
+                            // Update wishlist count badge immediately
+                            if(typeof window.updateCartAndWishlistCounts === 'function'){
+                                window.updateCartAndWishlistCounts();
+                            }
                         } else {
                             showError('Failed to add to wishlist');
                         }
@@ -410,7 +425,7 @@
                 if(typeof isAuthenticated !== 'undefined' && isAuthenticated) {
                     window.location.href = targetUrl;
                 } else {
-                    alert('Please login to access this feature');
+                    showError('Please login to access this feature');
                     window.location.href = '/login.html';
                 }
             }
@@ -427,8 +442,8 @@
                         // Handle both array format and object.items format
                         const wishlistItems = Array.isArray(wishlistData) ? wishlistData : wishlistData.items;
 
-                        // First, reset all wishlist buttons to default state
-                        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                        // FIXED: Reset ALL wishlist buttons (both .wishlist-btn and .wishlist-btn-top)
+                        document.querySelectorAll('.wishlist-btn, .wishlist-btn-top').forEach(btn => {
                             btn.classList.remove('added');
                             btn.querySelector('i').className = 'fa-regular fa-heart';
                             btn.title = 'Add to Wishlist';
@@ -438,9 +453,9 @@
                             // Get all product IDs in wishlist
                             const wishlistProductIds = wishlistItems.map(item => item.productId || item.id || item);
 
-                            // Update heart icons for products in wishlist
+                            // FIXED: Update heart icons for products in wishlist using proper selector
                             wishlistProductIds.forEach(productId => {
-                                const wishlistBtn = document.querySelector(`[data-product-id="${productId}"]`);
+                                const wishlistBtn = document.querySelector(`.wishlist-btn-top[data-product-id="${productId}"], .wishlist-btn[data-product-id="${productId}"]`);
                                 if(wishlistBtn){
                                     wishlistBtn.classList.add('added');
                                     wishlistBtn.querySelector('i').className = 'fa-solid fa-heart';

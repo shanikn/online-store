@@ -1,19 +1,59 @@
 {
-  "name": "online_store",
+  "name": "golden-jewelry-store",
   "version": "1.0.0",
-  "description": "",
+  "description": "Online gold jewelry store - a Node.js Express app for FullStack course final project",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:server": "eslint server.js screens/**/*.js persist_module.js",
+    "lint:client": "eslint public/**/*.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
+    "test:server": "jest __tests__/server.test.js",
+    "test:cart": "jest __tests__/cart-server.test.js",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\"",
+    "pretest": "npm run lint",
+    "ci": "npm run lint && npm run test:coverage",
+    "check-all": "npm run lint && npm run test && echo '✅ All checks passed!'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "ecommerce",
+    "jewelry",
+    "online-store",
+    "nodejs",
+    "express",
+    "fullstack"
+  ],
+  "author": "Shani Knobel",
+  "license": "MIT",
+  "homepage": "http://127.0.0.1:5000/store.html",
   "type": "commonjs",
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@jest/globals": "^29.7.0",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.15.0",
+    "jest": "^30.1.3",
+    "prettier": "^3.6.2",
+    "supertest": "^7.1.4"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }

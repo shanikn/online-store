@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>Shopping Cart - ShaniknJewls</title>
+        <title>Shopping Cart - ShanikJewls</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
@@ -54,59 +54,7 @@
                 top: 120px;
             }
 
-            .cart-item {
-                display: grid;
-                grid-template-columns: 100px 1fr auto;
-                gap: 20px;
-                padding: 24px 0;
-                border-bottom: 1px solid rgba(162, 150, 138, 0.15);
-                align-items: center;
-            }
-
-            .cart-item:last-child {
-                border-bottom: none;
-            }
-
-            .item-image {
-                width: 100px;
-                height: 100px;
-                border-radius: 12px;
-                overflow: hidden;
-                background: #f8f8f8;
-            }
-
-            .item-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-            .item-details {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .item-name {
-                font-weight: 600;
-                font-size: 1.1rem;
-                color: #3a332d;
-                font-family: 'Fraunces', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                letter-spacing: 0.01em;
-            }
-
-            .item-description {
-                color: #6c5f54;
-                font-size: 0.9rem;
-                line-height: 1.4;
-            }
-
-            .item-price {
-                font-weight: 600;
-                color: #4b3f36;
-                font-size: 1.1rem;
-                letter-spacing: 0.01em;
-            }
+            /* Cart-specific item layout - inherits base .cart-item from theme.css */
 
             .customization-details {
                 background: rgba(120, 108, 98, 0.15);
@@ -151,11 +99,7 @@
                 box-shadow: 0 4px 8px rgba(184, 134, 106, 0.2);
             }
 
-            .quantity-display {
-                min-width: 40px;
-                text-align: center;
-                font-weight: 600;
-            }
+            /* quantity-display now inherited from theme.css */
 
             .remove-btn {
                 background: none;
@@ -258,17 +202,7 @@
                 background: linear-gradient(140deg, rgba(0,0,0,0.3), transparent 70%);
             }
 
-            body.dark-mode .item-name {
-                color: #f7ede0;
-            }
-
-            body.dark-mode .item-description {
-                color: #d1c6b9;
-            }
-
-            body.dark-mode .item-price {
-                color: #f1e8dc;
-            }
+            /* Dark mode item styles now inherited from theme.css */
 
             body.dark-mode .summary-total {
                 color: #f5ede2;
@@ -301,9 +235,7 @@
                 box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             }
 
-            body.dark-mode .quantity-display {
-                color: #f1e8dc;
-            }
+            /* quantity-display dark mode now inherited from theme.css */
 
             body.dark-mode .remove-btn {
                 color: #ff6b6b;
@@ -314,24 +246,24 @@
             }
 
             body.dark-mode .checkout-btn {
-                background: #5a5a5a;
+                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
                 color: #f9f4ee;
                 box-shadow: 0 16px 30px rgba(0,0,0,0.35);
             }
 
             body.dark-mode .checkout-btn:hover {
-                background: #6a6a6a;
+                background: linear-gradient(135deg, #7a7a7a 0%, #5a5a5a 100%);
                 box-shadow: 0 20px 36px rgba(0,0,0,0.4);
             }
 
             body.dark-mode .continue-shopping-btn {
-                background: #5a5a5a;
+                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
                 color: #f9f4ee;
                 box-shadow: 0 16px 30px rgba(0,0,0,0.35);
             }
 
             body.dark-mode .continue-shopping-btn:hover {
-                background: #6a6a6a;
+                background: linear-gradient(135deg, #7a7a7a 0%, #5a5a5a 100%);
                 box-shadow: 0 20px 36px rgba(0,0,0,0.4);
             }
         </style>
@@ -385,7 +317,7 @@
         <footer class="site-footer">
             <div class="footer-inner">
                 <div class="footer-brand">
-                    <h3>ShaniknJewls</h3>
+                    <h3>ShanikJewls</h3>
                     <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
                     <div class="footer-socials">
                         <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>

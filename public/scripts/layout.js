@@ -1,6 +1,6 @@
 // Global authentication state - tracks if user is logged in
-var isAuthenticated = false;
-var currentUser = null;
+let isAuthenticated = false;
+let currentUser = null;
 
 /**
  * Checks current user authentication status via API call
@@ -16,7 +16,7 @@ async function checkAuthStatus(){
             // Store user data
             currentUser = await response.json();
             // Fetch cart and wishlist counts
-            await updateCartAndWishlistCounts();
+            await window.updateCartAndWishlistCounts();
         } else {
             currentUser = null;
         }
@@ -94,6 +94,7 @@ function updateNavigation(){
             '</div>' +
             createMenuLink('/cart.html', 'fa-solid fa-shopping-cart', 'Cart') +
             createMenuLink('/wishlist.html', 'fa-solid fa-heart', 'Wishlist') +
+            createMenuLink('/my-items.html', 'fa-solid fa-box', 'My Items') +
             createMenuLink('/about.html', 'fa-solid fa-info-circle', 'About') +
             createMenuLink('/contact.html', 'fa-solid fa-envelope', 'Contact') +
             createMenuLink('/readme.html', 'fa-solid fa-book', 'README') +
@@ -246,33 +247,34 @@ function toggleTheme(){
 
 /**
  * Updates the user indicator in the header to show login status
- * Displays username when authenticated, hides when not authenticated
+ * Displays floating profile circle when authenticated, hides when not authenticated
  */
 function updateUserIndicator(){
-    let userIndicator = document.getElementById('userIndicator');
+    let profileCircle = document.getElementById('profileCircle');
 
-    if(!userIndicator){
-        // Create user indicator if it doesn't exist
-        userIndicator = document.createElement('div');
-        userIndicator.id = 'userIndicator';
-        userIndicator.className = 'user-indicator';
-        document.body.appendChild(userIndicator);
+    if(!profileCircle){
+        // Create floating profile circle if it doesn't exist
+        profileCircle = document.createElement('a');
+        profileCircle.id = 'profileCircle';
+        profileCircle.className = 'profile-circle';
+        profileCircle.href = '/profile.html';
+        profileCircle.title = `My Profile${currentUser ? ` (${currentUser.username})` : ''}`;
+        document.body.appendChild(profileCircle);
     }
 
     if(isAuthenticated && currentUser){
-        userIndicator.innerHTML = `
-            <i class="fa-solid fa-user"></i>
-            <span>Welcome, ${currentUser.username}</span>
-        `;
-        userIndicator.style.display = 'flex';
+        // Show user icon instead of first letter
+        profileCircle.innerHTML = `<i class="fa-solid fa-user"></i>`;
+        profileCircle.title = `My Profile (${currentUser.username})`;
+        profileCircle.style.display = 'flex';
     } else {
-        userIndicator.style.display = 'none';
+        profileCircle.style.display = 'none';
     }
 }
 
 /**
  * Handles user logout by calling the server logout endpoint
- * Reloads the page on successful logout to reset authentication state
+ * Redirects to store page on successful logout instead of just reloading
  */
 async function logout(){
     try{
@@ -280,13 +282,16 @@ async function logout(){
             method: 'POST'
         });
 
-        const data= await response.json()
+        const data = await response.json();
         if(data.success){
-            window.location.reload();
+            // Redirect to store instead of just reloading
+            window.location.href = '/store.html';
         }
     }
     catch(error){
         console.error('Logout error: ', error);
+        // Fallback: still redirect to store even if there's an error
+        window.location.href = '/store.html';
     }
 }
 
@@ -529,11 +534,11 @@ function updateBadge(badgeId, count){
  * Force refresh badges from server (call from console)
  */
 window.refreshBadges = function() {
-    if(typeof updateCartAndWishlistCounts === 'function') {
-        updateCartAndWishlistCounts();
+    if(typeof window.updateCartAndWishlistCounts === 'function') {
+        window.updateCartAndWishlistCounts();
         console.log('Badges refreshed from server');
     }
-}
+};
 
 /**
  * Debug function to check element existence and force visibility
@@ -617,8 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Wait for auth check to complete before fetching real counts
         setTimeout(() => {
-            if(typeof updateCartAndWishlistCounts === 'function') {
-                updateCartAndWishlistCounts();
+            if(typeof window.updateCartAndWishlistCounts === 'function') {
+                window.updateCartAndWishlistCounts();
             }
         }, 1000);
     }, 100);

@@ -1,48 +1,51 @@
-const persist = require('../persist_module');
-
-function getCurrentUser(req) {
-    return req.cookies.userToken || null;
-}
+const persist = require('./persist_module');
 
 module.exports = {
     async getActivities(req, res) {
         try {
-            const usernameFilter = req.query.username || '';
-            const activities = await persist.getActivities(usernameFilter);
-
-            // Transform activities to match frontend expectations
-            const transformedActivities = activities.map(activity => ({
-                ...activity,
-                activity: activity.activityType // Map activityType to activity field
-            }));
-
-            res.json(transformedActivities);
+            const activities = await persist.getAllActivities();
+            const { usernamePrefix } = req.query;
+            
+            let filteredActivities = activities;
+            if (usernamePrefix) {
+                filteredActivities = activities.filter(activity => 
+                    activity.username.toLowerCase().startsWith(usernamePrefix.toLowerCase())
+                );
+            }
+            
+            res.json(filteredActivities);
         } catch (error) {
             console.error('Error loading activities:', error);
             res.status(500).json({ error: 'Failed to load activities' });
         }
     },
 
+    async getSales(req, res) {
+        try {
+            const users = persist.getUsers();
+            let totalSales = 0;
+            
+            for (const user of users) {
+                const purchases = await persist.getUserPurchases(user.username);
+                totalSales += purchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            }
+            
+            res.json({ totalSales: totalSales.toFixed(2) });
+        } catch (error) {
+            console.error('Error calculating sales:', error);
+            res.status(500).json({ error: 'Failed to calculate sales' });
+        }
+    },
+
     async addProduct(req, res) {
         try {
-            const { title, description, image, price, customizable } = req.body;
-
-            const products = await persist.loadProducts();
-            const newId = Math.max(...products.map(p => p.id || 0)) + 1;
-
+            const products = persist.getProducts();
             const newProduct = {
-                id: newId,
-                name: title,
-                description,
-                image,
-                price: parseFloat(price),
-                customizable: customizable === 'true' || customizable === true
+                id: Date.now(),
+                ...req.body
             };
-
-            products.push(newProduct);
-            await persist.saveProducts(products);
-
-            await persist.logActivity(getCurrentUser(req), 'add-product', { productId: newId, title });
+            
+            await persist.addProduct(newProduct);
             res.json({ success: true, product: newProduct });
         } catch (error) {
             console.error('Error adding product:', error);
@@ -50,23 +53,14 @@ module.exports = {
         }
     },
 
-    async removeProduct(req, res) {
+    async deleteProduct(req, res) {
         try {
             const productId = parseInt(req.params.id);
-
-            const products = await persist.loadProducts();
-            const filteredProducts = products.filter(p => p.id !== productId);
-
-            if (products.length === filteredProducts.length) {
-                return res.status(404).json({ error: 'Product not found' });
-            }
-
-            await persist.saveProducts(filteredProducts);
-            await persist.logActivity(getCurrentUser(req), 'remove-product', { productId });
+            await persist.removeProduct(productId);
             res.json({ success: true });
         } catch (error) {
-            console.error('Error removing product:', error);
-            res.status(500).json({ error: 'Failed to remove product' });
+            console.error('Error deleting product:', error);
+            res.status(500).json({ error: 'Failed to delete product' });
         }
     }
 };

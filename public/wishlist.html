@@ -681,6 +681,11 @@
 
                 if (data.success) {
                     showSuccess('Item added to cart!');
+                    
+                    // Update cart count badge immediately
+                    if(typeof window.updateCartAndWishlistCounts === 'function'){
+                        window.updateCartAndWishlistCounts();
+                    }
                 } else {
                     showError('Failed to add item to cart');
                 }
@@ -704,30 +709,34 @@
 
         async function confirmRemove() {
             if (!productToRemove) return;
+            
+            // Store the product ID before closing modal (which resets it to null)
+            const productIdToRemove = productToRemove;
             closeConfirmModal();
-            await removeFromWishlist(productToRemove);
+            
+            // Use the stored product ID
+            await removeFromWishlist(productIdToRemove);
         }
 
         async function removeFromWishlist(productId) {
-
             try {
                 console.log('🗑️ REMOVING PRODUCT:', productId, 'from wishlist');
-                console.log('📋 Current wishlist before removal:', wishlistItems);
+                console.log('📤 Sending DELETE request to /api/wishlist/remove...');
 
-                // Use real API endpoint - matching the format used in store.html and collections
                 const response = await fetch('/api/wishlist/remove', {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Cache-Control': 'no-cache, no-store, must-revalidate'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({productId: productId})
                 });
 
                 console.log('🌐 Server response status:', response.status);
+                console.log('🌐 Server response ok:', response.ok);
 
                 // Handle authentication required response
                 if (response.status === 401 || response.redirected && response.url.includes('login')) {
+                    console.log('❌ Authentication required - redirecting to login');
                     alert('Please login to manage your wishlist');
                     window.location.href = '/login.html';
                     return;
@@ -737,36 +746,23 @@
                 console.log('📤 Server response data:', data);
 
                 if (data.success) {
-                    console.log('✅ Server confirmed removal, waiting 800ms then reloading...');
-                    // Add longer delay to ensure server has processed the change
-                    await new Promise(resolve => setTimeout(resolve, 800));
-
-                    // Reload wishlist from server to ensure consistency
-                    console.log('🔄 Reloading wishlist from server...');
+                    console.log('✅ Server confirmed removal, reloading wishlist...');
+                    
+                    // Reload wishlist from server immediately
                     await loadWishlist();
-                    console.log('📋 New wishlist after reload:', wishlistItems);
-
-                    // Double-check that the item was actually removed
-                    const itemStillExists = wishlistItems.some(item => item.id === productId || item === productId);
-                    if (itemStillExists) {
-                        console.error('❌ ITEM STILL EXISTS after removal! Trying again...');
-                        // Force a complete page refresh as last resort
-                        window.location.reload();
-                        return;
-                    }
-
-                    console.log('✅ Confirmed item was removed successfully');
+                    
                     showWishlistSuccess('Item removed from wishlist');
 
-                    // Update badge counts if function exists
-                    if(typeof updateCartAndWishlistCounts === 'function'){
-                        updateCartAndWishlistCounts();
+                    // Update badge counts
+                    if(typeof window.updateCartAndWishlistCounts === 'function'){
+                        window.updateCartAndWishlistCounts();
                     }
                 } else {
+                    console.log('❌ Server returned failure:', data);
                     showError('Failed to remove item from wishlist');
                 }
             } catch (error) {
-                console.error('Error removing item from wishlist:', error);
+                console.error('❌ JavaScript error during removal:', error);
                 showError('Failed to remove item from wishlist');
             }
         }

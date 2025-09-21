@@ -1,0 +1,17 @@
+[
+  {
+    "cartItemId": 1758408900164.544,
+    "productId": 11,
+    "quantity": 1,
+    "customization": {
+      "ringSize": "6"
+    },
+    "addedAt": "2025-09-20T22:55:00.164Z"
+  },
+  {
+    "cartItemId": 1758418909448.8218,
+    "productId": 6,
+    "quantity": 1,
+    "addedAt": "2025-09-21T01:41:49.448Z"
+  }
+]

@@ -7,91 +7,24 @@
     "email": "shanik867@gmail.com"
   },
   {
-    "username": "testuser_1757978266665",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:17:46.668Z"
-  },
-  {
-    "username": "testuser_1757978298443",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:18:18.446Z"
-  },
-  {
-    "username": "testuser_1757978459770",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:20:59.774Z"
-  },
-  {
-    "username": "testuser_1757978493930",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:21:33.934Z"
-  },
-  {
-    "username": "testuser_1757978539126",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:22:19.128Z"
-  },
-  {
-    "username": "testuser_1757978566806",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:22:46.808Z"
-  },
-  {
-    "username": "testuser_1757978598483",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:23:18.486Z"
-  },
-  {
-    "username": "testuser_1757978708295",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:25:08.298Z"
-  },
-  {
-    "username": "testuser_1757978738397",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:25:38.400Z"
-  },
-  {
-    "username": "testuser_1757978786187",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:26:26.190Z"
-  },
-  {
-    "username": "testuser_1757978931111",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:28:51.126Z"
-  },
-  {
-    "username": "testuser_1757978956298",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:29:16.316Z"
-  },
-  {
-    "username": "testuser_1757979007202",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:30:07.205Z"
-  },
-  {
-    "username": "testuser_1757979029473",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-15T23:30:29.477Z"
-  },
-  {
     "username": "shani",
-    "password": "123456"
+    "password": "123456",
+    "email": "shani@gmail.com",
+    "role": "user",
+    "createdAt": "2025-09-19T07:41:43.247Z"
+  },
+  {
+    "username": "shaniki",
+    "password": "shani",
+    "role": "user",
+    "email": "",
+    "createdAt": "2025-09-19T07:41:43.248Z"
+  },
+  {
+    "username": "sha",
+    "password": "shah",
+    "role": "user",
+    "email": "",
+    "createdAt": "2025-09-19T07:41:43.248Z"
   }
 ]

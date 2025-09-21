@@ -2,62 +2,15 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>Checkout - ShaniknJewls</title>
+        <title>Checkout - ShanikJewls</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="/styles/theme.css">
         <style>
+        /* Checkout-specific cart item layout - uses different grid for checkbox */
         .cart-item {
-            display: grid;
-            grid-template-columns: auto 100px 1fr;
-            gap: 20px;
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(162, 150, 138, 0.15);
-            align-items: center;
-        }
-
-        .item-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #f8f8f8;
-        }
-
-        .item-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .item-details {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .item-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #3f362f;
-        }
-
-        .item-description {
-            color: #7a6c5d;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .item-price {
-            font-weight: 600;
-            color: #7d514b;
-            font-size: 1.1rem;
-        }
-
-        .quantity-display {
-            font-size: 0.9rem;
-            color: #7a6c5d;
+            grid-template-columns: auto 100px 1fr; /* Override default to add checkbox column */
         }
 
         /* Enhanced checkout step separation */
@@ -183,8 +136,50 @@
             box-shadow: none;
         }
 
-        body.dark-mode .form-error__icon {
-            color: #ff8a80;
+        /* Dark mode item styles now inherited from theme.css */
+
+        /* Additional dark mode text visibility fixes */
+        body.dark-mode .checkout-helper {
+            color: #b8a899;
+        }
+
+        body.dark-mode .checkout-helper a {
+            color: #f1d9a6;
+        }
+
+        body.dark-mode .checkout-alert {
+            background: rgba(198, 182, 166, 0.15);
+            border-color: rgba(198, 182, 166, 0.3);
+            color: #f1e8dc;
+        }
+
+        /* Fix dark mode text visibility for all form elements */
+        body.dark-mode .checkout-form-grid label,
+        body.dark-mode .form-control-group label {
+            color: #f1e8dc !important;
+        }
+
+        body.dark-mode .form-control-group small {
+            color: #c8bcad !important;
+        }
+
+        body.dark-mode .checkout-step-header .step-title {
+            color: #f5ede2 !important;
+        }
+
+        body.dark-mode .form-control {
+            background: rgba(31, 28, 26, 0.95) !important;
+            border-color: rgba(156, 143, 129, 0.4) !important;
+            color: #f1e8dc !important;
+        }
+
+        body.dark-mode .form-control::placeholder {
+            color: #a39084 !important;
+        }
+
+        body.dark-mode .form-control:focus {
+            border-color: rgba(198, 182, 166, 0.72) !important;
+            box-shadow: 0 0 0 2px rgba(198, 182, 166, 0.3) !important;
         }
     </style>
     </head>
@@ -219,7 +214,7 @@
             <section class="page-hero page-hero--single">
                 <div class="page-hero__content">
                     <span class="page-hero__eyebrow">Secure Checkout</span>
-                    <h1 class="page-hero__title">Complete Your ShaniknJewls Order</h1>
+                    <h1 class="page-hero__title">Complete Your ShanikJewls Order</h1>
                     <p class="page-hero__copy">Review your details and place your order with confidence. Every purchase is wrapped, insured, and shipped with love.</p>
                     <div class="hero-actions">
                         <a class="cta-btn secondary" href="/cart.html"><i class="fa-solid fa-arrow-left"></i> Back to Cart</a>
@@ -375,7 +370,7 @@
         <footer class="site-footer">
             <div class="footer-inner">
                 <div class="footer-brand">
-                    <h3>ShaniknJewls</h3>
+                    <h3>ShanikJewls</h3>
                     <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
                     <div class="footer-socials">
                         <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -741,32 +736,37 @@
 
             document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
+                console.log('🛋️ CHECKOUT FORM SUBMITTED');
 
                 clearFormError();
 
                 // Comprehensive form validation
+                console.log('🔍 Starting form validation...');
                 const errors = validateForm();
                 if (errors.length > 0) {
+                    console.log('❌ Form validation failed:', errors);
                     showFormError(errors);
                     return;
                 }
+                console.log('✅ Form validation passed');
 
                 var submitBtn = e.target.querySelector('.place-order-btn');
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Processing...';
 
                 // Fix: Use cartItemId for filtering selected items
-                console.log('Cart items available:', cartItems);
+                console.log('📋 Cart items available:', cartItems);
                 const selectedItems = cartItems.filter(item => {
                     const checkboxId = item.cartItemId ? `select-${item.cartItemId}` : `select-${item.productId}`;
                     const checkbox = document.getElementById(checkboxId);
-                    console.log('Checking checkbox:', checkboxId, 'found:', !!checkbox, 'checked:', checkbox?.checked);
+                    console.log('🔍 Checking checkbox:', checkboxId, 'found:', !!checkbox, 'checked:', checkbox?.checked);
                     return checkbox && checkbox.checked;
                 });
 
-                console.log('Selected items:', selectedItems);
+                console.log('📆 Selected items for checkout:', selectedItems);
 
                 if (selectedItems.length === 0) {
+                    console.log('❌ No items selected for checkout');
                     showFormError('Please select at least one item to checkout');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
@@ -790,7 +790,15 @@
                     total: orderTotal
                 };
 
+                console.log('📦 Form data prepared:', {
+                    itemCount: formData.items.length,
+                    total: formData.total,
+                    customerInfo: `${formData.fullName} <${formData.email}>`,
+                    items: formData.items
+                });
+
                 try {
+                    console.log('📤 Sending checkout request to /api/checkout...');
                     var response = await fetch('/api/checkout', {
                         method: 'POST',
                         headers: {
@@ -799,26 +807,30 @@
                         body: JSON.stringify(formData)
                     });
 
-                    var data = await response.json();
+                    console.log('🌐 Checkout response status:', response.status);
+                    console.log('🌐 Checkout response ok:', response.ok);
 
-                    console.log('Checkout response:', data);
+                    var data = await response.json();
+                    console.log('📦 Checkout response data:', data);
+
                     if (data.success) {
+                        console.log('✅ Checkout successful! Order total:', data.total);
                         showSuccess('Order placed successfully! Redirecting...');
                         // Store order total for thank you page
                         localStorage.setItem('lastOrderTotal', orderTotal.toFixed(2));
-                        console.log('Redirecting to pay.html with total:', orderTotal.toFixed(2));
+                        console.log('🔗 Redirecting to pay.html with total:', orderTotal.toFixed(2));
                         setTimeout(function() {
-                            console.log('Executing redirect now...');
+                            console.log('🚀 Executing redirect now...');
                             window.location.href = '/pay.html?total=' + orderTotal.toFixed(2);
                         }, 1000);
                     } else {
-                        console.error('Checkout failed:', data.message);
+                        console.error('❌ Checkout failed:', data.message);
                         showFormError(data.message || 'Failed to place order');
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';
                     }
                 } catch (error) {
-                    console.error('Error placing order:', error);
+                    console.error('❌ JavaScript error during checkout:', error);
                     showFormError('Connection error. Please try again.');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Place Order';

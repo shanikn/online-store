@@ -2,12 +2,44 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>ShaniknJewls Store</title>
+        <title>ShanikJewls Store</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
         <!-- using the theme.css file i created -->
         <link rel="stylesheet" href="/styles/theme.css">
+        <style>
+            /* Login prompt styling */
+            .login-prompt {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .login-prompt i {
+                font-size: 1.2rem;
+                color: #ffd700;
+            }
+
+            .login-btn {
+                background: rgba(255, 255, 255, 0.9);
+                color: #dc3545;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin-left: auto;
+            }
+
+            .login-btn:hover {
+                background: white;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+        </style>
     </head>
     <body>
         <!-- header with navigation -->
@@ -104,7 +136,7 @@
                             <h2>Signature Collections</h2>
                             <p>Discover wedding bands, engagement keepsakes, and iconic hoops crafted for everyday radiance.</p>
                         </div>
-                        <a class="cta-btn secondary" href="/collection-wedding.html">View Entire Collection</a>
+                        <a class="cta-btn collection-explore" href="/store.html#all-items">Browse All Jewelry</a>
                     </div>
                     <div class="collection-grid">
                         <article class="collection-card collection-card--radiant">
@@ -240,7 +272,7 @@
         <footer class="site-footer">
             <div class="footer-inner">
                 <div class="footer-brand">
-                    <h3>ShaniknJewls</h3>
+                    <h3>ShanikJewls</h3>
                     <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
                     <div class="footer-socials">
                         <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -461,6 +493,25 @@
                 applySort();
             }
 
+            // Helper function for authenticated requests
+            async function handleAuthenticatedRequest(url, options, successCallback, authMessage = 'Please login to continue') {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status === 401) {
+                        showLoginPrompt(authMessage);
+                        return;
+                    }
+                    const data = await response.json();
+                    if (data.success) {
+                        successCallback(data);
+                    } else {
+                        showError('Operation failed');
+                    }
+                } catch (error) {
+                    showError('Connection error. Please try again.');
+                }
+            }
+
             async function addToCart(productId){
                 try{
                     const response= await fetch('/api/cart/add', {
@@ -471,9 +522,8 @@
                         body: JSON.stringify({ productId: productId })
                     });
 
-                    // If user is not authenticated, redirect to login
-                    if(response.status === 401 || response.redirected && response.url.includes('login')){
-                        alert('Please login to add items to cart');
+                    if(response.status === 401){
+                        alert('Please login to add items to your cart');
                         window.location.href = '/login.html';
                         return;
                     }
@@ -482,9 +532,8 @@
 
                     if(data.success){
                         showSuccess('Item added to cart!');
-                        // Update cart count
-                        if(typeof updateCartAndWishlistCounts === 'function'){
-                            updateCartAndWishlistCounts();
+                        if(typeof window.updateCartAndWishlistCounts === 'function'){
+                            window.updateCartAndWishlistCounts();
                         }
                     }
                     else{
@@ -498,13 +547,6 @@
             }
 
             async function addToWishlist(productId, buttonElement){
-                // Check authentication first
-                if(typeof isAuthenticated !== 'undefined' && !isAuthenticated) {
-                    alert('Please login to manage your wishlist');
-                    window.location.href = '/login.html';
-                    return;
-                }
-
                 try{
                     // Check if item is already in wishlist
                     const isInWishlist = buttonElement.classList.contains('added');
@@ -519,8 +561,7 @@
                             body: JSON.stringify({productId: productId})
                         });
 
-                        // If user is not authenticated, redirect to login
-                        if(response.status === 401 || response.redirected && response.url.includes('login')){
+                        if(response.status === 401){
                             alert('Please login to manage your wishlist');
                             window.location.href = '/login.html';
                             return;
@@ -533,6 +574,11 @@
                             buttonElement.querySelector('i').className = 'fa-regular fa-heart';
                             buttonElement.title = 'Add to Wishlist';
                             showWishlistSuccess('Removed from wishlist');
+                            
+                            // Update wishlist count badge immediately
+                            if(typeof window.updateCartAndWishlistCounts === 'function'){
+                                window.updateCartAndWishlistCounts();
+                            }
                         } else {
                             showError('Failed to remove from wishlist');
                         }
@@ -546,8 +592,7 @@
                             body: JSON.stringify({ productId: productId })
                         });
 
-                        // If user is not authenticated, redirect to login
-                        if(response.status === 401 || response.redirected && response.url.includes('login')){
+                        if(response.status === 401){
                             alert('Please login to add items to your wishlist');
                             window.location.href = '/login.html';
                             return;
@@ -560,6 +605,11 @@
                             buttonElement.querySelector('i').className = 'fa-solid fa-heart';
                             buttonElement.title = 'Remove from Wishlist';
                             showWishlistSuccess('Item added to wishlist! ❤️');
+                            
+                            // Update wishlist count badge immediately
+                            if(typeof window.updateCartAndWishlistCounts === 'function'){
+                                window.updateCartAndWishlistCounts();
+                            }
                         }
                         else{
                             showError('Failed to add item to wishlist');
@@ -573,16 +623,35 @@
             }
 
             function checkAuthAndRedirect(targetUrl) {
-                // Check if user is authenticated (using global isAuthenticated from layout.js)
-                if(typeof isAuthenticated !== 'undefined' && isAuthenticated) {
-                    window.location.href = targetUrl;
-                } else {
-                    alert('Please login to access this feature');
-                    window.location.href = '/login.html';
-                }
+                console.log('checkAuthAndRedirect called with:', targetUrl);
+                fetch('/api/users/current')
+                    .then(response => {
+                        console.log('Auth response status:', response.status);
+                        if(response.ok) {
+                            console.log('Redirecting to:', targetUrl);
+                            window.location.href = targetUrl;
+                        } else {
+                            console.log('Redirecting to login');
+                            window.location.href = '/login.html';
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Auth check error:', error);
+                        window.location.href = '/login.html';
+                    });
             }
 
             async function loadWishlistStatus(){
+                // Skip if not authenticated to avoid 401 errors
+                try {
+                    const authCheck = await fetch('/api/users/current');
+                    if (!authCheck.ok) {
+                        return; // User not authenticated, skip wishlist loading
+                    }
+                } catch (error) {
+                    return; // Auth check failed, skip wishlist loading
+                }
+
                 try{
                     const response = await fetch('/api/wishlist', {
                         cache: 'no-cache'
@@ -594,8 +663,8 @@
                         // Handle both array format and object.items format
                         const wishlistItems = Array.isArray(wishlistData) ? wishlistData : wishlistData.items;
 
-                        // First, reset all wishlist buttons to default state
-                        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                        // FIXED: Reset ALL wishlist buttons (both .wishlist-btn and .wishlist-btn-top)
+                        document.querySelectorAll('.wishlist-btn, .wishlist-btn-top').forEach(btn => {
                             btn.classList.remove('added');
                             btn.querySelector('i').className = 'fa-regular fa-heart';
                             btn.title = 'Add to Wishlist';
@@ -605,9 +674,9 @@
                             // Get all product IDs in wishlist - handle both productId and id formats
                             const wishlistProductIds = wishlistItems.map(item => item.productId || item.id || item);
 
-                            // Update heart icons for products in wishlist
+                            // FIXED: Update heart icons for products in wishlist using proper selector
                             wishlistProductIds.forEach(productId => {
-                                const wishlistBtn = document.querySelector(`[data-product-id="${productId}"]`);
+                                const wishlistBtn = document.querySelector(`.wishlist-btn-top[data-product-id="${productId}"], .wishlist-btn[data-product-id="${productId}"]`);
 
                                 if(wishlistBtn){
                                     wishlistBtn.classList.add('added');
@@ -616,9 +685,6 @@
                                 }
                             });
                         }
-                    } else if(response.status === 401) {
-                        // User not authenticated - this is expected for non-logged-in users
-                        return;
                     }
                 } catch(error){
                     console.error('Error loading wishlist status:', error);
@@ -788,7 +854,7 @@
 
                 let htmlContent = `<div>${message}</div>`;
 
-                if (showCartButton && isAuthenticated) {
+                if (showCartButton) {
                     htmlContent += `
                         <div class="success-actions">
                             <a href="/cart.html" class="view-cart-btn">
@@ -812,15 +878,13 @@
 
                 let htmlContent = `<div>${message}</div>`;
 
-                if (isAuthenticated) {
-                    htmlContent += `
-                        <div class="success-actions">
-                            <a href="/wishlist.html" class="view-cart-btn">
-                                <i class="fa-solid fa-heart"></i> View Wishlist
-                            </a>
-                        </div>
-                    `;
-                }
+                htmlContent += `
+                    <div class="success-actions">
+                        <a href="/wishlist.html" class="view-cart-btn">
+                            <i class="fa-solid fa-heart"></i> View Wishlist
+                        </a>
+                    </div>
+                `;
 
                 successDiv.innerHTML = htmlContent;
                 successDiv.style.display = 'block';
@@ -838,6 +902,24 @@
                 setTimeout(()=> {
                     errorDiv.style.display= 'none';
                 }, 5000);
+            }
+
+            // New styled login prompt function
+            function showLoginPrompt(message) {
+                const errorDiv = document.getElementById('errorMessage');
+                errorDiv.innerHTML = `
+                    <div class="login-prompt">
+                        <i class="fa-solid fa-user-lock"></i>
+                        <span>${message}</span>
+                        <button class="login-btn" onclick="window.location.href='/login.html'">
+                            <i class="fa-solid fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                `;
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 8000); // Longer timeout for login prompts
             }
 
             function showSearchSuggestions(query) {
@@ -1027,8 +1109,7 @@
                         })
                     });
 
-                    // If user is not authenticated, redirect to login
-                    if (response.status === 401 || response.redirected && response.url.includes('login')) {
+                    if (response.status === 401) {
                         alert('Please login to add items to cart');
                         window.location.href = '/login.html';
                         return;
@@ -1047,8 +1128,8 @@
                         showSuccess(message);
                         closeCustomizationModal();
                         // Update cart count
-                        if(typeof updateCartAndWishlistCounts === 'function'){
-                            updateCartAndWishlistCounts();
+                        if(typeof window.updateCartAndWishlistCounts === 'function'){
+                            window.updateCartAndWishlistCounts();
                         }
                     } else {
                         showError('Failed to add customized item to cart');
