@@ -150,12 +150,13 @@ app.get('/my-items.html', requireAuth, (req, res)=> {
 app.get('/api/products', storeServer.getProducts);
 
 // add item to cart
-app.post('/api/cart/add', requireAuthAPI, cartServer.addToCart);
-
-// get user cart
+// Cart endpoints
+app.post('/api/cart', requireAuthAPI, cartServer.addToCart);
 app.get('/api/cart', requireAuthAPI, cartServer.getCart);
 
-app.delete('/api/cart/remove', requireAuthAPI, cartServer.removeFromCart);
+// Remove item from cart - multiple endpoints for compatibility
+app.delete('/api/cart/:productId', requireAuthAPI, cartServer.removeFromCart);
+app.post('/api/cart/remove', requireAuthAPI, (req, res) => cartServer.removeFromCart(req, res));
 
 
 // update cart quantity (also for when clearing cart after purchase- resetting quanitity to 0)
@@ -174,7 +175,10 @@ app.put('/api/cart/update-customization', requireAuthAPI, cartServer.updateCusto
 app.get('/api/products/search', storeServer.searchProducts);
 
 
+// Admin activity routes
+app.get('/api/admin/activity', requireAuthAPI, adminServer.getActivities);
 app.get('/api/admin/activities', requireAuthAPI, adminServer.getActivities);
+app.get('/api/admin/activities/filter', requireAuthAPI, adminServer.getActivities);
 
 
 app.post('/api/admin/products', requireAuthAPI, adminServer.addProduct);
@@ -184,7 +188,11 @@ app.delete('/api/admin/products/:id', requireAuthAPI, adminServer.removeProduct)
 
 
 
+// Checkout endpoint - process an order
 app.post('/api/checkout', requireAuthAPI, checkoutServer.processCheckout);
+
+// Alternative checkout endpoint for compatibility
+app.post('/api/orders', requireAuthAPI, checkoutServer.processCheckout);
 
 
 
@@ -236,7 +244,7 @@ app.get('/api/admin/sales', requireAuthAPI, async(req, res)=> {
 app.get('/api/users/current', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
-        const users= await persist.loadUsers();
+        const users= persist.getUsers();
         const user= users.find(u=> u.username === username);
 
         if(user){
@@ -257,9 +265,8 @@ app.get('/api/users/current', requireAuthAPI, async(req, res)=> {
 app.post('/api/contact', requireAuthAPI, async(req, res)=> {
     try{
         const { name, email, message }= req.body;
-        const contacts= await persist.loadData('contacts.json', []);
 
-        contacts.push({
+        await persist.addContact({
             id: Date.now(),
             name,
             email,
@@ -268,7 +275,6 @@ app.post('/api/contact', requireAuthAPI, async(req, res)=> {
             from: getCurrentUser(req)
         });
 
-        await persist.saveData('contacts.json', contacts);
         res.json({ success: true, message: 'Message sent' });
     }
     catch(error){
@@ -281,25 +287,25 @@ app.put('/api/profile', requireAuthAPI, async(req, res)=> {
     try {
         const oldUsername = getCurrentUser(req);
         const { newUsername, email } = req.body;
-        
+
         // migrate user data
         const cart = await persist.loadCart(oldUsername);
         const wishlist = await persist.loadData('wishlists.json', {});
         const purchases = await persist.getPurchases(oldUsername);
-    
+
         await persist.saveCart(newUsername, cart);
         if (wishlist[oldUsername]) {
             wishlist[newUsername] = wishlist[oldUsername];
             delete wishlist[oldUsername];
             await persist.saveData('wishlists.json', wishlist);
-        }        
+        }
 
         // update users and set new cookie
         const users = await persist.loadUsers();
         const userIndex = users.findIndex(u => u.username === oldUsername);
         users[userIndex] = {...users[userIndex], username: newUsername, email};
         await persist.saveUsers(users);
-        
+
         res.cookie('userToken', newUsername, {maxAge: 12*24*60*60*1000});
         res.json({ success: true });
     } catch (error) {
@@ -311,12 +317,9 @@ app.put('/api/profile', requireAuthAPI, async(req, res)=> {
 app.get('/api/wishlist', requireAuthAPI, async(req, res)=> {
     try{
         const username= getCurrentUser(req);
-        const wishlists= await persist.loadData('wishlists.json', {});
-        const userWishlistIds= wishlists[username] || [];
-
-        // Get full product details for wishlist items
-        const products= await persist.loadData('products.json', []);
-        const wishlistItems= products.filter(product => userWishlistIds.includes(product.id));
+        const userWishlistIds = await persist.getUserWishlist(username);
+        const products = persist.getProducts();
+        const wishlistItems = products.filter(product => userWishlistIds.includes(product.id));
 
         res.json(wishlistItems);
     }
@@ -327,29 +330,17 @@ app.get('/api/wishlist', requireAuthAPI, async(req, res)=> {
 });
 
 
-app.post('/api/wishlist/add', requireAuthAPI, async(req, res)=>{
+app.post('/api/wishlist', requireAuthAPI, async(req, res)=>{
     try{
         const username= getCurrentUser(req);
         const { productId }= req.body;
 
-        const wishlists= await persist.loadData('wishlists.json', {});
-        if(!wishlists[username]){
-            wishlists[username]=[];
-        }
-
-        // Convert productId to number for consistency
+        const wishlist = await persist.getUserWishlist(username);
         const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
 
-        // Check if the product is already in the wishlist (comparing numbers)
-        const alreadyExists = wishlists[username].some(id => {
-            const numId = typeof id === 'string' ? parseInt(id) : id;
-            return numId === numProductId;
-        });
-
-        if(!alreadyExists){
-            wishlists[username].push(numProductId);
-            await persist.saveData('wishlists.json', wishlists);
-            console.log(`[DEBUG] Added product ${numProductId} to ${username}'s wishlist`);
+        if(!wishlist.includes(numProductId)){
+            wishlist.push(numProductId);
+            await persist.saveUserWishlist(username, wishlist);
         }
 
         res.json({ success: true });
@@ -360,36 +351,68 @@ app.post('/api/wishlist/add', requireAuthAPI, async(req, res)=>{
     }
 });
 
-app.delete('/api/wishlist/remove', requireAuthAPI, async(req, res)=>{
+app.delete('/api/wishlist', requireAuthAPI, async(req, res)=>{
     try{
-        const username= getCurrentUser(req);
-        const { productId }= req.body;
+        const username = getCurrentUser(req);
+        const productId = req.body.productId;
 
-        const wishlists= await persist.loadData('wishlists.json', {});
-        if(!wishlists[username]){
-            wishlists[username]=[];
+        if (!productId) {
+            return res.status(400).json({ success: false, error: 'Product ID is required' });
         }
 
-        // Remove the productId from the user's wishlist
-        // Convert both to numbers for comparison to handle type mismatches
-        console.log(`[DEBUG] Removing product ${productId} (type: ${typeof productId}) from ${username}'s wishlist`);
-        console.log(`[DEBUG] Wishlist before removal:`, wishlists[username]);
+        // Get current wishlist
+        const userWishlist = await persist.getUserWishlist(username);
 
-        wishlists[username] = wishlists[username].filter(id => {
+        // Convert to number for consistent comparison
+        const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
+
+        // Remove the product from wishlist
+        const updatedWishlist = userWishlist.filter(id => {
             const numId = typeof id === 'string' ? parseInt(id) : id;
-            const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
-            console.log(`[DEBUG] Comparing ${numId} !== ${numProductId} = ${numId !== numProductId}`);
             return numId !== numProductId;
         });
 
-        await persist.saveData('wishlists.json', wishlists);
-        console.log(`[DEBUG] Wishlist after removal:`, wishlists[username]);
+        // Save the updated wishlist
+        await persist.saveUserWishlist(username, updatedWishlist);
 
         res.json({ success: true });
     }
     catch(error){
         console.error('Error removing from wishlist:', error);
-        res.status(500).json({ error: 'Failed to remove from wishlist' });
+        res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
+    }
+});
+
+// Legacy endpoint for backward compatibility
+app.delete('/api/wishlist/remove', requireAuthAPI, async(req, res)=>{
+    try {
+        const username = getCurrentUser(req);
+        const productId = req.body.productId;
+
+        if (!productId) {
+            return res.status(400).json({ success: false, error: 'Product ID is required' });
+        }
+
+        // Get current wishlist
+        const userWishlist = await persist.getUserWishlist(username);
+
+        // Convert to number for consistent comparison
+        const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
+
+        // Remove the product from wishlist
+        const updatedWishlist = userWishlist.filter(id => {
+            const numId = typeof id === 'string' ? parseInt(id) : id;
+            return numId !== numProductId;
+        });
+
+        // Save the updated wishlist
+        await persist.saveUserWishlist(username, updatedWishlist);
+
+        res.json({ success: true });
+    }
+    catch(error) {
+        console.error('Error removing from wishlist:', error);
+        res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
     }
 });
 
@@ -424,7 +447,10 @@ async function migrateUserData() {
 
 // start server
 app.listen(5000, async ()=> {
-    console.log("Express App running at http://127.0.0.1:5000/");
+    console.log('Express App running at http://127.0.0.1:5000/');
+
+    // Initialize persist module
+    await persist.initialize();
 
     // Run migration on startup
     await migrateUserData();

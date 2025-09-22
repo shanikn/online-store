@@ -8,22 +8,49 @@ module.exports = {
     async processCheckout(req, res) {
         try {
             const username = getCurrentUser(req);
-            const { items, total, fullName, email, phone, address, city, zipCode, country, packaging, giftMessage, cardName, cardNumber, expiry, cvv } = req.body;
+            const {
+                items,
+                total,
+                fullName,
+                email,
+                phone,
+                address,
+                city,
+                zipCode,
+                country,
+                packaging,
+                giftMessage,
+                cardName,
+                cardNumber,
+                expiry,
+                cvv
+            } = req.body;
 
-            // Validate required fields
-            if (!items || items.length === 0) {
-                return res.json({ success: false, message: 'No items selected' });
+            // Validate cart items
+            if (!items || !Array.isArray(items) || items.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No items selected for checkout'
+                });
             }
 
+            // Validate required shipping fields
             if (!fullName || !email || !phone || !address || !city || !zipCode) {
-                return res.json({ success: false, message: 'Please fill in all required fields' });
+                return res.status(400).json({
+                    success: false,
+                    message: 'Please fill in all required shipping fields'
+                });
             }
 
+            // Validate payment information
             if (!cardName || !cardNumber || !expiry || !cvv) {
-                return res.json({ success: false, message: 'Please complete payment information' });
+                return res.status(400).json({
+                    success: false,
+                    message: 'Please complete payment information'
+                });
             }
 
-            // get cart details
+            // Get products to calculate accurate totals
             const products = await persist.loadProducts();
             let calculatedTotal = 0;
             const purchaseItems = items.map(item => {
@@ -65,16 +92,15 @@ module.exports = {
             };
 
             // Log activity
-            await persist.logActivity(username, 'purchase', `Order total: ₪${calculatedTotal.toFixed(2)}`);
+            await persist.logActivity(username, 'purchase', {
+                total: calculatedTotal.toFixed(2),
+                itemCount: items.length
+            });
 
-            // save the purchase
-            try {
-                await persist.savePurchase(username, purchaseData);
-            } catch (persistError) {
-                console.log('Purchase saved to activity log instead of separate purchase store');
-            }
+            // Save the purchase
+            await persist.savePurchase(username, purchaseData);
 
-            // Remove selected items from cart after purchase
+            // Remove purchased items from cart
             const fullCart = await persist.loadCart(username);
             const remainingCart = fullCart.filter(cartItem => {
                 // Check if this cart item was purchased
@@ -85,18 +111,21 @@ module.exports = {
                     }
                     // Fallback matching for items without cartItemId
                     const productMatch = selectedItem.productId === cartItem.productId;
-                    const customizationMatch = JSON.stringify(selectedItem.customization || {}) === 
+                    const customizationMatch = JSON.stringify(selectedItem.customization || {}) ===
                                                JSON.stringify(cartItem.customization || {});
                     return productMatch && customizationMatch;
                 });
             });
-            
+
             await persist.saveCart(username, remainingCart);
 
             res.json({ success: true, total: calculatedTotal });
         } catch (error) {
             console.error('Checkout error:', error);
-            res.status(500).json({ success: false, message: 'Payment processing failed. Please try again.' });
+            res.status(500).json({
+                success: false,
+                message: 'Payment processing failed. Please try again.'
+            });
         }
     }
 };

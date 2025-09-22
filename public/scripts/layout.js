@@ -66,8 +66,6 @@ function createMenuLink(href, icon, text) {
 function updateNavigation(){
     const sideMenu = document.getElementById('sideMenu');
 
-    console.log('updateNavigation called, sideMenu found:', !!sideMenu);
-    console.log('isAuthenticated:', isAuthenticated);
 
     if(!sideMenu){
         console.error('Side menu element not found!');
@@ -137,23 +135,18 @@ function updateNavigation(){
  * Controls menu button animation, side menu visibility, and overlay
  */
 function toggleMenu(){
-    console.log('toggleMenu called!');
     const menu = document.getElementById('menu');
     const sideMenu = document.getElementById('sideMenu');
     const overlay = document.getElementById('menuOverlay');
-
-    console.log('Menu elements found:', {menu: !!menu, sideMenu: !!sideMenu, overlay: !!overlay});
 
     if(!menu || !sideMenu || !overlay){
         console.error('Missing menu elements!');
         return;
     }
 
-    console.log('Before toggle - menu active:', menu.classList.contains('active'));
     menu.classList.toggle('active');
     sideMenu.classList.toggle('active');
     overlay.classList.toggle('active');
-    console.log('After toggle - menu active:', menu.classList.contains('active'));
 }
 
 /**
@@ -187,12 +180,17 @@ function toggleCollections(){
     }
 }
 
-
 /**
  * Initializes theme settings from localStorage on page load
- * Applies saved dark mode preference and updates theme toggle UI
+ * This function checks if theme.js is loaded, and if not, provides a fallback
+ * implementation that applies saved dark mode preference and updates theme toggle UI
  */
 function initializeTheme(){
+    // If theme.js is handling this functionality, don't duplicate it
+    if (window.themeInitialized) {
+        return;
+    }
+
     const savedTheme = localStorage.getItem('theme');
     const themeIcon = document.getElementById('themeIcon');
     const themeText = document.getElementById('themeText');
@@ -217,9 +215,16 @@ function initializeTheme(){
 
 /**
  * Toggles between light and dark theme modes
+ * This is a fallback implementation if theme.js isn't loaded
  * Updates localStorage setting and theme toggle button UI
  */
 function toggleTheme(){
+    // If theme.js is handling this functionality, let it take precedence
+    if (window.themeToggleHandler) {
+        window.themeToggleHandler();
+        return;
+    }
+
     const body = document.body;
     const themeIcon = document.getElementById('themeIcon');
     const themeText = document.getElementById('themeText');
@@ -264,7 +269,7 @@ function updateUserIndicator(){
 
     if(isAuthenticated && currentUser){
         // Show user icon instead of first letter
-        profileCircle.innerHTML = `<i class="fa-solid fa-user"></i>`;
+        profileCircle.innerHTML = '<i class="fa-solid fa-user"></i>';
         profileCircle.title = `My Profile (${currentUser.username})`;
         profileCircle.style.display = 'flex';
     } else {
@@ -307,11 +312,20 @@ window.closeMenu = closeMenu;
  * Sets up all layout functionality: theme, auth, scroll, images, and menu overlay
  */
 function initializeBaseLayout(){
+    // Load theme.js script if it's not already loaded
+    if (!document.getElementById('theme-js-script')) {
+        const themeScript = document.createElement('script');
+        themeScript.id = 'theme-js-script';
+        themeScript.src = '/scripts/theme.js';
+        themeScript.async = true;
+        document.head.appendChild(themeScript);
+    }
+
     initializeTheme();
 
-    const menuButton = document.getElementById("menu");
-    const themeToggle = document.getElementById("themeToggle");
-    const overlay = document.getElementById("menuOverlay");
+    const menuButton = document.getElementById('menu');
+    const themeToggle = document.getElementById('themeToggle');
+    const overlay = document.getElementById('menuOverlay');
 
     // Move hamburger menu button out of header
     if(menuButton && menuButton.parentElement !== document.body){
@@ -464,25 +478,18 @@ window.updateCartAndWishlistCounts = async function updateCartAndWishlistCounts(
     try{
         // Fetch cart count
         const cartResponse = await fetch('/api/cart');
-        console.log('=== CART API RESPONSE ===');
-        console.log('Cart response status:', cartResponse.status);
         if(cartResponse.ok){
             const cartData = await cartResponse.json();
-            console.log('Cart data from server:', cartData);
 
             // Handle both array format and object.items format
             const items = Array.isArray(cartData) ? cartData : cartData.items;
-            console.log('Cart items:', items);
             const cartCount = items ? items.reduce((total, item) => total + (item.quantity || 1), 0) : 0;
-            console.log('Calculated cart count:', cartCount);
 
             // Always update with real server data
             updateBadge('cart-count', cartCount);
 
             localStorage.setItem('cartCount', cartCount);
-            console.log(`Updated cart badge to: ${cartCount}`);
         } else if(cartResponse.status === 401) {
-            console.log('Cart fetch: User not authenticated');
             return;
         }
 
@@ -490,7 +497,6 @@ window.updateCartAndWishlistCounts = async function updateCartAndWishlistCounts(
         const wishlistResponse = await fetch('/api/wishlist');
         if(wishlistResponse.ok){
             const wishlistData = await wishlistResponse.json();
-            console.log('Wishlist data from server:', wishlistData);
 
             // Handle both array format and object.items format
             const wishlistItems = Array.isArray(wishlistData) ? wishlistData : wishlistData.items;
@@ -499,9 +505,7 @@ window.updateCartAndWishlistCounts = async function updateCartAndWishlistCounts(
             // Always update with real server data
             updateBadge('wishlist-count', wishlistCount);
             localStorage.setItem('wishlistCount', wishlistCount);
-            console.log(`Updated wishlist badge to: ${wishlistCount}`);
         } else if(wishlistResponse.status === 401) {
-            console.log('Wishlist fetch: User not authenticated');
             return;
         }
     }
@@ -509,7 +513,7 @@ window.updateCartAndWishlistCounts = async function updateCartAndWishlistCounts(
         console.error('Error updating counts:', error);
         // Don't override existing values on error, just log it
     }
-}
+};
 
 /**
  * Updates a badge element with a count
@@ -536,67 +540,20 @@ function updateBadge(badgeId, count){
 window.refreshBadges = function() {
     if(typeof window.updateCartAndWishlistCounts === 'function') {
         window.updateCartAndWishlistCounts();
-        console.log('Badges refreshed from server');
     }
 };
 
-/**
- * Debug function to check element existence and force visibility
- */
-window.debugElements = function() {
-    console.log('=== DEBUGGING ELEMENTS ===');
-
-    // Check badges
-    const cartBadge = document.getElementById('cart-count');
-    const wishlistBadge = document.getElementById('wishlist-count');
-
-    console.log('Cart badge element:', cartBadge);
-    console.log('Wishlist badge element:', wishlistBadge);
-
-    if(cartBadge) {
-        cartBadge.innerHTML = '5';
-        // Let CSS handle all styling
-        console.log('Forced cart badge styling');
-    }
-
-    if(wishlistBadge) {
-        wishlistBadge.innerHTML = '3';
-        // Let CSS handle all styling
-        console.log('Forced wishlist badge styling');
-    }
-
-    // Check dropdown arrow
-    const dropdownArrows = document.querySelectorAll('.dropdown-arrow');
-    console.log('Found dropdown arrows:', dropdownArrows);
-
-    dropdownArrows.forEach((arrow, index) => {
-        console.log(`Arrow ${index} content:`, arrow.textContent);
-        console.log(`Arrow ${index} innerHTML:`, arrow.innerHTML);
-    });
-
-    // Also check the Collections menu
-    const collectionsToggle = document.querySelector('.menu-dropdown-toggle');
-    console.log('Collections toggle element:', collectionsToggle);
-
-    if(collectionsToggle) {
-        console.log('Collections toggle HTML:', collectionsToggle.innerHTML);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     revealPhotoItemsOnScroll();
 
     // Don't initialize with 0 values - let the test setup handle it
-    console.log('DOM loaded - skipping initial badge update to avoid 0 values');
 
     // Update badges after a slight delay to ensure DOM is ready
     setTimeout(() => {
         // Skip the initial update that was causing 0 values
-        console.log('Skipping initial updateBadge calls');
 
         // Initialize badges with real server data
-        console.log('=== BADGE INITIALIZATION ===');
-        console.log('Loading real cart and wishlist counts from server...');
 
         // Clear test mode
         localStorage.removeItem('testMode');
@@ -605,20 +562,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // If user is authenticated, server will update badges
         // If not authenticated, badges will remain hidden (empty)
 
-        // Check if dropdown arrows exist
-        setTimeout(() => {
-            const arrows = document.querySelectorAll('.dropdown-arrow');
-            const toggle = document.querySelector('.menu-dropdown-toggle');
-            console.log('=== ARROW CHECK ===');
-            console.log('Found dropdown arrows:', arrows.length);
-            console.log('Collections toggle exists:', !!toggle);
-            if(toggle) {
-                console.log('Collections HTML:', toggle.innerHTML);
-            }
-        }, 100);
 
         // Don't set test values - let server provide real data
-        console.log('Waiting for real server data...');
 
         // Wait for auth check to complete before fetching real counts
         setTimeout(() => {

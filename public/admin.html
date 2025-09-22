@@ -271,7 +271,7 @@
                             <tr>
                                 <td>${new Date(activity.timestamp).toLocaleString()}</td>
                                 <td>${activity.username}</td>
-                                <td><span class="activity-type ${activity.activity.replace(' ', '-')}">${activity.activity}</span></td>
+                                <td><span class="activity-type ${activity.type.replace(' ', '-').toLowerCase()}">${activity.type}</span></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -314,7 +314,7 @@
                             <tr>
                                 <td>${new Date(activity.timestamp).toLocaleString()}</td>
                                 <td>${activity.username}</td>
-                                <td><span class="activity-type ${activity.activity.replace(' ', '-')}">${activity.activity}</span></td>
+                                <td><span class="activity-type ${activity.type.replace(' ', '-').toLowerCase()}">${activity.type}</span></td>
                                 <td>${typeof activity.details === 'object' ? JSON.stringify(activity.details) : (activity.details || '-')}</td>
                             </tr>
                         `).join('')}

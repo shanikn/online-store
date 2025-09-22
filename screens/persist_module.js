@@ -28,7 +28,7 @@ async function ensureDirectories() {
     } catch {
         await fs.mkdir(DATA_DIR, { recursive: true });
     }
-    
+
     try {
         await fs.access(USER_DATA_DIR);
     } catch {
@@ -95,7 +95,7 @@ async function saveUserData(username, dataType, data) {
         const filePath = path.join(USER_DATA_DIR, filename);
         await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
     } catch (error) {
-        console.error(`Error saving ${filename}:`, error);
+        console.error(`Error saving ${username}_${dataType}.json:`, error);
         throw error;
     }
 }
@@ -117,7 +117,7 @@ async function initializeNewUser(username) {
 // Public API
 module.exports = {
     initialize,
-    
+
     // Users
     getUsers: () => users,
     addUser: async (user) => {
@@ -125,7 +125,10 @@ module.exports = {
         await saveJSON('users.json', users);
         await initializeNewUser(user.username);
     },
-    saveUsers: async () => await saveJSON('users.json', users),
+    saveUsers: async (updatedUsers) => {
+        if (updatedUsers) users = updatedUsers;
+        await saveJSON('users.json', users);
+    },
 
     // Products
     getProducts: () => products,
@@ -146,19 +149,27 @@ module.exports = {
         await saveJSON('contacts.json', contacts);
     },
 
+    // Legacy methods for compatibility
+    loadData: async (filename, defaultValue) => {
+        return await loadJSON(filename, defaultValue);
+    },
+    saveData: async (filename, data) => {
+        await saveJSON(filename, data);
+    },
+
     // User-specific data
     getUserCart: async (username) => await loadUserData(username, 'cart', []),
     saveUserCart: async (username, cart) => await saveUserData(username, 'cart', cart),
-    
+
     getUserWishlist: async (username) => await loadUserData(username, 'wishlist', []),
     saveUserWishlist: async (username, wishlist) => await saveUserData(username, 'wishlist', wishlist),
-    
+
     getUserPurchases: async (username) => await loadUserData(username, 'purchases', []),
     saveUserPurchases: async (username, purchases) => await saveUserData(username, 'purchases', purchases),
-    
+
     getUserActivity: async (username) => await loadUserData(username, 'activity', []),
     saveUserActivity: async (username, activity) => await saveUserData(username, 'activity', activity),
-    
+
     // Activity logging
     logActivity: async (username, activityType, details = {}) => {
         try {

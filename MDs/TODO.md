@@ -26,6 +26,8 @@
 
 [ ]Use jest for testing
 
+[ ]have only minimum needed scripts in package.json scripts
+
 [ ]Make login and register style match- They have a very similar concept so they should be similar in style (theyre both simple forms)
 
 [ ]Remove tooltips from all buttons- For styling purposes. Don’t forget to do so for both light and dark modes.

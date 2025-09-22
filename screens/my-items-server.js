@@ -10,7 +10,7 @@ function getCurrentUser(req) {
 module.exports = {
     // This can be a simple wrapper around the existing /api/purchases endpoint
     // Or we can add my-items specific functionality here if needed later
-    
+
     async getPurchases(req, res) {
         try {
             const username = getCurrentUser(req);

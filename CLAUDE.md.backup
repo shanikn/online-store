@@ -583,4 +583,3 @@ tail -f server.log
 - Main styles: `public/styles/theme.css:1`
 
 This documentation should help any AI assistant understand and work with this online jewelry store project effectively.
-- when adding new styling, first make sure there are no already existing versions in the file, so there won't be any conflicts which will cause errors.

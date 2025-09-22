@@ -6,7 +6,7 @@ module.exports = {
             const { username, password, remember } = req.body;
 
             // load users & find specific user
-            const users = await persist.loadUsers();
+            const users = await persist.getUsers();
             const user = users.find(u => u.username === username && u.password === password);
 
             if (user) {
@@ -14,7 +14,7 @@ module.exports = {
                 const maxAge = remember ? (12*24*60*60*1000) : (30*60*1000);
                 res.cookie('userToken', username, {maxAge: maxAge});
 
-                // log activity
+                // log activity - standardize to required format
                 await persist.logActivity(username, 'login');
 
                 // on login success (valid input): send success response & redirect to store screen
@@ -33,12 +33,15 @@ module.exports = {
         try {
             const username = req.cookies.userToken || null;
 
+            // Log the logout activity before clearing the cookie
+            if (username) {
+                await persist.logActivity(username, 'logout');
+            }
+
             // clear the cookie on logout (multiple ways to ensure it's cleared)
             res.clearCookie('userToken');
             res.clearCookie('userToken', { path: '/' });
             res.clearCookie('userToken', { path: '/', domain: 'localhost' });
-
-            // logout completed (no need to log normal logout behavior)
 
             res.json({ success: true, redirect: '/store.html' });
         } catch (error) {

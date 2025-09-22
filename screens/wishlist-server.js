@@ -22,7 +22,7 @@ module.exports = {
             const { productId } = req.body;
 
             const wishlist = await persist.getUserWishlist(username);
-            
+
             if (!wishlist.includes(productId)) {
                 wishlist.push(productId);
                 await persist.saveUserWishlist(username, wishlist);
@@ -42,7 +42,7 @@ module.exports = {
 
             let wishlist = await persist.getUserWishlist(username);
             wishlist = wishlist.filter(id => id !== productId);
-            
+
             await persist.saveUserWishlist(username, wishlist);
             res.json({ success: true });
         } catch (error) {

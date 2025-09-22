@@ -8,19 +8,12 @@
     "dev": "node server.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:server": "eslint server.js screens/**/*.js persist_module.js",
-    "lint:client": "eslint public/**/*.js",
-    "test": "jest",
+    "test": "node test.js",
+    "test:unit": "jest",
+    "test:integration": "node test.js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:verbose": "jest --verbose",
-    "test:server": "jest __tests__/server.test.js",
-    "test:cart": "jest __tests__/cart-server.test.js",
-    "format": "prettier --write \"**/*.{js,json,md}\"",
-    "format:check": "prettier --check \"**/*.{js,json,md}\"",
-    "pretest": "npm run lint",
-    "ci": "npm run lint && npm run test:coverage",
-    "check-all": "npm run lint && npm run test && echo '✅ All checks passed!'"
+    "pretest": "npm run lint"
   },
   "keywords": [
     "ecommerce",

@@ -1,0 +1,12 @@
+{
+    "terminal.integrated.enableVisualBell": true,
+    "terminal.integrated.suggest.enabled": true,
+    "terminal.integrated.tabs.defaultColor": "terminal.ansiCyan",
+    "task.quickOpen.showAll": true,
+    "task.quickOpen.skip": true,
+    "workbench.editor.autoLockGroups": {
+        "workbench.editorinputs.searchEditorInput": true,
+        "workbench.editor.processExplorer": false
+    },
+    "python.analysis.autoImportCompletions": true
+}

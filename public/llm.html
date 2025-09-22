@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI-Assisted Code Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="/styles/theme.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h1, h2 {
+            font-family: 'Fraunces', serif;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+        
+        p, li {
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-shell">
+        <div class="header">
+            <a href="/" class="brand">
+                <h1>ShanikJewls</h1>
+                <span class="brand-tagline">Handcrafted Jewelry</span>
+            </a>
+            <div class="header-actions">
+                <a href="/store.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">OFF</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <h1>AI-Assisted Code Documentation</h1>
+        
+        <p>This document details the portions of the ShanikJewls online store that were generated with AI assistance, specifically Claude by Anthropic.</p>
+        
+        <h2>Testing Framework</h2>
+        
+        <p>I used Claude to help create and refine the testing framework for the project. Claude assisted with:</p>
+        
+        <ul>
+            <li>Designing a structure for automated tests in test.js</li>
+            <li>Writing test functions for API endpoints</li>
+            <li>Creating edge case tests for error handling</li>
+            <li>Debugging tests that were failing</li>
+            <li>Implementing proper test reporting and summaries</li>
+        </ul>
+        
+        <h2>Bug Detection</h2>
+        
+        <p>Claude helped identify several bugs in the code, particularly with:</p>
+        
+        <ul>
+            <li>Wishlist functionality type inconsistencies</li>
+            <li>Cart customization undefined variable issues</li>
+            <li>Authentication flow problems</li>
+        </ul>
+        
+        <p>The bug analysis and fixes were documented in the BUGS_ANALYSIS.md file within the project.</p>
+        
+        <h2>Error Handling</h2>
+        
+        <p>Claude provided guidance on implementing consistent error handling patterns throughout the application.</p>
+    </main>
+
+    <script>
+        // Include theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const isDarkMode = body.classList.toggle('dark-mode');
+            
+            // Update icon and text
+            document.getElementById('themeIcon').textContent = isDarkMode ? '☀️' : '🌙';
+            document.getElementById('themeText').textContent = isDarkMode ? 'ON' : 'OFF';
+            
+            // Save preference
+            localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+        }
+        
+        // Load theme preference
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeIcon').textContent = '☀️';
+                document.getElementById('themeText').textContent = 'ON';
+            }
+        });
+    </script>
+</body>
+</html>
