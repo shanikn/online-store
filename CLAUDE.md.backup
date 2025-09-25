@@ -48,7 +48,7 @@ online_store/
 │   ├── products.json
 │   ├── carts.json
 │   ├── wishlists.json
-│   ├── activity.json
+│   ├── activities.json
 │   └── purchases.json
 └── public/            # Frontend files
     ├── *.html        # All HTML pages
@@ -129,7 +129,7 @@ online_store/
     "username": [1, 3, 5, 8]
   }
   ```
-- `activity.json` - User activity logs for tracking
+- `activities.json` - User activity logs for tracking
   ```json
   [
     {

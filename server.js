@@ -87,7 +87,7 @@ function rateLimiter(req, res, next){
 
     // add the current request & continue
     requestCounts[ip].push(now);
-    next();
+    return next();
 }
 
 // more middleware
@@ -291,7 +291,6 @@ app.put('/api/profile', requireAuthAPI, async(req, res)=> {
         // migrate user data
         const cart = await persist.loadCart(oldUsername);
         const wishlist = await persist.loadData('wishlists.json', {});
-        const purchases = await persist.getPurchases(oldUsername);
 
         await persist.saveCart(newUsername, cart);
         if (wishlist[oldUsername]) {
@@ -375,11 +374,11 @@ app.delete('/api/wishlist', requireAuthAPI, async(req, res)=>{
         // Save the updated wishlist
         await persist.saveUserWishlist(username, updatedWishlist);
 
-        res.json({ success: true });
+        return res.json({ success: true });
     }
     catch(error){
         console.error('Error removing from wishlist:', error);
-        res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
+        return res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
     }
 });
 
@@ -408,11 +407,11 @@ app.delete('/api/wishlist/remove', requireAuthAPI, async(req, res)=>{
         // Save the updated wishlist
         await persist.saveUserWishlist(username, updatedWishlist);
 
-        res.json({ success: true });
+        return res.json({ success: true });
     }
     catch(error) {
         console.error('Error removing from wishlist:', error);
-        res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
+        return res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
     }
 });
 

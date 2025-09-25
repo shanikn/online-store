@@ -10,7 +10,6 @@ module.exports = {
             const username = getCurrentUser(req);
             const {
                 items,
-                total,
                 fullName,
                 email,
                 phone,
@@ -18,8 +17,6 @@ module.exports = {
                 city,
                 zipCode,
                 country,
-                packaging,
-                giftMessage,
                 cardName,
                 cardNumber,
                 expiry,
@@ -119,10 +116,10 @@ module.exports = {
 
             await persist.saveCart(username, remainingCart);
 
-            res.json({ success: true, total: calculatedTotal });
+            return res.json({ success: true, total: calculatedTotal });
         } catch (error) {
             console.error('Checkout error:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: 'Payment processing failed. Please try again.'
             });

@@ -68,5 +68,11 @@
     "password": "testpass123",
     "role": "user",
     "createdAt": "2025-09-22T05:41:43.155Z"
+  },
+  {
+    "username": "testuser_1758758386186",
+    "password": "testpass123",
+    "role": "user",
+    "createdAt": "2025-09-24T23:59:46.193Z"
   }
 ]

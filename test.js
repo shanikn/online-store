@@ -247,8 +247,8 @@ async function testAdminActivities() {
             }
         });
     } catch (error) {
+        console.log('   Debug - Falling back to legacy activity endpoint due to:', error.message);
         // Fall back to legacy endpoint
-        console.log('   Debug - Falling back to legacy activity endpoint');
         response = await makeRequest(`${BASE_URL}/api/admin/activity`, {
             headers: {
                 'Cookie': global.authCookie || ''
@@ -283,8 +283,8 @@ async function testAdminActivitiesFilter() {
             }
         });
     } catch (error) {
+        console.log('   Debug - Falling back to legacy activity filter endpoint due to:', error.message);
         // Fall back to legacy endpoint with filter
-        console.log('   Debug - Falling back to legacy activity filter endpoint');
         response = await makeRequest(`${BASE_URL}/api/admin/activity?usernamePrefix=admin`, {
             headers: {
                 'Cookie': global.authCookie || ''
@@ -608,7 +608,7 @@ async function cleanupTestData() {
             await fs.writeFile(path.join(userDataDir, 'admin_cart.json'), '[]');
             await fs.writeFile(path.join(userDataDir, 'admin_wishlist.json'), '[]');
         } catch (error) {
-            console.log('Cleanup note: Individual user files reset');
+            console.log('Cleanup note: Individual user files reset, error:', error.message);
         }
 
         // Reset contacts

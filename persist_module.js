@@ -5,14 +5,45 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-// make sure the 'data' folder exists
+// make sure the 'data' and 'data/user_data' folders exist
 async function ensureDataDir() {
     try {
         await fs.mkdir('data', { recursive: true });
+        await fs.mkdir(path.join('data', 'user_data'), { recursive: true });
     }
     catch (error) {
         // errors like directory already exists - can be safely ignored
         console.log('Data directory creation:', error.message);
+    }
+}
+
+// Helper function to load individual user data files
+async function loadUserData(username, dataType, defaultValue = []) {
+    try {
+        const filename = `${username}_${dataType}.json`;
+        const filepath = path.join('data', 'user_data', filename);
+        const data = await fs.readFile(filepath, 'utf8');
+        return JSON.parse(data);
+    }
+    catch (error) {
+        // file doesn't exist => return default and create file
+        console.log(`User file read error (using default): ${username}_${dataType}.json - ${error.message}`);
+        await saveUserData(username, dataType, defaultValue);
+        return defaultValue;
+    }
+}
+
+// Helper function to save individual user data files
+async function saveUserData(username, dataType, data) {
+    try {
+        await ensureDataDir();
+        const filename = `${username}_${dataType}.json`;
+        const filepath = path.join('data', 'user_data', filename);
+        await fs.writeFile(filepath, JSON.stringify(data, null, 2));
+    }
+    catch (error) {
+        console.error(`Error saving ${username}_${dataType}.json: `, error);
+        throw error;
     }
 }
 
@@ -88,16 +119,13 @@ async function addUser(userData) {
     return newUser;
 }
 
-// cart management
+// cart management - using individual user files
 async function saveCart(username, cartItems) {
-    const carts = await loadData('carts.json', {});
-    carts[username] = cartItems;
-    return await saveData('carts.json', carts);
+    return await saveUserData(username, 'cart', cartItems);
 }
 
 async function loadCart(username) {
-    const carts = await loadData('carts.json', {});
-    return carts[username] || [];
+    return await loadUserData(username, 'cart', []);
 }
 
 // Aliases for cart functions
@@ -109,9 +137,9 @@ async function saveUserCart(username, cartItems) {
     return await saveCart(username, cartItems);
 }
 
-// activity logging (add new activity to file)
+// activity logging - using individual user files
 async function logActivity(username, activityType, details = {}) {
-    const activities = await loadData('activity.json', []);
+    const activities = await loadUserData(username, 'activity', []);
     const activity = {
         timestamp: new Date().toISOString(),
         username,
@@ -119,26 +147,39 @@ async function logActivity(username, activityType, details = {}) {
         details
     };
     activities.push(activity);
-    await saveData('activity.json', activities);
+    await saveUserData(username, 'activity', activities);
     return activity;
 }
 
-// Get activities with optional username filter
-async function getActivities(usernameFilter = null) {
-    const activities = await loadData('activity.json', []);
-    let filteredActivities;
-    if (usernameFilter) {
-        filteredActivities = activities.filter(a => a.username.startsWith(usernameFilter));
-    } else {
-        filteredActivities = activities;
-    }
+// Get activities for a specific user
+async function getUserActivities(username) {
+    return await loadUserData(username, 'activity', []);
+}
 
-    // Sort by timestamp descending (latest first)
-    return filteredActivities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+// Get activities with optional username filter - combines all user files
+async function getActivities(usernameFilter = null) {
+    try {
+        // Get list of all users to read their activity files
+        const users = await loadUsers();
+        let allActivities = [];
+
+        for (const user of users) {
+            if (!usernameFilter || user.username.startsWith(usernameFilter)) {
+                const userActivities = await loadUserData(user.username, 'activity', []);
+                allActivities = allActivities.concat(userActivities);
+            }
+        }
+
+        // Sort by timestamp descending (latest first)
+        return allActivities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    } catch (error) {
+        console.error('Error getting activities:', error);
+        return [];
+    }
 }
 
 async function getAllActivities() {
-    return await loadData('activity.json', []);
+    return await getActivities();
 }
 
 // product management
@@ -192,14 +233,9 @@ async function removeProduct(productId) {
     return filteredProducts;
 }
 
-// purchase history
+// purchase history - using individual user files
 async function savePurchase(username, purchaseData) {
-    const purchases = await loadData('purchases.json', {});
-
-    // Initialize user's purchases array if it doesn't exist
-    if (!purchases[username]) {
-        purchases[username] = [];
-    }
+    const purchases = await loadUserData(username, 'purchases', []);
 
     const purchase = {
         id: Date.now(),
@@ -209,14 +245,13 @@ async function savePurchase(username, purchaseData) {
         ...purchaseData
     };
 
-    purchases[username].push(purchase);
-    await saveData('purchases.json', purchases);
+    purchases.push(purchase);
+    await saveUserData(username, 'purchases', purchases);
     return purchase;
 }
 
 async function getPurchases(username) {
-    const purchases = await loadData('purchases.json', {});
-    return purchases[username] || [];
+    return await loadUserData(username, 'purchases', []);
 }
 
 async function getUserPurchases(username) {
@@ -249,12 +284,10 @@ async function initialize() {
     try {
         await loadUsers(); // This creates default admin if needed
         await loadProducts(); // This creates default products if needed
-        await loadData('activity.json', []); // Initialize empty activity log
-        await loadData('carts.json', {}); // Initialize empty carts
-        await loadData('purchases.json', {}); // Initialize empty purchases
-        await loadData('wishlists.json', {}); // Initialize empty wishlists
+        await loadData('wishlists.json', {}); // Initialize empty wishlists (kept centralized)
         await loadData('contacts.json', []); // Initialize empty contacts
         console.log('✅ Data files initialized successfully');
+        console.log('📁 User-specific data will be created in data/user_data/ as needed');
     } catch (error) {
         console.error('❌ Error initializing data files:', error);
         throw error;
@@ -282,6 +315,7 @@ module.exports = {
     logActivity,
     getActivities,
     getAllActivities,
+    getUserActivities,
 
     saveProducts,
     loadProducts,

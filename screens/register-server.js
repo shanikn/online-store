@@ -34,10 +34,10 @@ module.exports = {
             // log the activity
             await persist.logActivity(username, 'register');
 
-            res.json({ success: true, redirect: '/store.html' });
+            return res.json({ success: true, redirect: '/store.html' });
         } catch (error) {
             console.error('Registration error:', error);
-            res.status(500).json({ success: false, message: 'Server error' });
+            return res.status(500).json({ success: false, message: 'Server error' });
         }
     }
 };

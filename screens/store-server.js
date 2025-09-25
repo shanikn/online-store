@@ -28,10 +28,10 @@ module.exports = {
                 return name.includes(search) || description.includes(search);
             });
 
-            res.json(filtered);
+            return res.json(filtered);
         } catch (error) {
             console.error('Error searching products:', error);
-            res.status(500).json({ error: 'Failed to search products' });
+            return res.status(500).json({ error: 'Failed to search products' });
         }
     }
 };

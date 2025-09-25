@@ -553,7 +553,7 @@
 
                     if(isInWishlist) {
                         // Remove from wishlist
-                        const response = await fetch('/api/wishlist/remove', {
+                        const response = await fetch('/api/wishlist', {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -584,7 +584,7 @@
                         }
                     } else {
                         // Add to wishlist
-                        const response= await fetch('/api/wishlist/add', {
+                        const response= await fetch('/api/wishlist', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

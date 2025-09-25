@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1758760496480,
+    "timestamp": "2025-09-25T00:34:56.480Z",
+    "items": [
+      {
+        "productId": 1,
+        "quantity": 1,
+        "price": 99.99
+      }
+    ],
+    "total": 99.99,
+    "customerInfo": {
+      "name": "Test User"
+    }
+  }
+]

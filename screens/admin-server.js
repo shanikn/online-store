@@ -54,7 +54,6 @@ module.exports = {
 
     async getSales(req, res) {
         try {
-            const users = await persist.getUsers();
             let totalSales = 0;
             let totalOrders = 0;
 
@@ -118,16 +117,15 @@ module.exports = {
 
             // We no longer log add-product activities
 
-            res.json({ success: true, product: newProduct });
+            return res.json({ success: true, product: newProduct });
         } catch (error) {
             console.error('Error adding product:', error);
-            res.status(500).json({ success: false, error: 'Failed to add product' });
+            return res.status(500).json({ success: false, error: 'Failed to add product' });
         }
     },
 
     async removeProduct(req, res) {
         try {
-            const username = req.cookies.userToken || null;
             const productId = parseInt(req.params.id);
 
             if (isNaN(productId)) {
@@ -152,10 +150,10 @@ module.exports = {
 
             // We no longer log remove-product activities
 
-            res.json({ success: true });
+            return res.json({ success: true });
         } catch (error) {
             console.error('Error removing product:', error);
-            res.status(500).json({ success: false, error: 'Failed to remove product' });
+            return res.status(500).json({ success: false, error: 'Failed to remove product' });
         }
     }
 };

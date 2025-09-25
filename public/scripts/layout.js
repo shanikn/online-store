@@ -22,7 +22,7 @@ async function checkAuthStatus(){
         }
     }
     catch(error){
-        console.log('Auth check error:', error);
+        console.error('Auth check failed:', error);
         isAuthenticated = false;
         currentUser = null;
     }
@@ -68,7 +68,6 @@ function updateNavigation(){
 
 
     if(!sideMenu){
-        console.error('Side menu element not found!');
         return;
     }
 
@@ -140,7 +139,6 @@ function toggleMenu(){
     const overlay = document.getElementById('menuOverlay');
 
     if(!menu || !sideMenu || !overlay){
-        console.error('Missing menu elements!');
         return;
     }
 
@@ -294,7 +292,7 @@ async function logout(){
         }
     }
     catch(error){
-        console.error('Logout error: ', error);
+        console.error('Logout failed:', error);
         // Fallback: still redirect to store even if there's an error
         window.location.href = '/store.html';
     }
@@ -306,6 +304,7 @@ window.initializeBaseLayout = initializeBaseLayout;
 window.toggleTheme = toggleTheme;
 window.toggleCollections = toggleCollections;
 window.closeMenu = closeMenu;
+window.logout = logout;
 
 /**
  * Main initialization function - called when page loads
@@ -354,20 +353,13 @@ function initializeBaseLayout(){
     }
 
     // Add event listeners for menu and theme buttons
-    console.log('Adding event listeners:', {menuButton: !!menuButton, themeToggle: !!themeToggle});
     if(menuButton){
-        console.log('Setting menu button onclick handler');
         // Ensure onclick is set after moving the button
         menuButton.onclick = toggleMenu;
-    } else {
-        console.error('Menu button not found!');
     }
     if(themeToggle){
-        console.log('Setting theme toggle onclick handler');
         // Ensure onclick is set after moving the button
         themeToggle.onclick = toggleTheme;
-    } else {
-        console.error('Theme toggle not found!');
     }
 
     // Call checkAuthStatus and ensure navigation is updated
@@ -377,7 +369,6 @@ function initializeBaseLayout(){
     setTimeout(() => {
         const sideMenu = document.getElementById('sideMenu');
         if(sideMenu && sideMenu.innerHTML.trim() === ''){
-            console.log('Side menu empty after 1 second, forcing update...');
             updateNavigation();
         }
     }, 1000);
@@ -510,8 +501,8 @@ window.updateCartAndWishlistCounts = async function updateCartAndWishlistCounts(
         }
     }
     catch(error){
-        console.error('Error updating counts:', error);
-        // Don't override existing values on error, just log it
+        console.error('Failed to update counts:', error);
+        // Don't override existing values on error
     }
 };
 

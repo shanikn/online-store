@@ -1,4 +1,4 @@
-const persist = require('./persist_module');
+const persist = require('../persist_module');
 
 function getCurrentUser(req) {
     return req.cookies.userToken || null;

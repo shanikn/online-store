@@ -205,14 +205,5 @@
     "image": "https://i.pinimg.com/1200x/25/9c/b8/259cb8fcbcd6ad3a34c53ae090dcc02b.jpg",
     "id": 23,
     "type": "bracelets"
-  },
-  {
-    "id": 1758519703223,
-    "name": "Test Product",
-    "description": "A test product for testing",
-    "price": 29.99,
-    "customizable": false,
-    "addedBy": "admin",
-    "createdAt": "2025-09-22T05:41:43.224Z"
   }
 ]

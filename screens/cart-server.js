@@ -56,10 +56,10 @@ module.exports = {
             // Log the add-to-cart activity with the standardized type
             await persist.logActivity(username, 'add-to-cart', { productId: numProductId });
 
-            res.json({ success: true });
+            return res.json({ success: true });
         } catch (error) {
             console.error('Error adding to cart:', error);
-            res.status(500).json({ success: false, error: 'Failed to add to cart' });
+            return res.status(500).json({ success: false, error: 'Failed to add to cart' });
         }
     },
 
@@ -150,10 +150,10 @@ module.exports = {
             }
 
             await persist.saveUserCart(username, cart);
-            res.json({ success: true });
+            return res.json({ success: true });
         } catch (error) {
             console.error('Error removing from cart:', error);
-            res.status(500).json({ success: false, error: 'Failed removing from cart' });
+            return res.status(500).json({ success: false, error: 'Failed removing from cart' });
         }
     },
 
@@ -186,13 +186,13 @@ module.exports = {
                 }
 
                 await persist.saveUserCart(username, cart);
-                res.json({ success: true });
+                return res.json({ success: true });
             } else {
-                res.status(400).json({ success: false, error: 'Item not found in cart' });
+                return res.status(400).json({ success: false, error: 'Item not found in cart' });
             }
         } catch (error) {
             console.error('Error updating cart:', error);
-            res.status(500).json({ success: false, error: 'Failed to update cart' });
+            return res.status(500).json({ success: false, error: 'Failed to update cart' });
         }
     },
 
@@ -224,13 +224,13 @@ module.exports = {
                 item.lastModified = new Date().toISOString();
 
                 await persist.saveUserCart(username, cart);
-                res.json({ success: true });
+                return res.json({ success: true });
             } else {
-                res.status(404).json({ success: false, error: 'Item not found in cart' });
+                return res.status(404).json({ success: false, error: 'Item not found in cart' });
             }
         } catch (error) {
             console.error('Error updating customization:', error);
-            res.status(500).json({ success: false, error: 'Failed to update customization' });
+            return res.status(500).json({ success: false, error: 'Failed to update customization' });
         }
     }
 };

@@ -31,7 +31,7 @@
 │     ├── <userId>_cart.json       # individual user cart files
 │     ├── <userId>_wishlist.json   # individual user wishlist files
 │     ├── <userId>_purchases.json  # individual user purchase history
-│     └── <userId>_activity.json   # individual user activity logs
+│     └── <userId>_activities.json   # individual user activity logs
 ├── /public                        # static client
 │  ├── styles/
 │  │  └── theme.css                # unified styling with dark/light mode
