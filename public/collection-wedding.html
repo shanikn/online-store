@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>Wedding & Engagement Rings - ShanikJewls</title>
+        <title>Wedding & Engagement Rings - ShanikJewels</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
@@ -19,7 +19,7 @@
             <div class="header">
                 <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
                 <div class="brand">
-                    <h1>ShanikJewls</h1>
+                    <h1>ShanikJewels</h1>
                     <span class="brand-tagline">Handcrafted Jewelry</span>
                 </div>
                 <div class="header-actions">
@@ -75,37 +75,6 @@
             <div id="productsContainer" class="products-grid"></div>
         </main>
 
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <div class="footer-brand">
-                    <h3>ShanikJewls</h3>
-                    <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
-                    <div class="footer-socials">
-                        <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" aria-label="Follow on Pinterest"><i class="fa-brands fa-pinterest"></i></a>
-                        <a href="#" aria-label="Follow on TikTok"><i class="fa-brands fa-tiktok"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links">
-                    <h4>Explore</h4>
-                    <nav>
-                        <a href="/store.html">Store</a>
-                        <a href="/about.html">About</a>
-                        <a href="/contact.html">Contact</a>
-                        <a href="/readme.html">Story</a>
-                    </nav>
-                </div>
-                <div class="footer-newsletter">
-                    <h4>Insider List</h4>
-                    <p>Be first to know about limited releases, styling events, and private previews.</p>
-                    <form class="newsletter-form" onsubmit="event.preventDefault(); showSuccess('You are on the list!', false);">
-                        <input type="email" placeholder="Enter your email" aria-label="Email address">
-                        <button type="submit">Join Now</button>
-                    </form>
-                    <div class="footer-note">We respect your inbox</div>
-                </div>
-            </div>
-        </footer>
 
         <!-- Customization Modal -->
         <div id="customizationModal" class="modal-overlay">
@@ -325,7 +294,7 @@
                 }
 
                 try {
-                    const response = await fetch('/api/cart/add', {
+                    const response = await fetch('/api/cart', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -370,7 +339,7 @@
 
             async function addToCart(productId){
                 try{
-                    const response = await fetch('/api/cart/add', {
+                    const response = await fetch('/api/cart', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

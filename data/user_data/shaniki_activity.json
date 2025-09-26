@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "timestamp": "2025-09-26T02:13:03.963Z",
+    "username": "shaniki",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-26T02:13:36.792Z",
+    "username": "shaniki",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 20
+    }
+  },
+  {
+    "timestamp": "2025-09-26T02:13:43.790Z",
+    "username": "shaniki",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 21
+    }
+  },
+  {
+    "timestamp": "2025-09-26T02:13:49.574Z",
+    "username": "shaniki",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 6
+    }
+  },
+  {
+    "timestamp": "2025-09-26T02:15:23.664Z",
+    "username": "shaniki",
+    "activityType": "purchase",
+    "details": {
+      "total": "489.97",
+      "itemCount": 2
+    }
+  },
+  {
+    "timestamp": "2025-09-26T02:21:00.333Z",
+    "username": "shaniki",
+    "activityType": "logout",
+    "details": {}
+  }
+]

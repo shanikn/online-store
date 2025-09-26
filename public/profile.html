@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Profile - ShanikJewls</title>
+    <title>Profile - ShanikJewels</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="/styles/theme.css">
@@ -12,12 +12,12 @@
         <div class="announcement-bar">
             <span class="announcement-pill"><i class="fa-solid fa-user"></i> Your Profile</span>
             <span>Manage your account settings and view your purchase history.</span>
-            <button type="button" class="announcement-action" onclick="scrollToHistory()">View Purchase History <i class="fa-solid fa-arrow-right"></i></button>
+            <button type="button" class="announcement-action" onclick="window.location.href='/my-items.html'">View Purchase History <i class="fa-solid fa-arrow-right"></i></button>
         </div>
         <div class="header">
             <button class="menu" id="menu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
             <div class="brand">
-                <h1>ShanikJewls</h1>
+                <h1>ShanikJewels</h1>
                 <span class="brand-tagline">Handcrafted Jewelry</span>
             </div>
             <div class="header-actions">
@@ -126,37 +126,10 @@
             </div>
         </div>
 
-        <div class="profile-section">
-            <h2>Quick Actions</h2>
-            <div class="account-actions">
-                <a href="/my-items.html" class="btn btn-info">
-                    <i class="fa-solid fa-box"></i> View My Orders
-                </a>
-                <a href="/wishlist.html" class="btn btn-info">
-                    <i class="fa-solid fa-heart"></i> View My Wishlist
-                </a>
-                <a href="/cart.html" class="btn btn-info">
-                    <i class="fa-solid fa-shopping-cart"></i> View My Cart
-                </a>
-                <button type="button" class="btn btn-warning" onclick="confirmLogout()">
-                    <i class="fa-solid fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </div>
     </main>
 
     <script>
         let profileCurrentUser = null;
-
-        function scrollToHistory() {
-            const historySection = document.querySelector('#purchaseHistory');
-            if (historySection) {
-                historySection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
 
         async function loadUserProfile() {
             try {
@@ -173,7 +146,11 @@
                 document.getElementById('currentEmail').textContent = userData.email || 'Not set';
                 document.getElementById('currentRole').textContent = userData.role || 'user';
                 document.getElementById('memberSince').textContent = userData.createdAt
-                    ? new Date(userData.createdAt).toLocaleDateString()
+                    ? new Date(userData.createdAt).toLocaleDateString('he-IL', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    })
                     : 'Not available';
 
                 document.getElementById('newUsername').value = userData.username;

@@ -20,13 +20,6 @@
         "-y",
         "@modelcontextprotocol/server-github"
       ]
-    },
-    "markitdown": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@microsoft/markitdown-mcp"
-      ]
     }
   }
 }

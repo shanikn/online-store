@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>ShanikJewls Store</title>
+        <title>ShanikJewels Store</title>
         <!-- Font Awesome for icons <3 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
@@ -39,6 +39,43 @@
                 transform: translateY(-1px);
                 box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             }
+
+            /* Lighter Browse All Jewelry button */
+            .collection-explore {
+                background: rgba(184, 134, 106, 0.15) !important;
+                color: #7d514b !important;
+                border: 2px solid rgba(184, 134, 106, 0.35) !important;
+                padding: 14px 28px;
+                border-radius: 16px;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .collection-explore:hover {
+                background: rgba(184, 134, 106, 0.25) !important;
+                border-color: rgba(184, 134, 106, 0.5) !important;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 16px rgba(125, 81, 75, 0.15);
+            }
+
+            /* Dark mode for browse button */
+            body.dark-mode .collection-explore {
+                background: rgba(154, 154, 154, 0.12) !important;
+                color: #c2b5a8 !important;
+                border-color: rgba(154, 154, 154, 0.3) !important;
+            }
+
+            body.dark-mode .collection-explore:hover {
+                background: rgba(154, 154, 154, 0.2) !important;
+                border-color: rgba(154, 154, 154, 0.45) !important;
+            }
         </style>
     </head>
     <body>
@@ -53,7 +90,7 @@
             <div class="header">
                 <button class="menu" id="menu" aria-label="Toggle menu" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
                 <div class="brand">
-                    <h1>ShanikJewls</h1>
+                    <h1>ShanikJewels</h1>
                     <span class="brand-tagline">Handcrafted Jewelry</span>
                 </div>
                 <div class="header-actions">
@@ -111,7 +148,7 @@
             <section class="hero-section">
                 <div class="hero-content">
                     <span class="hero-badge">New Season</span>
-                    <h2>Elevate Every Moment with ShanikJewls</h2>
+                    <h2>Elevate Every Moment with ShanikJewels</h2>
                     <p>Discover handcrafted pieces inspired by timeless design and modern elegance. Each jewel is crafted to celebrate your story.</p>
                     <div class="features-grid">
                         <div class="feature-item"><i class="fa-solid fa-gem" aria-hidden="true"></i><span>Conflict-Free Materials</span></div>
@@ -119,12 +156,12 @@
                         <div class="feature-item"><i class="fa-solid fa-box-open" aria-hidden="true"></i><span>Gift-Ready Packaging</span></div>
                     </div>
                     <div class="hero-actions">
-                        <a class="cta-btn primary" href="/collection-wedding.html">Shop Collection</a>
+                        <a class="cta-btn primary" href="/collection-wedding.html">Shop Wedding Collection</a>
                         <a class="cta-btn secondary" href="/about.html">Our Craft</a>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="https://i.pinimg.com/736x/ed/ad/2d/edad2d1e32beea4598ebba0f8be4052b.jpg" alt="Woman wearing ShanikJewls gold jewelry">
+                    <img src="https://i.pinimg.com/736x/ed/ad/2d/edad2d1e32beea4598ebba0f8be4052b.jpg" alt="Woman wearing ShanikJewels gold jewelry">
                 </div>
             </section>
 
@@ -136,7 +173,6 @@
                             <h2>Signature Collections</h2>
                             <p>Discover wedding bands, engagement keepsakes, and iconic hoops crafted for everyday radiance.</p>
                         </div>
-                        <a class="cta-btn collection-explore" href="/store.html#all-items">Browse All Jewelry</a>
                     </div>
                     <div class="collection-grid">
                         <article class="collection-card collection-card--radiant">
@@ -193,7 +229,7 @@
                     </div>
                     <div class="customization-cta">
                         <button class="cta-btn primary" onclick="scrollToProducts()">Explore Customizable Pieces</button>
-                        <button class="cta-btn secondary" onclick="document.getElementById('search').focus()">Start with a Favorite</button>
+                        <button class="cta-btn secondary" onclick="document.getElementById('search').focus()">Search Products</button>
                     </div>
                 </div>
             </section>
@@ -269,37 +305,6 @@
             <div id="productsContainer" class="products-grid"></div>
         </main>
 
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <div class="footer-brand">
-                    <h3>ShanikJewls</h3>
-                    <p>Mindfully crafted gold jewelry created in small batches. Each piece is designed to layer effortlessly and last a lifetime.</p>
-                    <div class="footer-socials">
-                        <a href="#" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" aria-label="Follow on Pinterest"><i class="fa-brands fa-pinterest"></i></a>
-                        <a href="#" aria-label="Follow on TikTok"><i class="fa-brands fa-tiktok"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links">
-                    <h4>Explore</h4>
-                    <nav>
-                        <a href="/store.html">Store</a>
-                        <a href="/about.html">About</a>
-                        <a href="/contact.html">Contact</a>
-                        <a href="/readme.html">Story</a>
-                    </nav>
-                </div>
-                <div class="footer-newsletter">
-                    <h4>Insider List</h4>
-                    <p>Be first to know about limited releases, styling events, and private previews.</p>
-                    <form class="newsletter-form" onsubmit="event.preventDefault(); showSuccess('You are on the list!', false);">
-                        <input type="email" placeholder="Enter your email" aria-label="Email address">
-                        <button type="submit">Join Now</button>
-                    </form>
-                    <div class="footer-note">We respect your inbox</div>
-                </div>
-            </div>
-        </footer>
 
         <!-- Customization Modal -->
         <div id="customizationModal" class="modal-overlay">
@@ -514,7 +519,7 @@
 
             async function addToCart(productId){
                 try{
-                    const response= await fetch('/api/cart/add', {
+                    const response= await fetch('/api/cart', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -1056,7 +1061,7 @@
                         <div class="customization-group">
                             <label for="engraving">Engraving (optional):</label>
                             <input type="text" id="engraving" placeholder="Enter your custom text (max 20 characters)" maxlength="20">
-                            <small style="color: #666; font-size: 12px;">Leave blank for no engraving</small>
+                            <small style="display: block; color: #666; font-size: 12px; margin-top: 0.5rem;">Leave blank for no engraving</small>
                         </div>
                     `;
                 }
@@ -1066,7 +1071,7 @@
                         <div class="customization-group">
                             <label for="engraving">Custom Engraving (optional):</label>
                             <input type="text" id="engraving" placeholder="Enter your custom text (max 20 characters)" maxlength="20">
-                            <small style="color: #666; font-size: 12px;">Leave blank for no engraving</small>
+                            <small style="display: block; color: #666; font-size: 12px; margin-top: 0.5rem;">Leave blank for no engraving</small>
                         </div>
                     `;
                 }
@@ -1098,7 +1103,7 @@
                 }
 
                 try {
-                    const response = await fetch('/api/cart/add', {
+                    const response = await fetch('/api/cart', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

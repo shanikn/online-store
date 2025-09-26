@@ -1,586 +1,276 @@
-# PROJECT DOCUMENTATION
+# CLAUDE.md
 
-This file provides comprehensive documentation for the online jewelry store web application. It's designed to help AI assistants (Claude, ChatGPT, or others) understand the complete project structure and implementation details.
+This file provides guidance to Claude Code when working with the Golden Jewelry Store codebase.
 
 ## Project Overview
 
-This is a RUNI 2025 FullStack course final project - an online gold jewelry store web application built with Node.js/Express. The project implements a complete e-commerce solution with authentication, shopping cart, checkout, admin panel, and various user features.
+This is a full-stack e-commerce jewelry store built with Node.js/Express and vanilla HTML/CSS/JavaScript. It's a Multi-Page Application (MPA) with server-side rendering and JSON-based data persistence.
 
-### Project Requirements Summary
-- **Authentication**: Cookie-based with "remember me" functionality
-- **User Roles**: Regular users and admin (admin/admin credentials)
-- **Data Persistence**: JSON files in `/data` directory
-- **Modular Architecture**: Server-side screen handlers in separate modules
-- **Security**: DOS attack protection required
-- **Testing**: Automated test suite using node-fetch
-- **UI Customization**: LocalStorage-based theme/view customization
-
-## Technology Stack
-
-- **Backend**: Node.js with Express.js framework
-- **Frontend**: Vanilla JavaScript, HTML5, CSS3
-- **Database**: JSON file-based storage (no SQL database)
+### Key Characteristics
+- **Architecture**: Traditional MPA with server-rendered HTML pages
+- **Backend**: Node.js + Express.js server
+- **Frontend**: Static HTML pages with inline JavaScript
+- **Data Storage**: JSON files in the `data/` directory
 - **Authentication**: Cookie-based sessions
-- **Testing**: Node-fetch for automated testing
-- **Package Manager**: npm
+- **No Build Process**: Direct execution without bundling
 
 ## Project Structure
 
 ```
 online_store/
-├── server.js              # Main Express server file
-├── persist_module.js      # Centralized data persistence layer
-├── test.js               # Automated test suite
-├── package.json          # Project dependencies and scripts
-├── CLAUDE.md            # This documentation file
-├── screens/             # Server-side route handlers
-│   ├── login-server.js
-│   ├── register-server.js
-│   ├── store-server.js
-│   ├── cart-server.js
-│   ├── checkout-server.js
-│   ├── admin-server.js
-│   ├── wishlist-server.js
-│   ├── profile-server.js
-│   └── contact-server.js
-├── data/               # JSON data storage
-│   ├── users.json
-│   ├── products.json
-│   ├── carts.json
-│   ├── wishlists.json
-│   ├── activities.json
-│   └── purchases.json
-└── public/            # Frontend files
-    ├── *.html        # All HTML pages
-    ├── styles/       # CSS files
-    │   └── theme.css
-    ├── scripts/      # JavaScript files
-    │   └── layout.js
-    └── images/       # Product images
-```
-
-## Architecture
-
-### Server Structure
-- **Main Server**: `server.js` - Express application entry point
-  - Port: 5000
-  - Middleware: cookie-parser, express.json, express.urlencoded, static files
-  - Authentication: `requireAuth` middleware using `userToken` cookie
-  
-- **Screen Modules**: `/screens/*.js` - Each screen's server logic in separate module
-  - `login-server.js` - Login/authentication logic
-  - `register-server.js` - User registration
-  - `store-server.js` - Product catalog and search
-  - `cart-server.js` - Shopping cart management
-  - `checkout-server.js` - Payment processing
-  - `admin-server.js` - Admin panel and activity tracking
-
-- **Data Module**: `persist_module.js` - ALL file I/O operations must go through this module
-  - Handles reading/writing to JSON files
-  - Must use async/await for all operations
-
-### Data Files (`/data/`)
-- `users.json` - User accounts, credentials, and profiles
-  ```json
-  {
-    "username": {
-      "password": "hashed_password",
-      "email": "user@example.com",
-      "fullName": "User Name",
-      "address": "123 Main St"
-    }
-  }
-  ```
-- `products.json` - Product catalog with jewelry items
-  ```json
-  [
-    {
-      "id": 1,
-      "name": "Gold Diamond Ring",
-      "description": "14k gold ring with diamond",
-      "price": 1999,
-      "image": "/images/ring1.jpg",
-      "category": "rings",
-      "customizable": true,
-      "customization": {
-        "type": "ring",
-        "sizes": [5, 6, 7, 8, 9, 10, 11]
-      }
-    }
-  ]
-  ```
-- `carts.json` - Shopping cart data per user with unique cartItemId
-  ```json
-  {
-    "username": [
-      {
-        "cartItemId": 1234567890,
-        "productId": 1,
-        "quantity": 2,
-        "customization": { "size": 7 },
-        "addedAt": "2025-01-01T10:00:00.000Z"
-      }
-    ]
-  }
-  ```
-- `wishlists.json` - User wishlists storing product IDs
-  ```json
-  {
-    "username": [1, 3, 5, 8]
-  }
-  ```
-- `activities.json` - User activity logs for tracking
-  ```json
-  [
-    {
-      "username": "admin",
-      "activity": "login",
-      "details": "User logged in",
-      "timestamp": "2025-01-01T10:00:00.000Z"
-    }
-  ]
-  ```
-- `purchases.json` - Completed purchase records
-  ```json
-  {
-    "username": [
-      {
-        "items": [...],
-        "total": 1999,
-        "customerInfo": {...},
-        "orderDate": "2025-01-01T10:00:00.000Z"
-      }
-    ]
-  }
-  ```
-
-### Frontend Pages (`/public/`)
-- `login.html` - Entry point with "remember me" checkbox
-- `register.html` - New user registration
-- `store.html` - Product catalog with search functionality
-- `cart.html` - Shopping cart management
-- `checkout.html` - Payment form (fake payment)
-- `admin.html` - Admin dashboard with activity logs and product management
-- `profile.html`, `wishlist.html`, `about.html`, `contact.html` - Additional pages
-- `readme.html` - Project documentation (individual work)
-- `llm.html` - LLM-generated code documentation
-
-### Frontend Implementation Details
-
-#### Shared Layout System (`public/scripts/layout.js`)
-The layout.js file provides shared functionality across all pages:
-- **Authentication checking** - `checkAuthStatus()` verifies user login state
-- **Navigation management** - Dynamic menu updates based on auth status
-- **Theme switching** - Dark/light mode toggle with localStorage persistence
-- **Hamburger menu** - Mobile-responsive navigation
-- **Floating buttons** - Cart and theme toggle buttons
-- **Base initialization** - `initializeBaseLayout()` must be called on page load
-
-#### Critical Frontend Rules
-1. **DO NOT redeclare variables** from layout.js (especially `let isAuthenticated`)
-2. **DO NOT redefine functions** that exist in layout.js
-3. **Always use onclick handlers** in HTML to call layout.js functions
-4. **Always call initializeBaseLayout()** in DOMContentLoaded event
-5. **Use event delegation** for dynamically created elements
-
-#### Common Frontend Patterns
-```javascript
-// Correct initialization pattern
-document.addEventListener('DOMContentLoaded', () => {
-    initializeBaseLayout();  // From layout.js
-    // Page-specific code here
-});
-
-// Authentication check pattern
-if (await checkAuthStatus()) {
-    // User is logged in
-} else {
-    // User not logged in, redirect if needed
-    window.location.href = '/login.html';
-}
-
-// API call pattern with error handling
-try {
-    const response = await fetch('/api/endpoint', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-    const result = await response.json();
-    if (result.success) {
-        // Handle success
-    } else {
-        showError(result.message);
-    }
-} catch (error) {
-    console.error('Error:', error);
-    showError('An error occurred');
-}
+├── server.js              # Main Express server
+├── persist_module.js      # Data persistence layer
+├── test.js               # Test suite
+├── screens/              # Server-side route handlers
+│   ├── admin-server.js   # Admin panel endpoints
+│   ├── cart-server.js    # Shopping cart endpoints
+│   ├── checkout-server.js # Checkout process
+│   ├── login-server.js   # Authentication endpoints
+│   ├── register-server.js # User registration
+│   ├── store-server.js   # Product listing endpoints
+│   └── wishlist-server.js # Wishlist functionality
+├── public/               # Static files served to browser
+│   ├── *.html           # HTML pages (store, cart, checkout, etc.)
+│   ├── styles/          # CSS files
+│   │   └── theme.css    # Main stylesheet
+│   └── scripts/         # Client-side JavaScript
+│       ├── layout.js    # Common layout functions
+│       └── theme.js     # Theme management
+├── data/                # JSON data storage
+│   ├── products.json    # Product catalog
+│   ├── users.json       # User accounts
+│   ├── wishlists.json   # User wishlists
+│   ├── contacts.json    # Contact messages
+│   └── user_data/       # Per-user data files
+│       ├── {username}_cart.json     # User's cart
+│       ├── {username}_activity.json # User activity log
+│       └── {username}_purchases.json # Purchase history
+└── tests/               # Test files (if any)
 ```
 
 ## Development Commands
 
+### Running the Application
 ```bash
-# Install dependencies
-npm install
-
-# Start server
-node server.js
-
-# Run automated tests
-node test.js
+npm start          # Start the server (port 5000)
+npm run dev        # Same as npm start
+node server.js     # Direct execution
 ```
 
-Server URL: http://127.0.0.1:5000/
+### Testing
+```bash
+npm test           # Run test suite (executes test.js)
+npm run test:unit  # Run Jest unit tests
+npm run test:integration # Run integration tests
+npm run test:watch # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+```
 
-## Key Implementation Requirements
+### Code Quality
+```bash
+npm run lint       # Check code style with ESLint
+npm run lint:fix   # Auto-fix linting issues
+```
+
+## API Endpoints
 
 ### Authentication
-- Cookie name: `userToken`
-- Session duration: 30 minutes (default) or 12 days (remember me)
-- Default admin user: username="admin", password="admin"
-- All pages except login, register, readme, and products require authentication
+- `POST /login` - User login
+- `POST /logout` - User logout
+- `POST /register` - New user registration
+- `GET /api/current-user` - Get current user info
 
-### Required Features
-1. **Product Search**: Textual prefix search by name or description
-2. **Shopping Cart**: Add/remove products, persists across sessions
-3. **Activity Logging**: Track login/logout/add-to-cart events with timestamps
-4. **Admin Panel**: 
-   - Activity table with columns: datetime, username, activity type
-   - Username prefix filter for activity logs
-   - Product management (add/remove products with title, description, image)
-5. **DOS Protection**: Implement rate limiting or similar protection
-6. **UI Customization**: User-configurable theme stored in localStorage
+### Store Operations
+- `GET /api/products` - Get all products
+- `GET /api/product/:id` - Get specific product
+- `POST /api/filter-products` - Filter products by category
 
-### Module Structure Rules
-- Each screen's server logic MUST be in separate module (`screens/*-server.js`)
-- ALL data persistence MUST go through `persist_module.js`
-- Use async/await for all asynchronous operations
-- Choose appropriate HTTP methods (GET/POST/PUT/DELETE)
-- Handle all errors, exceptions, and async errors
+### Cart Management
+- `GET /api/cart` - Get user's cart
+- `POST /api/cart/add` - Add item to cart
+- `POST /api/cart/remove` - Remove item from cart
+- `POST /api/cart/update` - Update item quantity
+- `POST /api/cart/clear` - Clear entire cart
 
-### Testing Requirements
-- `test.js` must test all dynamic server routes
-- Use node-fetch for testing
-- Print test names and pass/fail status to stdout
-- Test only server-side routes, not static files
+### Wishlist
+- `GET /api/wishlist` - Get user's wishlist
+- `POST /api/wishlist/add` - Add to wishlist
+- `POST /api/wishlist/remove` - Remove from wishlist
+- `POST /api/wishlist/toggle` - Toggle wishlist item
 
-### Additional Pages Required
-- Minimum 4 additional functional pages
-- Each must communicate with server
-- Must be distinct in functionality
+### Checkout
+- `POST /api/checkout` - Process order
+- `GET /api/purchases` - Get purchase history
 
-## Current Implementation Status
+### Admin
+- `GET /api/admin/users` - List all users
+- `GET /api/admin/activity/:username` - Get user activity
+- `POST /api/admin/product` - Add/update product
+- `DELETE /api/admin/product/:id` - Delete product
 
-### ✅ COMPLETED (100% Functional)
-- **Full Express server** with all routes and middleware
-- **Complete authentication system** with cookie-based sessions and "remember me"
-- **Data persistence layer** (`persist_module.js`) with async JSON file operations
-- **All HTML pages** - Login, Register, Store, Cart, Checkout, Admin, About, Contact, Wishlist, Profile, Readme
-- **Product catalog** with search functionality and dynamic display
-- **Shopping cart system** with add/remove/update quantities and persistence
-- **Checkout process** with complete payment form and order processing
-- **Admin dashboard** with activity logs, product management, and user filtering
-- **Activity logging** for login/logout/add-to-cart events with timestamps
-- **DOS protection** with rate limiting middleware
-- **Navigation system** with dynamic authentication-aware menus across all pages
-- **Comprehensive testing** with 18 automated tests using node-fetch
-- **Project documentation** with individual work report and setup instructions
+## Data Models
 
-### ✅ Core Features Working
-- **Authentication**: Cookie-based with "remember me" functionality ✓
-- **User Roles**: Regular users and admin (admin/admin) ✓
-- **Data Persistence**: JSON files with async operations ✓
-- **Security**: Rate limiting and input validation ✓
-- **Testing**: Complete test suite with node-fetch ✓
-- **UI**: Consistent styling and navigation ✓
+### User
+```json
+{
+  "username": "string",
+  "password": "string (hashed)",
+  "email": "string",
+  "isAdmin": "boolean"
+}
+```
 
-### ✅ All Required Pages Implemented
-- **12 functional HTML pages** with server communication
-- **4+ additional pages** (About, Contact, Wishlist, Profile) as required
-- **Documentation pages** (readme.html with individual work report)
-- **All pages have consistent navigation** with hamburger menu
+### Product
+```json
+{
+  "id": "string",
+  "name": "string",
+  "price": "number",
+  "description": "string",
+  "category": "string",
+  "image": "string (URL)",
+  "stock": "number"
+}
+```
 
-### ✅ LATEST FEATURES ADDED (September 2025)
-- **Product Customization System** with modal interface for jewelry personalization
-- **Ring Sizing Options** (sizes 5-11) for customizable rings
-- **Engraving Services** (max 20 characters) for bracelets and watches
-- **Dynamic Product Buttons** showing "Customize & Add" for customizable items
-- **Enhanced Cart System** supporting unique customized items with separate tracking
-- **Live Search Dropdown** with 4-result preview and keyboard navigation
-- **Column Layout Selector** (2, 3, 5 columns) with localStorage persistence
-- **Improved Product Image Positioning** for better jewelry display
-- **Enhanced Visual Separation** with product card borders and hover effects
-- **Packaging Options** in checkout (standard, premium $15, luxury $25)
-- **Gift Messaging** support for special occasions
-- **Admin Tab Persistence** remembers active tab on refresh using localStorage
-- **Wishlist Cache-Busting** for reliable item removal and updates
+### Cart Item
+```json
+{
+  "productId": "string",
+  "quantity": "number",
+  "addedAt": "timestamp"
+}
+```
 
-### Known Issues
-- None - Project is fully functional and ready for submission
+## Coding Guidelines
 
-### Current Status: PROJECT COMPLETE ✅
-All PDF requirements have been successfully implemented and tested. The application is fully functional with:
-- Authentication and authorization working
-- Shopping cart and checkout process complete
-- Admin panel with activity tracking functional
-- Comprehensive test suite passing
-- All documentation complete
-- **NEW**: Complete customization system for jewelry personalization
+### File Naming
+- Server-side handlers: `{feature}-server.js`
+- HTML pages: `{pagename}.html` (lowercase)
+- Data files: `{datatype}.json`
 
-## Authentication Flow
+### JavaScript Style
+- **Module System**: CommonJS (`require`/`module.exports`)
+- **Async Operations**: Callbacks or Promises (no async/await in older code)
+- **Error Handling**: Try-catch blocks with proper error responses
+- **Authentication**: Cookie-based with `userToken`
 
-### User Experience
-- **Home page**: Users land on `/store.html` and can browse products without login
-- **Product browsing**: Search and view products works without authentication
-- **Cart actions**: Clicking "Add to Cart" redirects to login if not authenticated
-- **Navigation**: Menu dynamically shows different options based on login status:
-  - **Not logged in**: Store, About, Contact, Login, Register
-  - **Logged in**: Store, Cart, Wishlist, About, Contact, Profile, Admin, Logout
-- **Auto-redirect**: After login, users return to their intended action
+### HTML Structure
+- Each page includes common navigation header
+- Inline `<script>` tags for page-specific JavaScript
+- Font Awesome icons for UI elements
+- Bootstrap-inspired custom CSS classes
 
-### Authentication Implementation
-- Cookie-based authentication using `userToken` cookie
-- Admin user automatically created on first server run
-- Session duration: 30 minutes (default) or 12 days (remember me)
-
-## API Documentation
-
-### Route Structure
-
-#### Public Routes (No Auth Required)
-- GET `/` - Redirects to store (users can browse without login)
-- GET `/store.html` - Product catalog (public browsing)
-- GET `/products.html` - Same as store (alias)
-- GET `/login.html` - Login page
-- GET `/register.html` - Registration page
-- GET `/readme.html` - Project documentation
-- GET `/api/products` - Get all products (public API)
-- GET `/api/products/search` - Product search (public API)
-- POST `/login` - Authentication endpoint
-- POST `/register` - User registration endpoint
-
-#### Protected Routes (Auth Required)
-- GET `/cart.html` - Shopping cart
-- GET `/checkout.html` - Payment page
-- GET `/admin.html` - Admin panel
-- GET `/profile.html` - User profile
-- POST `/api/cart/add` - Add to cart (redirects to login if not authenticated)
-- DELETE `/api/cart/remove` - Remove from cart
-- PUT `/api/cart/update` - Update cart quantities
-- DELETE `/api/cart/clear` - Clear entire cart
-- GET `/api/cart` - Get user's cart contents
-- POST `/api/checkout` - Process payment
-- GET `/api/admin/activities` - Get activity logs (with optional username filter)
-- POST `/api/admin/products` - Add product
-- DELETE `/api/admin/products/:id` - Remove product
-- GET `/api/purchases` - Get user's purchase history
-- GET `/api/users/current` - Get current user info
-- PUT `/api/profile` - Update user profile
-- POST `/api/contact` - Submit contact form
-- GET `/api/wishlist` - Get user wishlist
-- POST `/api/wishlist/add` - Add to wishlist
-
-### API Endpoint Details
-
-#### Authentication Endpoints
-- **POST /login**
-  ```json
-  Request: { "username": "admin", "password": "admin", "rememberMe": true }
-  Response: { "success": true, "message": "Login successful" }
-  ```
-- **POST /register**
-  ```json
-  Request: { "username": "newuser", "password": "pass123", "email": "user@example.com" }
-  Response: { "success": true, "message": "Registration successful" }
-  ```
-
-#### Cart Management
-- **POST /api/cart/add**
-  ```json
-  Request: { "productId": 1, "quantity": 2, "customization": { "size": 7 } }
-  Response: { "success": true, "message": "Added to cart" }
-  ```
-- **DELETE /api/cart/remove**
-  ```json
-  Request: { "cartItemId": 1234567890 }
-  Response: { "success": true }
-  ```
-
-#### Wishlist Management
-- **POST /api/wishlist/add**
-  ```json
-  Request: { "productId": 5 }
-  Response: { "success": true }
-  ```
-- **DELETE /api/wishlist/remove**
-  ```json
-  Request: { "productId": 5 }
-  Response: { "success": true }
-  ```
-
-## Key Implementation Features
-
-### Shopping Cart System
-- **Unique Cart Item IDs**: Each cart item has a unique `cartItemId` for tracking
-- **Customization Support**: Items with customizations are tracked separately
-- **Persistent Storage**: Cart persists across sessions using JSON storage
-- **Real-time Updates**: Cart badge updates dynamically on all pages
-
-### Wishlist System
-- **Simple Product ID Storage**: Wishlists store arrays of product IDs
-- **Cache-Busting**: Aggressive cache prevention for real-time updates
-- **Heart Icon Toggle**: Visual feedback on store page for wishlist items
-
-### Admin Dashboard
-- **Tab Persistence**: Active tab saved to localStorage
-- **Activity Tracking**: All user actions logged with timestamps
-- **Product Management**: Add/edit/delete products with image upload
-- **Statistics Display**: Real-time counts of users, products, activities
-- **Username Filtering**: Filter activity logs by username prefix
-
-### Checkout Process
-- **Multi-Step Form**: Customer info → Packaging → Payment
-- **Packaging Options**: Standard (free), Premium ($15), Luxury ($25)
-- **Gift Messages**: Support for personalized gift messages
-- **Order Processing**: Creates purchase record and clears selected cart items
-- **Email Notifications**: (Simulated) Order confirmation emails
+### Data Persistence
+- All data stored in JSON files
+- User-specific data in `data/user_data/`
+- Use `persist_module.js` for all file operations
+- Implement proper file locking for concurrent access
 
 ## Security Considerations
-- **Password Hashing**: Never store passwords in plain text (use bcrypt/crypto)
-- **Input Validation**: Validate and sanitize all user inputs
-- **Rate Limiting**: DOS protection with express-rate-limit middleware
-- **Cookie Security**: httpOnly and secure flags for production
-- **Path Traversal Prevention**: Validate all file paths
-- **XSS Protection**: Sanitize HTML output and user content
-- **CSRF Protection**: Consider implementing CSRF tokens for forms
 
-## Project Submission
+### Authentication
+- Store hashed passwords (never plain text)
+- Use secure cookies with httpOnly flag
+- Implement session timeout
+- Validate user permissions for admin routes
 
-### Files to Include in Submission Zip
+### Input Validation
+- Sanitize all user inputs
+- Validate data types and ranges
+- Prevent SQL injection (even though using JSON)
+- Implement rate limiting for API endpoints
+
+### Data Protection
+- Don't expose sensitive user data in responses
+- Implement proper access controls
+- Log security-relevant events
+- Regular backup of JSON data files
+
+## Testing Strategy
+
+### Unit Tests
+- Test persist_module functions
+- Test authentication logic
+- Test data validation functions
+- Test cart calculations
+
+### Integration Tests
+- Test complete user flows
+- Test API endpoint responses
+- Test error handling
+- Test concurrent operations
+
+## Performance Optimization
+
+### Current Architecture
+- Static file serving with Express
+- In-memory caching for frequently accessed data
+- Minimize JSON file reads/writes
+- Compress large responses
+
+### Future Improvements
+- Consider database migration for scalability
+- Implement Redis for session management
+- Add CDN for static assets
+- Enable gzip compression
+
+## Deployment Considerations
+
+### Environment Variables
+```bash
+PORT=5000               # Server port
+NODE_ENV=production     # Environment
+SESSION_SECRET=xxx      # Session encryption key
 ```
-/online_store
-  /public           - All HTML pages (required)
-    - login.html
-    - register.html
-    - store.html
-    - cart.html
-    - checkout.html
-    - admin.html
-    - about.html
-    - contact.html
-    - wishlist.html
-    - profile.html
-    - readme.html
-  server.js         - Main server file (required)
-  persist_module.js - Data handling module (required)
-  test.js          - Test suite (required)
-  package.json     - Dependencies and scripts (required)
-  CLAUDE.md        - Project documentation (required)
-  PROJECT_QA.md    - Q&A documentation (optional)
-```
 
-### Files to EXCLUDE from Submission
-- `/node_modules` - Teacher will run `npm install`
-- `/client` - React leftovers not part of vanilla project
-- `/data` - Admin user auto-creates, not needed
-- IDE files (.vscode, .idea, etc.)
-- Cache files
-
-### Teacher Setup Instructions
-1. Extract the submission zip file
-2. Run `npm install` to install dependencies
-3. Run `node server.js` to start the server
-4. Visit `http://127.0.0.1:5000/`
-5. Login with username: `admin`, password: `admin`
-
-**Note:** Admin account is automatically created on first server run - no pre-existing data files needed.
+### Production Checklist
+- [ ] Set NODE_ENV to production
+- [ ] Configure proper error handling
+- [ ] Set up logging system
+- [ ] Enable HTTPS
+- [ ] Configure backup strategy
+- [ ] Set up monitoring
 
 ## Common Issues and Solutions
 
-### Problem: Wishlist items not removing
-**Solution**: Clear browser cache, check console for errors, verify server is running
+### Issue: Cart not persisting
+- Check cookie settings
+- Verify user is logged in
+- Check file permissions in data/user_data/
 
-### Problem: Admin dashboard shows zeros
-**Solution**: Refresh page, ensure data files exist in /data directory
+### Issue: Products not loading
+- Verify products.json exists and is valid
+- Check persist_module is working
+- Look for console errors
 
-### Problem: "Please fill in all required fields" error in checkout
-**Solution**: Check all form fields are filled, verify no hidden validation requirements
+### Issue: Login not working
+- Check users.json file format
+- Verify password hashing
+- Check cookie domain settings
 
-### Problem: Cart badge not updating
-**Solution**: Check layout.js is loaded, verify checkAuthStatus() is called
+## Development Workflow
 
-### Problem: Search dropdown not showing
-**Solution**: Type at least 2 characters, check for JavaScript errors
+### Adding a New Feature
+1. Create route handler in `screens/`
+2. Add endpoint in `server.js`
+3. Create/update HTML page in `public/`
+4. Add necessary data files in `data/`
+5. Write tests in `test.js`
+6. Update this documentation
 
-## Testing the Application
+### Making Changes
+1. Run `npm test` before starting
+2. Make changes incrementally
+3. Test each change manually
+4. Run `npm run lint` to check code style
+5. Run full test suite before committing
+6. Update relevant documentation
 
-### Manual Testing Checklist
-- [ ] Register new user account
-- [ ] Login with "remember me" checked
-- [ ] Browse products without login
-- [ ] Search for products
-- [ ] Add items to cart (with and without customization)
-- [ ] Update cart quantities
-- [ ] Add/remove wishlist items
-- [ ] Complete checkout with packaging options
-- [ ] View order history in profile
-- [ ] Admin: View activity logs
-- [ ] Admin: Add/remove products
-- [ ] Admin: Filter activities by username
-- [ ] Test responsive design on mobile
-- [ ] Test theme switching (dark/light mode)
+## Important Notes
 
-### Automated Testing
-```bash
-# Run the test suite
-node test.js
-
-# Expected output: All tests should pass
-# The test suite covers:
-# - Authentication (login/logout)
-# - Registration
-# - Product listing and search
-# - Cart operations
-# - Wishlist management
-# - Admin functionality
-# - Profile updates
-# - Purchase history
-```
-
-## For AI Assistants
-
-When working with this codebase:
-1. **Always use persist_module.js** for any data operations
-2. **Never modify layout.js variables** from other files
-3. **Follow the existing code patterns** in each file
-4. **Test changes thoroughly** before committing
-5. **Maintain backward compatibility** with existing data
-6. **Use the established error handling patterns**
-7. **Follow the modular architecture** - keep screen logic separate
-
-### Quick Command Reference
-```bash
-# Start development server
-node server.js
-
-# Run tests
-node test.js
-
-# Check for syntax errors
-node -c server.js
-node -c persist_module.js
-
-# View server logs (if running in background)
-tail -f server.log
-```
-
-### Important File Locations
-- Server entry: `server.js:1`
-- Auth middleware: `server.js:50-60`
-- Data operations: `persist_module.js:1`
-- Shared frontend: `public/scripts/layout.js:1`
-- Main styles: `public/styles/theme.css:1`
-
-This documentation should help any AI assistant understand and work with this online jewelry store project effectively.
-- when adding new styling, first make sure there are no already existing versions in the file, so there won't be any conflicts which will cause errors.
+- This is NOT a bundled SPA application
+- No webpack, vite, or other bundlers are used
+- Client-side code is inline or in simple script files
+- Data persistence is file-based, not database-based
+- The project is designed for educational purposes

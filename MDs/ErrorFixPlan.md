@@ -2,7 +2,7 @@
 
 ## ✅ Completed
 - CSS shared components extracted to theme.css
-- Store name standardized to "ShanikJewls"
+- Store name standardized to "ShanikJewels"
 - Activity log fixes
 - UI improvements
 - **Authentication system fixed:**

@@ -80,9 +80,15 @@ async function saveUsers(users) {
 
 async function loadUsers() {
     const users = await loadData('users.json', []);
+    return users;
+}
 
-    // ensure admin user exists
-    if (!users.find(u => u.username === 'admin')) {
+// Create default admin only during initialization
+async function createDefaultAdmin() {
+    const users = await loadData('users.json', []);
+
+    // only create admin if no users exist at all
+    if (users.length === 0) {
         users.push({
             username: 'admin',
             password: 'admin',
@@ -90,6 +96,7 @@ async function loadUsers() {
             createdAt: new Date().toISOString()
         });
         await saveUsers(users);
+        console.log('✅ Created default admin user');
     }
     return users;
 }
@@ -282,12 +289,11 @@ async function initialize() {
     await ensureDataDir();
     // Ensure all required data files exist with default values
     try {
-        await loadUsers(); // This creates default admin if needed
+        await createDefaultAdmin(); // This creates default admin only if no users exist
         await loadProducts(); // This creates default products if needed
         await loadData('wishlists.json', {}); // Initialize empty wishlists (kept centralized)
         await loadData('contacts.json', []); // Initialize empty contacts
         console.log('✅ Data files initialized successfully');
-        console.log('📁 User-specific data will be created in data/user_data/ as needed');
     } catch (error) {
         console.error('❌ Error initializing data files:', error);
         throw error;

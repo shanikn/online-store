@@ -8,5 +8,6 @@
         "workbench.editorinputs.searchEditorInput": true,
         "workbench.editor.processExplorer": false
     },
-    "python.analysis.autoImportCompletions": true
+    "python.analysis.autoImportCompletions": true,
+    "todo-tree.tree.scanMode": "workspace only"
 }

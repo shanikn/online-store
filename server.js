@@ -176,6 +176,7 @@ app.get('/api/products/search', storeServer.searchProducts);
 
 
 // Admin activity routes
+app.get('/api/admin/users', requireAuthAPI, adminServer.getUsers);
 app.get('/api/admin/activity', requireAuthAPI, adminServer.getActivities);
 app.get('/api/admin/activities', requireAuthAPI, adminServer.getActivities);
 app.get('/api/admin/activities/filter', requireAuthAPI, adminServer.getActivities);

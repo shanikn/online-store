@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-redeclare
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 // Test configuration
@@ -642,7 +641,7 @@ async function testLogout() {
 
 // Main test runner
 async function runAllTests() {
-    console.log('🚀 Starting ShanikJewls Online Store Tests...\n');
+    console.log('🚀 Starting ShanikJewels Online Store Tests...\n');
     console.log('=' .repeat(60));
 
     // Basic functionality tests
@@ -699,7 +698,7 @@ async function runAllTests() {
     console.log(`Success Rate: ${((passCount / testCount) * 100).toFixed(1)}%`);
 
     if (passCount === testCount) {
-        console.log('\n🎉 ALL TESTS PASSED! Your ShanikJewls store is working perfectly!');
+        console.log('\n🎉 ALL TESTS PASSED! Your ShanikJewels store is working perfectly!');
     } else {
         console.log('\n⚠️  Some tests failed. Check the errors above for details.');
     }

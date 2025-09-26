@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": 1758853527362,
+    "timestamp": "2025-09-26T02:25:27.362Z",
+    "items": [
+      {
+        "productId": 4,
+        "name": "Gold Drop Earrings",
+        "price": 119.99,
+        "quantity": 1,
+        "itemTotal": 119.99
+      }
+    ],
+    "total": 119.99,
+    "customerInfo": {
+      "fullName": "Shani Knobel",
+      "email": "shanik867@gmail.com",
+      "phone": "0544462496",
+      "address": "3 Gordon street",
+      "city": "Givatayim",
+      "zipCode": "55555"
+    },
+    "paymentInfo": {
+      "cardName": "shani knobel",
+      "cardLast4": "7417",
+      "expiry": "06/26"
+    },
+    "orderDate": "2025-09-26T02:25:27.356Z"
+  }
+]

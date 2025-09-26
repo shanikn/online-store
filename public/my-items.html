@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>My Items - ShanikJewls</title>
+    <title>My Items - ShanikJewels</title>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
@@ -19,7 +19,7 @@
         <div class="header">
             <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
             <div class="brand">
-                <h1>ShanikJewls</h1>
+                <h1>ShanikJewels</h1>
                 <span class="brand-tagline">Handcrafted Jewelry</span>
             </div>
             <div class="header-actions">
@@ -272,8 +272,8 @@
                 }
 
                 const purchases = await response.json();
-                // Sort purchases by date, latest first (using timeStamp field)
-                purchases.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
+                // Sort purchases by date, latest first (using timestamp field)
+                purchases.sort((a, b) => new Date(b.timestamp || b.orderDate) - new Date(a.timestamp || a.orderDate));
                 displayPurchases(purchases);
             } catch (error) {
                 console.error('Error loading purchases:', error);
@@ -300,7 +300,11 @@
                 <div class="purchase-item">
                     <div class="purchase-header">
                         <div class="purchase-id">Order #${purchase.id}</div>
-                        <div class="purchase-date">${new Date(purchase.timeStamp).toLocaleDateString()}</div>
+                        <div class="purchase-date">${new Date(purchase.timestamp || purchase.orderDate).toLocaleDateString('he-IL', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        })}</div>
                         <div class="purchase-total">₪${purchase.total.toFixed(2)}</div>
                     </div>
                     <div class="purchase-items">

@@ -18,7 +18,6 @@ module.exports = {
             const newUser = {
                 username,
                 password,
-                email: req.body.email,
                 role: 'user',
                 createdAt: new Date().toISOString()
             };

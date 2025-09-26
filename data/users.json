@@ -7,72 +7,9 @@
     "email": "shanik867@gmail.com"
   },
   {
-    "username": "shani",
-    "password": "123456",
-    "email": "shani@gmail.com",
-    "role": "user",
-    "createdAt": "2025-09-19T07:41:43.247Z"
-  },
-  {
     "username": "shaniki",
-    "password": "shani",
+    "password": "123456",
     "role": "user",
-    "email": "",
-    "createdAt": "2025-09-19T07:41:43.248Z"
-  },
-  {
-    "username": "sha",
-    "password": "shah",
-    "role": "user",
-    "email": "",
-    "createdAt": "2025-09-19T07:41:43.248Z"
-  },
-  {
-    "username": "testuser_1758425812267",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-21T03:36:52.271Z"
-  },
-  {
-    "username": "testuser_1758426001050",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-21T03:40:01.053Z"
-  },
-  {
-    "username": "testuser_1758426162533",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-21T03:42:42.536Z"
-  },
-  {
-    "username": "testuser_1758426382941",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-21T03:46:22.944Z"
-  },
-  {
-    "username": "testuser_1758426437225",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-21T03:47:17.228Z"
-  },
-  {
-    "username": "testuser_1758426466653",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-21T03:47:46.657Z"
-  },
-  {
-    "username": "testuser_1758519703126",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-22T05:41:43.155Z"
-  },
-  {
-    "username": "testuser_1758758386186",
-    "password": "testpass123",
-    "role": "user",
-    "createdAt": "2025-09-24T23:59:46.193Z"
+    "createdAt": "2025-09-26T02:13:03.950Z"
   }
 ]

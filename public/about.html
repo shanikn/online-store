@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Our Craft - ShanikJewls</title>
+    <title>About Us - ShanikJewels | Handcrafted Luxury Jewelry</title>
     <!-- Font Awesome for icons <3 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
@@ -32,25 +32,54 @@
 
         .about-title {
             font-family: 'Fraunces', serif;
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-size: clamp(2.5rem, 4vw, 3.8rem);
             font-weight: 700;
-            color: #3e342a;
+            color: #2c2a26;
             margin: 0 0 20px;
-            line-height: 1.2;
+            line-height: 1.1;
             letter-spacing: 0.02em;
         }
 
         .about-subtitle {
-            font-size: 1.2rem;
-            color: #6b5744;
+            font-size: 1.25rem;
+            color: #5f4f42;
             line-height: 1.6;
-            margin: 0;
+            margin: 0 0 30px;
+            font-weight: 400;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .hero-stat {
+            text-align: left;
+        }
+
+        .hero-stat-number {
+            font-family: 'Fraunces', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #5f4f42;
+            display: block;
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: #8a7b6e;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
         }
 
         .about-image {
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .about-image img {
@@ -68,58 +97,201 @@
             box-shadow: 0 25px 50px rgba(52, 41, 32, 0.2);
         }
 
+        .image-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #8a7b6e, #6b5d52);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(52, 41, 32, 0.2);
+        }
+
+        /* Brand Story Section */
+        .brand-story {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 60px 50px;
+            margin: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-story::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(184, 134, 106, 0.6), rgba(184, 134, 106, 0.8), rgba(184, 134, 106, 0.6));
+        }
+
+        .story-intro {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            color: #4c4136;
+            margin-bottom: 30px;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .story-highlight {
+            color: #b8866a;
+            font-weight: 600;
+        }
+
+        /* Journey Timeline */
+        .journey-section {
+            margin: 100px 0;
+        }
+
+        .journey-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .journey-step {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(52, 41, 32, 0.1);
+            border: 1px solid rgba(162, 150, 138, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .journey-step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 45px rgba(52, 41, 32, 0.15);
+        }
+
+        .journey-year {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #b8866a, #9a6f54);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .journey-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(184, 134, 106, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto 25px;
+            color: #b8866a;
+            font-size: 1.8rem;
+        }
+
+        .journey-step h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c2a26;
+            margin: 0 0 15px;
+        }
+
+        .journey-step p {
+            color: #5f4f42;
+            line-height: 1.6;
+            margin: 0;
+        }
+
         /* Content Sections */
         .about-section {
-            margin: 60px 0;
+            margin: 80px 0;
             text-align: center;
-            max-width: 800px;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .about-section h2 {
-            font-size: 2.2rem;
+            font-family: 'Fraunces', serif;
+            font-size: 2.4rem;
             font-weight: 600;
-            color: #3e342a;
-            margin: 0 0 25px;
+            color: #2c2a26;
+            margin: 0 0 30px;
             position: relative;
         }
 
         .about-section h2::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -12px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #766156, #5a4f42);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #b8866a, #9a6f54);
             border-radius: 2px;
         }
 
         .about-section p {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             line-height: 1.8;
-            color: #5a4f42;
-            margin: 0 0 20px;
+            color: #4c4136;
+            margin: 0 0 25px;
+        }
+
+        .section-highlight {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #b8866a;
+            margin-bottom: 35px;
+            font-style: italic;
         }
 
         /* Features Grid */
         .about-features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 35px;
+            margin-top: 60px;
         }
 
         .about-feature {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            padding: 35px 25px;
+            padding: 40px 30px;
             text-align: center;
             box-shadow: 0 15px 30px rgba(52, 41, 32, 0.1);
             border: 1px solid rgba(162, 150, 138, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b8866a, #9a6f54);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .about-feature:hover {
@@ -127,51 +299,154 @@
             box-shadow: 0 20px 40px rgba(52, 41, 32, 0.15);
         }
 
+        .about-feature:hover::before {
+            opacity: 1;
+        }
+
         .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #766156, #5a4f42);
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, #b8866a, #9a6f54);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
             color: white;
-            font-size: 1.8rem;
+            font-size: 1.9rem;
+            box-shadow: 0 10px 20px rgba(184, 134, 106, 0.3);
         }
 
         .about-feature h3 {
+            font-family: 'Fraunces', serif;
             font-size: 1.4rem;
             font-weight: 600;
-            color: #3e342a;
+            color: #2c2a26;
             margin: 0 0 15px;
         }
 
         .about-feature p {
             font-size: 1rem;
-            color: #6b5744;
+            color: #5f4f42;
             line-height: 1.6;
             margin: 0;
         }
 
-        /* Commitment Section */
-        .commitment {
-            background: rgba(244, 240, 234, 0.6);
-            border-radius: 25px;
-            padding: 50px 40px;
-            margin: 80px auto;
-            text-align: center;
-            max-width: 1000px;
+        /* Trust Indicators */
+        .trust-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+            padding: 50px 0;
+            border-top: 1px solid rgba(162, 150, 138, 0.2);
+            border-bottom: 1px solid rgba(162, 150, 138, 0.2);
         }
 
-        .cta-message {
-            margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #766156, #5a4f42);
-            color: white;
-            border-radius: 15px;
-            font-size: 1.1rem;
+        .trust-item {
             text-align: center;
+            padding: 20px;
+        }
+
+        .trust-icon {
+            font-size: 2.5rem;
+            color: #b8866a;
+            margin-bottom: 15px;
+        }
+
+        .trust-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c2a26;
+            margin: 0 0 8px;
+        }
+
+        .trust-desc {
+            font-size: 0.9rem;
+            color: #8a7b6e;
+            line-height: 1.4;
+        }
+
+        /* Commitment Section */
+        .commitment {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 60px 50px;
+            margin: 100px auto;
+            text-align: center;
+            max-width: 1000px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(184, 134, 106, 0.25);
+        }
+
+        .commitment::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(184, 134, 106, 0.1), rgba(154, 111, 84, 0.1), rgba(184, 134, 106, 0.1));
+            border-radius: 32px;
+            z-index: -1;
+        }
+
+        .commitment h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: #2c2a26;
+        }
+
+        .commitment-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .cta-primary, .cta-secondary {
+            padding: 16px 32px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #b8866a, #9a6f54);
+            color: white;
+            box-shadow: 0 15px 30px rgba(184, 134, 106, 0.3);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(184, 134, 106, 0.4);
+        }
+
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #b8866a;
+            border: 2px solid #b8866a;
+        }
+
+        .cta-secondary:hover {
+            background: #b8866a;
+            color: white;
+            transform: translateY(-3px);
         }
 
         /* Dark Mode Styles */
@@ -183,6 +458,22 @@
             color: #c1b6a8;
         }
 
+        body.dark-mode .hero-stat-number {
+            color: #c1b6a8;
+        }
+
+        body.dark-mode .hero-stat-label {
+            color: #8a7b6e;
+        }
+
+        body.dark-mode .brand-story {
+            background: rgba(32, 29, 27, 0.9);
+        }
+
+        body.dark-mode .story-intro {
+            color: #c1b6a8;
+        }
+
         body.dark-mode .about-section h2 {
             color: #f5efe6;
         }
@@ -191,21 +482,55 @@
             color: #b8a690;
         }
 
+        body.dark-mode .section-highlight {
+            color: #c1b6a8;
+        }
+
         body.dark-mode .about-feature {
             background: rgba(32, 29, 27, 0.95);
             border-color: rgba(130, 116, 102, 0.35);
         }
 
-        body.dark-mode .about-feature h3 {
+        body.dark-mode .journey-step {
+            background: rgba(32, 29, 27, 0.95);
+            border-color: rgba(130, 116, 102, 0.35);
+        }
+
+        body.dark-mode .about-feature h3,
+        body.dark-mode .journey-step h3 {
             color: #e8ded2;
         }
 
-        body.dark-mode .about-feature p {
+        body.dark-mode .about-feature p,
+        body.dark-mode .journey-step p {
             color: #b8a690;
         }
 
+        body.dark-mode .trust-title {
+            color: #e8ded2;
+        }
+
+        body.dark-mode .trust-desc {
+            color: #8a7b6e;
+        }
+
         body.dark-mode .commitment {
-            background: rgba(28, 25, 23, 0.8);
+            background: linear-gradient(135deg, rgba(28, 25, 23, 0.9), rgba(20, 18, 16, 0.8));
+        }
+
+        body.dark-mode .commitment h2 {
+            color: #f5efe6;
+        }
+
+        body.dark-mode .cta-secondary {
+            background: rgba(40, 37, 35, 0.9);
+            color: #c1b6a8;
+            border-color: #b8866a;
+        }
+
+        body.dark-mode .cta-secondary:hover {
+            background: #b8866a;
+            color: white;
         }
 
         /* Responsive Design */
@@ -216,9 +541,23 @@
                 text-align: center;
             }
 
+            .hero-stats {
+                justify-content: center;
+                gap: 40px;
+            }
+
             .about-image img {
                 max-width: 280px;
                 height: 280px;
+            }
+
+            .brand-story {
+                padding: 40px 30px;
+            }
+
+            .journey-timeline {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
 
             .about-features {
@@ -226,13 +565,29 @@
                 gap: 30px;
             }
 
+            .trust-indicators {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+
             .about-section {
-                margin: 40px 0;
+                margin: 60px 0;
             }
 
             .commitment {
-                padding: 35px 25px;
-                margin: 60px 0;
+                padding: 40px 30px;
+                margin: 80px 0;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-primary, .cta-secondary {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
             }
         }
 
@@ -241,19 +596,40 @@
                 padding: 0 15px;
             }
 
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
             .about-image img {
                 max-width: 250px;
                 height: 250px;
             }
 
+            .brand-story {
+                padding: 30px 20px;
+            }
+
+            .journey-step {
+                padding: 30px 20px;
+            }
+
             .about-feature {
-                padding: 25px 20px;
+                padding: 30px 20px;
             }
 
             .feature-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
+                width: 65px;
+                height: 65px;
+                font-size: 1.6rem;
+            }
+
+            .trust-indicators {
+                grid-template-columns: 1fr;
+            }
+
+            .commitment {
+                padding: 35px 20px;
             }
         }
     </style>
@@ -263,14 +639,14 @@
     <!-- header with navigation -->
     <div class="header-shell">
         <div class="announcement-bar">
-            <span class="announcement-pill"><i class="fa-solid fa-gem"></i> Our Craft</span>
-            <span>Handcrafted jewelry made with passion and precision.</span>
+            <span class="announcement-pill"><i class="fa-solid fa-crown"></i> About Us</span>
+            <span>Discover the story behind our handcrafted luxury jewelry.</span>
             <button type="button" class="announcement-action" onclick="window.location.href='/store.html'">Shop Now <i class="fa-solid fa-arrow-right"></i></button>
         </div>
         <div class="header">
             <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
             <div class="brand">
-                <h1>ShanikJewls</h1>
+                <h1>ShanikJewels</h1>
                 <span class="brand-tagline">Handcrafted Jewelry</span>
             </div>
             <div class="header-actions">
@@ -292,66 +668,154 @@
             <!-- Page Hero Section -->
             <section class="about-hero">
                 <div class="about-hero-content">
-                    <h1 class="about-title">Our Craft</h1>
-                    <p class="about-subtitle">Handcrafted jewelry made with passion, precision, and years of expertise</p>
+                    <h1 class="about-title">Where Gold Meets Artistry</h1>
+                    <p class="about-subtitle">Handcrafted jewelry made with passion, precision, and generations of expertise. Every piece tells a story of timeless elegance.</p>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="hero-stat-number">100%</span>
+                            <span class="hero-stat-label">Handcrafted</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-number">Quality</span>
+                            <span class="hero-stat-label">Guaranteed</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-number">Unique</span>
+                            <span class="hero-stat-label">Designs</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="about-image">
-                    <img src="https://i.pinimg.com/1200x/f3/c5/7b/f3c57be1299165a2b216c679189ab117.jpg" alt="Our Craftsmanship">
+                    <img src="https://i.pinimg.com/1200x/f3/c5/7b/f3c57be1299165a2b216c679189ab117.jpg" alt="Jewelry Crafting Process">
+                    <div class="image-badge">Handcrafted</div>
                 </div>
             </section>
 
-            <!-- Story Section -->
-            <section class="about-section">
-                <h2>Welcome to ShanikJewls</h2>
-                <p>ShanikJewls is your premier destination for exquisite gold jewelry and accessories. Founded with a passion for craftsmanship and beauty, we specialize in creating unique gold pieces that celebrate life's most precious moments.</p>
+            <!-- Brand Story Section -->
+            <section class="brand-story">
+                <p class="story-intro">"Every piece of jewelry should be as <span class="story-highlight">unique and precious</span> as the person who wears it."</p>
+                <p>ShanikJewels was founded with a simple belief: that jewelry is more than ornamentation—it's a reflection of your most cherished moments and personal style.</p>
+                <p>What began as a small workshop with a passion for traditional goldsmithing techniques has evolved into a jewelry store where craftsmanship meets contemporary elegance.</p>
             </section>
 
-            <section class="about-section">
-                <h2>Our Story</h2>
-                <p>What started as a small family business has grown into a trusted name in fine gold jewelry. We believe that every piece of gold jewelry tells a story, and we're honored to be part of yours. Our exclusive focus on gold allows us to perfect our craft and offer the finest quality gold pieces.</p>
+            <!-- Journey Timeline -->
+            <section class="about-section journey-section">
+                <h2>Our Journey</h2>
+                <p class="section-highlight">Our commitment to quality and craftsmanship</p>
+                <div class="journey-timeline">
+                    <div class="journey-step">
+                        <div class="journey-year">Start</div>
+                        <div class="journey-icon">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h3>The Beginning</h3>
+                        <p>Started as a small workshop with a passion for traditional jewelry making and a dream to create exceptional pieces.</p>
+                    </div>
+                    <div class="journey-step">
+                        <div class="journey-year">Growth</div>
+                        <div class="journey-icon">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3>Recognition</h3>
+                        <p>Gained recognition for our unique designs and quality craftsmanship through word-of-mouth recommendations.</p>
+                    </div>
+                    <div class="journey-step">
+                        <div class="journey-year">Online</div>
+                        <div class="journey-icon">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <h3>Digital Presence</h3>
+                        <p>Expanded our reach with an online presence, bringing handcrafted jewelry to customers everywhere.</p>
+                    </div>
+                    <div class="journey-step">
+                        <div class="journey-year">Today</div>
+                        <div class="journey-icon">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3>Excellence</h3>
+                        <p>Continuing our commitment to creating timeless pieces that celebrate life's most precious moments.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trust Indicators -->
+            <section class="trust-indicators">
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <div class="trust-title">Certified Quality</div>
+                    <div class="trust-desc">All pieces certified for authenticity and purity</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fa-solid fa-shipping-fast"></i>
+                    </div>
+                    <div class="trust-title">Secure Delivery</div>
+                    <div class="trust-desc">Insured shipping worldwide with tracking</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fa-solid fa-undo"></i>
+                    </div>
+                    <div class="trust-title">30-Day Returns</div>
+                    <div class="trust-desc">Full refund guarantee if not completely satisfied</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fa-solid fa-tools"></i>
+                    </div>
+                    <div class="trust-title">Lifetime Service</div>
+                    <div class="trust-desc">Free cleaning, inspection, and minor repairs for life</div>
+                </div>
             </section>
 
             <!-- Features Grid -->
             <section class="about-section">
-                <h2>What We Offer</h2>
+                <h2>Our Craftsmanship</h2>
+                <p class="section-highlight">What makes ShanikJewels exceptional</p>
                 <div class="about-features">
                     <div class="about-feature">
                         <div class="feature-icon">
                             <i class="fa-solid fa-palette"></i>
                         </div>
                         <h3>Custom Design</h3>
-                        <p>Personalized jewelry tailored to your unique style and preferences.</p>
+                        <p>Work directly with our skilled jewelers to create one-of-a-kind pieces that reflect your personal style and story.</p>
                     </div>
                     <div class="about-feature">
                         <div class="feature-icon">
                             <i class="fa-solid fa-gem"></i>
                         </div>
-                        <h3>Quality Materials</h3>
-                        <p>Only the finest metals and gemstones for lasting beauty.</p>
+                        <h3>Premium Materials</h3>
+                        <p>Only the finest 14k and 18k gold, ethically sourced gemstones, and conflict-free diamonds in all our creations.</p>
                     </div>
                     <div class="about-feature">
                         <div class="feature-icon">
                             <i class="fa-solid fa-hammer"></i>
                         </div>
-                        <h3>Expert Craftsmanship</h3>
-                        <p>Handcrafted by skilled artisans with years of experience.</p>
+                        <h3>Skilled Craftsmanship</h3>
+                        <p>Each piece is meticulously handcrafted by skilled artisans using traditional techniques and attention to detail.</p>
                     </div>
                     <div class="about-feature">
                         <div class="feature-icon">
                             <i class="fa-solid fa-shield-heart"></i>
                         </div>
-                        <h3>Lifetime Service</h3>
-                        <p>Comprehensive care and maintenance for your precious pieces.</p>
+                        <h3>Quality Promise</h3>
+                        <p>Every piece comes with our lifetime guarantee for quality, craftsmanship, and authenticity.</p>
                     </div>
                 </div>
             </section>
 
             <!-- Commitment Section -->
-            <section class="about-section commitment">
-                <h2>Our Commitment</h2>
-                <p>At ShanikJewls, we are committed to providing exceptional quality gold jewelry, outstanding customer service, and designs that exceed expectations. Every gold piece is crafted with attention to detail and made to last a lifetime. We use only the finest 14k and 18k gold to ensure lasting beauty and value.</p>
-                <div class="cta-message">
-                    <strong>Visit our store today and discover the perfect piece for you or your loved ones!</strong>
+            <section class="commitment">
+                <h2>Our Promise to You</h2>
+                <p class="commitment-text">At ShanikJewels, we don't just create jewelry—we craft heirlooms. Each piece represents our unwavering commitment to excellence, our respect for traditional craftsmanship, and our dedication to creating something truly extraordinary for you.</p>
+                <p class="commitment-text">From the moment you choose us, you become part of our family. We're here to ensure your jewelry remains as beautiful and meaningful as the day you first wore it.</p>
+                <div class="cta-buttons">
+                    <a href="/store.html" class="cta-primary">
+                        <i class="fa-solid fa-store"></i>
+                        Explore Our Collection
+                    </a>
                 </div>
             </section>
         </div>

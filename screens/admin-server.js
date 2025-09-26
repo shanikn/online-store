@@ -155,5 +155,21 @@ module.exports = {
             console.error('Error removing product:', error);
             return res.status(500).json({ success: false, error: 'Failed to remove product' });
         }
+    },
+
+    async getUsers(req, res) {
+        try {
+            const users = await persist.loadUsers();
+            // Return only safe user data (no passwords)
+            const safeUsers = users.map(user => ({
+                username: user.username,
+                role: user.role,
+                createdAt: user.createdAt
+            }));
+            res.json(safeUsers);
+        } catch (error) {
+            console.error('Error loading users:', error);
+            return res.status(500).json({ success: false, error: 'Failed to load users' });
+        }
     }
 };

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Admin Panel - ShanikJewls</title>
+    <title>Admin Panel - ShanikJewels</title>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
@@ -20,7 +20,7 @@
         <div class="header">
             <button class="menu" id="menu" onclick="toggleMenu()" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
             <div class="brand">
-                <h1>ShanikJewls</h1>
+                <h1>ShanikJewels</h1>
                 <span class="brand-tagline">Admin Dashboard</span>
             </div>
             <div class="header-actions">
@@ -43,42 +43,24 @@
         <div id="errorMessage" class="error" style="display: none;"></div>
 
         <div class="admin-tabs">
-            <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-            <button class="tab-btn" onclick="switchTab('activities')">Activity Logs</button>
+            <button class="tab-btn active" onclick="switchTab('activities')">Activity Logs</button>
             <button class="tab-btn" onclick="switchTab('products')">Product Management</button>
         </div>
 
-        <!-- Dashboard Tab -->
-        <div id="dashboard-tab" class="tab-content active">
-            <h2>Dashboard Overview</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3 id="totalUsers">0</h3>
-                    <p>Total Users</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalProducts">0</h3>
-                    <p>Total Products</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="todayActivities">0</h3>
-                    <p>Today's Activities</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalSales">₪0</h3>
-                    <p>Total Sales</p>
+        <!-- Activities Tab -->
+        <div id="activities-tab" class="tab-content active">
+            <h2>User Activity Logs</h2>
+            
+            <!-- Registered Users Section -->
+            <div class="users-section" style="margin-bottom: 2rem; padding: 1rem; background: var(--surface-color, #fff); border-radius: 12px;">
+                <h3 style="margin-bottom: 1rem;">Registered Users</h3>
+                <div id="usersListContainer" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    <div class="loading">Loading users...</div>
                 </div>
             </div>
-            <h3>Recent Activities</h3>
-            <div id="recentActivities"></div>
-        </div>
 
-        <!-- Activities Tab -->
-        <div id="activities-tab" class="tab-content">
-            <h2>User Activity Logs</h2>
             <div class="filter-section">
-                <input type="text" id="usernameFilter" placeholder="Filter by username prefix...">
-                <button onclick="filterActivities()">Filter</button>
+                <input type="text" id="usernameFilter" placeholder="Filter by username prefix..." oninput="filterActivities()">
                 <button onclick="clearFilter()">Clear</button>
             </div>
             <div id="activitiesContent">
@@ -139,12 +121,12 @@
             checkAdminAccess();
 
             // Load all data first
-            loadDashboard();
+            loadUsers();
             loadActivities();
             loadProducts();
 
-            // Then restore last active tab or default to dashboard
-            const savedTab = localStorage.getItem('adminActiveTab') || 'dashboard';
+            // Then restore last active tab or default to activities
+            const savedTab = localStorage.getItem('adminActiveTab') || 'activities';
 
             // Just switch the visual tab, don't reload data
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -204,79 +186,51 @@
 
             // reload data for the selected tab
             if (tabName === 'activities') {
+                loadUsers();
                 loadActivities();
             } else if (tabName === 'products') {
                 loadProducts();
-            } else if (tabName === 'dashboard') {
-                loadDashboard();
             }
         }
 
-        async function loadDashboard() {
+        async function loadUsers() {
             try {
-                // load statistics
-                const [activitiesRes, productsRes, usersRes, salesRes] = await Promise.all([
-                    fetch('/api/admin/activities'),
-                    fetch('/api/products'),
-                    fetch('/api/users').catch(() => ({ json: () => [] })),
-                    fetch('/api/admin/sales')
-                ]);
-
-                activities = await activitiesRes.json();
-                products = await productsRes.json();
-                users = await usersRes.json().catch(() => []);
-                const salesData = await salesRes.json();
-
-                // update stats
-                document.getElementById('totalUsers').textContent = users.length || '3';
-                document.getElementById('totalProducts').textContent = products.length;
-
-                // count today's activities
-                const today = new Date().toDateString();
-                const todayActivities = activities.filter(a =>
-                    new Date(a.timestamp).toDateString() === today
-                ).length;
-                document.getElementById('todayActivities').textContent = todayActivities;
-
-                // display real sales data
-                document.getElementById('totalSales').textContent = `₪${salesData.totalSales}`;
-
-                // show recent activities
-                displayRecentActivities(activities.slice(0, 5));
-
+                const response = await fetch('/api/admin/users').catch(() => 
+                    fetch('/api/users').catch(() => ({ ok: false }))
+                );
+                
+                if (response.ok) {
+                    users = await response.json();
+                } else {
+                    // Fallback: extract unique usernames from activities
+                    if (activities.length > 0) {
+                        const uniqueUsernames = [...new Set(activities.map(a => a.username))];
+                        users = uniqueUsernames.map(username => ({ username }));
+                    } else {
+                        users = [];
+                    }
+                }
+                displayUsers();
             } catch (error) {
-                console.error('Error loading dashboard:', error);
+                console.error('Error loading users:', error);
+                document.getElementById('usersListContainer').innerHTML = 
+                    '<p class="error">Failed to load users</p>';
             }
         }
 
-        function displayRecentActivities(recentActivities) {
-            const container = document.getElementById('recentActivities');
+        function displayUsers() {
+            const container = document.getElementById('usersListContainer');
 
-            if (!recentActivities || recentActivities.length === 0) {
-                container.innerHTML = '<p class="no-data">No recent activities</p>';
+            if (!users || users.length === 0) {
+                container.innerHTML = '<p class="no-data">No users found</p>';
                 return;
             }
 
-            container.innerHTML = `
-                <table class="activity-table">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>User</th>
-                            <th>Activity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${recentActivities.map(activity => `
-                            <tr>
-                                <td>${new Date(activity.timestamp).toLocaleString()}</td>
-                                <td>${activity.username}</td>
-                                <td><span class="activity-type ${activity.type.replace(' ', '-').toLowerCase()}">${activity.type}</span></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+            container.innerHTML = users.map(user => `
+                <span style="display: inline-block; padding: 0.5rem 1rem; background: var(--accent-color, #b8977c); color: white; border-radius: 20px; font-size: 0.9rem;">
+                    <i class="fa-solid fa-user" style="margin-right: 0.5rem;"></i>${user.username}
+                </span>
+            `).join('');
         }
 
         async function loadActivities() {
@@ -306,16 +260,21 @@
                             <th>Date & Time</th>
                             <th>Username</th>
                             <th>Activity Type</th>
-                            <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${activitiesToShow.map(activity => `
                             <tr>
-                                <td>${new Date(activity.timestamp).toLocaleString()}</td>
+                                <td>${new Date(activity.timestamp).toLocaleString('he-IL', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: false
+                                })}</td>
                                 <td>${activity.username}</td>
                                 <td><span class="activity-type ${activity.type.replace(' ', '-').toLowerCase()}">${activity.type}</span></td>
-                                <td>${typeof activity.details === 'object' ? JSON.stringify(activity.details) : (activity.details || '-')}</td>
                             </tr>
                         `).join('')}
                     </tbody>
