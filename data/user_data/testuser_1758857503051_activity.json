@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": "2025-09-26T03:31:43.107Z",
+    "username": "testuser_1758857503051",
+    "activityType": "register",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-09-26T03:31:43.123Z",
+    "username": "testuser_1758857503051",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-09-26T03:31:43.159Z",
+    "username": "testuser_1758857503051",
+    "activityType": "logout",
+    "details": {}
+  }
+]

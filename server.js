@@ -183,9 +183,10 @@ app.get('/api/admin/activities/filter', requireAuthAPI, adminServer.getActivitie
 
 
 app.post('/api/admin/products', requireAuthAPI, adminServer.addProduct);
-
+app.post('/api/admin/product', requireAuthAPI, adminServer.addProduct); // Singular version for compatibility
 
 app.delete('/api/admin/products/:id', requireAuthAPI, adminServer.removeProduct);
+app.delete('/api/admin/product/:id', requireAuthAPI, adminServer.removeProduct); // Singular version for compatibility
 
 
 
@@ -335,8 +336,20 @@ app.post('/api/wishlist', requireAuthAPI, async(req, res)=>{
         const username= getCurrentUser(req);
         const { productId }= req.body;
 
-        const wishlist = await persist.getUserWishlist(username);
         const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
+
+        // Validate that the product exists
+        const products = await persist.getProducts();
+        const productExists = products.some(p => p.id === numProductId);
+
+        if (!productExists) {
+            return res.status(400).json({
+                success: false,
+                error: 'Product not found'
+            });
+        }
+
+        const wishlist = await persist.getUserWishlist(username);
 
         if(!wishlist.includes(numProductId)){
             wishlist.push(numProductId);

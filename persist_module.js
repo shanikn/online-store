@@ -235,7 +235,7 @@ async function addProduct(productData) {
 
 async function removeProduct(productId) {
     const products = await loadProducts();
-    const filteredProducts = products.filter(p => p.id != parseInt(productId));
+    const filteredProducts = products.filter(p => p.id != Number(productId));
     await saveProducts(filteredProducts);
     return filteredProducts;
 }

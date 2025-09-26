@@ -1246,7 +1246,7 @@
             }
 
             body.dark-mode .side-menu button{
-                background: #5c5c5c;
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 color: #f6edeb;
                 box-shadow: 0 18px 32px rgba(0,0,0,0.4);
             }
@@ -1298,13 +1298,13 @@
             }
 
             body.dark-mode .search-controls .search-btn{
-                background: #5a5a5a;
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 color: #f9f4ee;
                 box-shadow: 0 16px 30px rgba(0,0,0,0.35);
             }
 
             body.dark-mode .search-controls .search-btn:hover{
-                background: #6a6a6a;
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
             }
 
             body.dark-mode .search-controls .clear-btn{
@@ -1599,15 +1599,15 @@
             }
 
             body.dark-mode .cta-btn.primary{
-                background: rgba(154, 154, 154, 0.15);
-                color: #c2b5a8;
-                border-color: rgba(154, 154, 154, 0.3);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
+                color: #f2ebe0;
+                border-color: rgba(184, 134, 106, 0.4);
             }
 
             body.dark-mode .cta-btn.primary:hover{
-                background: rgba(154, 154, 154, 0.25);
-                color: #f2ebe0;
-                border-color: rgba(154, 154, 154, 0.5);
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
+                color: #f9f4ee;
+                border-color: rgba(201, 153, 117, 0.6);
             }
 
             body.dark-mode .collection-showcase{
@@ -1688,16 +1688,16 @@
             }
 
             body.dark-mode .place-order-btn{
-                background: rgba(154, 154, 154, 0.15);
-                color: #c2b5a8;
-                border-color: rgba(154, 154, 154, 0.3);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
+                color: #f2ebe0;
+                border-color: rgba(184, 134, 106, 0.4);
                 box-shadow: 0 20px 36px rgba(0,0,0,0.35);
             }
 
             body.dark-mode .place-order-btn:hover{
-                background: rgba(154, 154, 154, 0.25);
-                color: #f2ebe0;
-                border-color: rgba(154, 154, 154, 0.5);
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
+                color: #f9f4ee;
+                border-color: rgba(201, 153, 117, 0.6);
             }
 
             body.dark-mode .place-order-btn:disabled{
@@ -1842,30 +1842,30 @@
             }
 
             body.dark-mode .btn-secondary {
-                background: rgba(154, 154, 154, 0.30);
-                color: #c8c8c8;
-                border-color: rgba(154, 154, 154, 0.50);
+                background: rgba(184, 134, 106, 0.20);
+                color: #c2b5a8;
+                border-color: rgba(184, 134, 106, 0.4);
             }
 
             body.dark-mode .btn-secondary:hover {
-                background: rgba(154, 154, 154, 0.45);
-                color: #e0e0e0;
-                border-color: rgba(154, 154, 154, 0.70);
-                box-shadow: 0 8px 16px rgba(154, 154, 154, 0.35);
+                background: rgba(184, 134, 106, 0.35);
+                color: #f2ebe0;
+                border-color: rgba(184, 134, 106, 0.6);
+                box-shadow: 0 8px 16px rgba(184, 134, 106, 0.25);
             }
 
-            /* Dark mode modal cancel button - brighter for better visibility */
+            /* Dark mode modal cancel button - jewelry themed */
             body.dark-mode .modal-footer .btn-secondary {
-                background: rgba(180, 180, 180, 0.75) !important;
-                color: #1a1a1a !important;
-                border: 2px solid rgba(200, 200, 200, 0.85) !important;
+                background: rgba(184, 134, 106, 0.25) !important;
+                color: #c2b5a8 !important;
+                border: 2px solid rgba(184, 134, 106, 0.4) !important;
             }
 
             body.dark-mode .modal-footer .btn-secondary:hover {
-                background: rgba(210, 210, 210, 0.85) !important;
-                color: #000000 !important;
-                border-color: rgba(230, 230, 230, 0.95) !important;
-                box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15) !important;
+                background: rgba(184, 134, 106, 0.4) !important;
+                color: #f2ebe0 !important;
+                border-color: rgba(184, 134, 106, 0.6) !important;
+                box-shadow: 0 10px 20px rgba(184, 134, 106, 0.2) !important;
             }
 
             body.dark-mode .customization-group label {
@@ -1889,27 +1889,27 @@
             }
 
             body.dark-mode .btn-primary {
-                background: rgba(154, 154, 154, 0.15);
-                color: #c2b5a8;
-                border-color: rgba(154, 154, 154, 0.3);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
+                color: #f2ebe0;
+                border-color: rgba(184, 134, 106, 0.4);
             }
 
             body.dark-mode .btn-primary:hover {
-                background: rgba(154, 154, 154, 0.25);
-                color: #f2ebe0;
-                border-color: rgba(154, 154, 154, 0.5);
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
+                color: #f9f4ee;
+                border-color: rgba(201, 153, 117, 0.6);
             }
 
             body.dark-mode .add-to-cart-btn {
-                background: rgba(154, 154, 154, 0.15);
-                color: #c2b5a8;
-                border-color: rgba(154, 154, 154, 0.3);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
+                color: #f2ebe0;
+                border-color: rgba(184, 134, 106, 0.4);
             }
 
             body.dark-mode .add-to-cart-btn:hover {
-                background: rgba(154, 154, 154, 0.25);
-                color: #f2ebe0;
-                border-color: rgba(154, 154, 154, 0.5);
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
+                color: #f9f4ee;
+                border-color: rgba(201, 153, 117, 0.6);
             }
 
             /* Customization Modal */
@@ -2029,10 +2029,10 @@
                 box-shadow: 0 8px 16px rgba(184, 134, 106, 0.35);
             }
 
-            /* Specific styles for modal cancel button to make it brighter */
+            /* Specific styles for modal cancel button with jewelry theme */
             .modal-footer .btn-secondary {
-                background: rgba(200, 180, 160, 0.85) !important;
-                color: #4a3a2a !important;
+                background: rgba(184, 134, 106, 0.15) !important;
+                color: #6b5d54 !important;
                 border: 2px solid rgba(160, 140, 120, 0.9) !important;
                 font-weight: 600;
             }
@@ -2440,7 +2440,8 @@
             }
 
             .form-group input,
-            .form-group textarea {
+            .form-group textarea,
+            .form-group select {
                 width: 100%;
                 padding: 14px 18px;
                 border: 1px solid rgba(184, 134, 106, 0.2);
@@ -2453,7 +2454,8 @@
             }
 
             .form-group input:focus,
-            .form-group textarea:focus {
+            .form-group textarea:focus,
+            .form-group select:focus {
                 outline: none;
                 border-color: #b8866a;
                 background: white;
@@ -2638,7 +2640,7 @@
             }
 
             body.dark-mode .tab-btn.active {
-                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             }
 
@@ -2671,7 +2673,7 @@
             }
 
             body.dark-mode .filter-section button {
-                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             }
 
@@ -2722,21 +2724,23 @@
             }
 
             body.dark-mode .form-group input,
-            body.dark-mode .form-group textarea {
+            body.dark-mode .form-group textarea,
+            body.dark-mode .form-group select {
                 background: rgba(0, 0, 0, 0.3);
                 border-color: rgba(140, 128, 116, 0.3);
                 color: #e0e0e0;
             }
 
             body.dark-mode .form-group input:focus,
-            body.dark-mode .form-group textarea:focus {
+            body.dark-mode .form-group textarea:focus,
+            body.dark-mode .form-group select:focus {
                 border-color: #7a7a7a;
                 background: rgba(0, 0, 0, 0.5);
                 box-shadow: 0 0 0 3px rgba(122, 122, 122, 0.15);
             }
 
             body.dark-mode .add-product-btn {
-                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             }
 
@@ -3054,12 +3058,12 @@
 
             /* Dark mode button adjustments */
             body.dark-mode .btn-info {
-                background: linear-gradient(135deg, #6a6a6a, #4a4a4a);
+                background: linear-gradient(135deg, #b8866a, #9a7456);
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             }
 
             body.dark-mode .btn-info:hover {
-                background: linear-gradient(135deg, #7a7a7a, #5a5a5a);
+                background: linear-gradient(135deg, #c99975, #a8855f);
                 box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
             }
 
@@ -3410,24 +3414,24 @@
             }
 
             body.dark-mode .checkout-btn {
-                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 color: #f9f4ee;
                 box-shadow: 0 16px 30px rgba(0,0,0,0.35);
             }
 
             body.dark-mode .checkout-btn:hover {
-                background: linear-gradient(135deg, #7a7a7a 0%, #5a5a5a 100%);
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
                 box-shadow: 0 20px 36px rgba(0,0,0,0.4);
             }
 
             body.dark-mode .continue-shopping-btn {
-                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 color: #f9f4ee;
                 box-shadow: 0 16px 30px rgba(0,0,0,0.35);
             }
 
             body.dark-mode .continue-shopping-btn:hover {
-                background: linear-gradient(135deg, #7a7a7a 0%, #5a5a5a 100%);
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
                 box-shadow: 0 20px 36px rgba(0,0,0,0.4);
             }
 
@@ -3641,15 +3645,15 @@
 
             /* Dark mode collection explore button */
             body.dark-mode .cta-btn.collection-explore{
-                background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
                 color: #f2ebe0;
-                border-color: #6a6a6a;
+                border-color: #b8866a;
                 box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
             }
 
             body.dark-mode .cta-btn.collection-explore:hover{
-                background: linear-gradient(135deg, #7a7a7a 0%, #5a5a5a 100%);
-                border-color: #7a7a7a;
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
+                border-color: #c99975;
                 box-shadow: 0 16px 28px rgba(0, 0, 0, 0.5);
             }
 
@@ -3889,7 +3893,7 @@
             }
 
             .checkout-form-grid.two-column > .form-control-group:last-child{
-                padding-right: 24px;
+                padding-right: 32px;
             }
 
             .checkout-form-grid > .form-control-group{
@@ -4702,28 +4706,28 @@
 
 
             body.dark-mode .view-cart-btn {
-                background: rgba(154, 154, 154, 0.15);
-                color: #c2b5a8;
-                border-color: rgba(154, 154, 154, 0.35);
+                background: linear-gradient(135deg, #b8866a 0%, #9a7456 100%);
+                color: #f2ebe0;
+                border-color: rgba(184, 134, 106, 0.4);
                 box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             }
 
             body.dark-mode .view-cart-btn:hover {
-                background: rgba(154, 154, 154, 0.25);
-                color: #f2ebe0;
-                border-color: rgba(154, 154, 154, 0.5);
+                background: linear-gradient(135deg, #c99975 0%, #a8855f 100%);
+                color: #f9f4ee;
+                border-color: rgba(201, 153, 117, 0.6);
             }
 
             body.dark-mode .continue-shopping-btn {
-                background: rgba(154, 154, 154, 0.08);
-                color: #9a9a9a;
-                border-color: rgba(154, 154, 154, 0.25);
+                background: rgba(184, 134, 106, 0.15);
+                color: #c2b5a8;
+                border-color: rgba(184, 134, 106, 0.3);
             }
 
             body.dark-mode .continue-shopping-btn:hover {
-                background: rgba(154, 154, 154, 0.15);
-                color: #c2b5a8;
-                border-color: rgba(154, 154, 154, 0.4);
+                background: rgba(184, 134, 106, 0.25);
+                color: #f2ebe0;
+                border-color: rgba(184, 134, 106, 0.5);
             }
 
             body.dark-mode .wishlist-btn{

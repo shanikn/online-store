@@ -205,5 +205,98 @@
     "image": "https://i.pinimg.com/1200x/25/9c/b8/259cb8fcbcd6ad3a34c53ae090dcc02b.jpg",
     "id": 23,
     "type": "bracelets"
+  },
+  {
+    "id": 1758862264911,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T04:51:04.911Z"
+  },
+  {
+    "id": 1758862883450,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:01:23.451Z"
+  },
+  {
+    "id": 1758863036809,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:03:56.809Z"
+  },
+  {
+    "id": 1758863251189,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "type": "test",
+    "image": null,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:07:31.190Z"
+  },
+  {
+    "id": 1758863308816,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "type": "test",
+    "image": null,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:08:28.816Z"
+  },
+  {
+    "id": 1758863355323,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "type": "test",
+    "image": null,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:09:15.324Z"
+  },
+  {
+    "id": 1758863376080,
+    "name": "Debug Product",
+    "description": "Test",
+    "price": 99.99,
+    "type": "test",
+    "image": null,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:09:36.081Z"
+  },
+  {
+    "id": 1758863617950,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "type": "test",
+    "image": null,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:13:37.950Z"
+  },
+  {
+    "id": 1758863779892,
+    "name": "Test Product",
+    "description": "A test product for testing",
+    "price": 29.99,
+    "type": "test",
+    "image": null,
+    "customizable": false,
+    "addedBy": "admin",
+    "createdAt": "2025-09-26T05:16:19.892Z"
   }
 ]

@@ -84,13 +84,13 @@ module.exports = {
     async addProduct(req, res) {
         try {
             const username = req.cookies.userToken || null;
-            const { name, description, price, customizable } = req.body;
+            const { name, description, price, category, image, customizable } = req.body;
 
             // Validate required fields
-            if (!name || !description || price === undefined) {
+            if (!name || !description || price === undefined || !category) {
                 return res.status(400).json({
                     success: false,
-                    error: 'Product requires name, description, and price'
+                    error: 'Product requires name, description, price, and category'
                 });
             }
 
@@ -108,16 +108,18 @@ module.exports = {
                 name,
                 description,
                 price: numPrice,
+                type: category,
+                image: image || null,
                 customizable: !!customizable,
                 addedBy: username,
                 createdAt: new Date().toISOString()
             };
 
-            await persist.addProduct(newProduct);
+            const savedProduct = await persist.addProduct(newProduct);
 
             // We no longer log add-product activities
 
-            return res.json({ success: true, product: newProduct });
+            return res.json({ success: true, product: savedProduct });
         } catch (error) {
             console.error('Error adding product:', error);
             return res.status(500).json({ success: false, error: 'Failed to add product' });
@@ -126,7 +128,7 @@ module.exports = {
 
     async removeProduct(req, res) {
         try {
-            const productId = parseInt(req.params.id);
+            const productId = Number(req.params.id);
 
             if (isNaN(productId)) {
                 return res.status(400).json({
@@ -137,6 +139,9 @@ module.exports = {
 
             // Check if product exists before removal
             const products = await persist.getProducts();
+            console.log(`Debug - Looking for product ID ${productId} (type: ${typeof productId})`);
+            console.log(`Debug - Available product IDs: ${products.map(p => `${p.id} (${typeof p.id})`).join(', ')}`);
+
             const product = products.find(p => p.id === productId);
 
             if (!product) {

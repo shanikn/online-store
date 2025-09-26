@@ -88,6 +88,17 @@
                         <input type="number" id="productPrice" step="0.01" min="0" required>
                     </div>
                     <div class="form-group">
+                        <label for="productCategory">Product Category *</label>
+                        <select id="productCategory" required class="form-select">
+                            <option value="">Select Product Type</option>
+                            <option value="earrings">Earrings</option>
+                            <option value="bracelets">Bracelets</option>
+                            <option value="necklaces">Necklaces</option>
+                            <option value="rings">Rings</option>
+                            <option value="watches">Watches</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="productImage">Image URL</label>
                         <input type="url" id="productImage" placeholder="https://example.com/image.jpg">
                     </div>
@@ -195,15 +206,27 @@
 
         async function loadUsers() {
             try {
-                const response = await fetch('/api/admin/users').catch(() => 
+                const response = await fetch('/api/admin/users').catch(() =>
                     fetch('/api/users').catch(() => ({ ok: false }))
                 );
-                
+
                 if (response.ok) {
                     users = await response.json();
                 } else {
                     // Fallback: extract unique usernames from activities
-                    if (activities.length > 0) {
+                    // First ensure activities are loaded
+                    if (!activities || activities.length === 0) {
+                        try {
+                            const activitiesResponse = await fetch('/api/admin/activities');
+                            if (activitiesResponse.ok) {
+                                activities = await activitiesResponse.json();
+                            }
+                        } catch (actError) {
+                            console.error('Error loading activities for user fallback:', actError);
+                        }
+                    }
+
+                    if (activities && activities.length > 0) {
                         const uniqueUsernames = [...new Set(activities.map(a => a.username))];
                         users = uniqueUsernames.map(username => ({ username }));
                     } else {
@@ -213,7 +236,7 @@
                 displayUsers();
             } catch (error) {
                 console.error('Error loading users:', error);
-                document.getElementById('usersListContainer').innerHTML = 
+                document.getElementById('usersListContainer').innerHTML =
                     '<p class="error">Failed to load users</p>';
             }
         }
@@ -265,13 +288,14 @@
                     <tbody>
                         ${activitiesToShow.map(activity => `
                             <tr>
-                                <td>${new Date(activity.timestamp).toLocaleString('he-IL', {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
+                                <td>${new Date(activity.timestamp).toLocaleTimeString('he-IL', {
                                     hour: '2-digit',
                                     minute: '2-digit',
                                     hour12: false
+                                })} ${new Date(activity.timestamp).toLocaleDateString('he-IL', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
                                 })}</td>
                                 <td>${activity.username}</td>
                                 <td><span class="activity-type ${activity.type.replace(' ', '-').toLowerCase()}">${activity.type}</span></td>
@@ -345,6 +369,7 @@
                 name: document.getElementById('productName').value,
                 description: document.getElementById('productDescription').value,
                 price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
                 image: document.getElementById('productImage').value || null,
                 customizable: document.getElementById('productCustomizable').checked
             };

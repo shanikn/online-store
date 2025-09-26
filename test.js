@@ -318,6 +318,7 @@ async function testAddProduct() {
         name: 'Test Product',
         description: 'A test product for testing',
         price: 29.99,
+        category: 'test',
         customizable: false
     };
 
@@ -337,6 +338,7 @@ async function testAddProduct() {
 
     // Store product ID for deletion test
     global.testProductId = data.product?.id;
+    console.log(`   Debug - Product created with ID: ${global.testProductId}`);
 }
 
 async function testDeleteProduct() {
@@ -344,6 +346,7 @@ async function testDeleteProduct() {
         throw new Error('No test product ID available for deletion');
     }
 
+    console.log(`   Debug - Attempting to delete product with ID: ${global.testProductId}`);
     const response = await makeRequest(`${BASE_URL}/api/admin/products/${global.testProductId}`, {
         method: 'DELETE',
         headers: {

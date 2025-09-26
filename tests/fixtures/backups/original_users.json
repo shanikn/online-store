@@ -1,0 +1,33 @@
+[
+  {
+    "username": "admin",
+    "password": "admin",
+    "role": "admin",
+    "createdAt": "2025-09-13T18:53:04.664Z",
+    "email": "shanik867@gmail.com"
+  },
+  {
+    "username": "shaniki",
+    "password": "123456",
+    "role": "user",
+    "createdAt": "2025-09-26T02:13:03.950Z"
+  },
+  {
+    "username": "testuser_1758857503051",
+    "password": "testpass123",
+    "role": "user",
+    "createdAt": "2025-09-26T03:31:43.101Z"
+  },
+  {
+    "username": "testuser_admin",
+    "password": "testpass123",
+    "role": "user",
+    "createdAt": "2025-09-26T03:36:40.577Z"
+  },
+  {
+    "username": "testuser_1758862114566",
+    "password": "testpass123",
+    "role": "user",
+    "createdAt": "2025-09-26T04:48:34.569Z"
+  }
+]
