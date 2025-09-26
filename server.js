@@ -1,227 +1,182 @@
 // require statements
-const express= require('express');
-const cookieParser= require('cookie-parser');
-const path= require('path');
-const persist= require('./persist_module');
-// const cors = require('cors'); // For React conversion later
-
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const persist = require('./persist_module');
 
 function getCurrentUser(req) {
     return req.cookies.userToken || null;
 }
 
-
 // screen modules imports
 const loginServer = require('./screens/login-server');
+const registerServer = require('./screens/register-server');
 const storeServer = require('./screens/store-server');
-const adminServer = require('./screens/admin-server');
 const cartServer = require('./screens/cart-server');
 const checkoutServer = require('./screens/checkout-server');
-const registerServer = require('./screens/register-server');
-// const myItemsServer = require('./screens/my-items-server'); // Not currently used
-
+const adminServer = require('./screens/admin-server');
+const myItemsServer = require('./screens/my-items-server');
+const profileServer = require('./screens/profile-server');
+const contactServer = require('./screens/contact-server');
+const wishlistServer = require('./screens/wishlist-server');
 
 // app startup
-const app= express();
+const app = express();
 
 // middleware
-// app.use(cors({
-//     origin: 'http://localhost:3000',
-//     credentials: true
-// })); // For React conversion later
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
 
-// helper functions
-
-// authentication
-function requireAuth(req, res, next){
-    if(getCurrentUser(req)) {
-        // the user is logged in=> continue
+// authentication middleware
+function requireAuth(req, res, next) {
+    if (getCurrentUser(req)) {
         next();
-    }
-    else{
-        // the user isn't logged in=> redirect to login screen
+    } else {
         res.redirect('/login.html');
     }
 }
 
-// API authentication - for AJAX requests, return JSON instead of redirect
-function requireAuthAPI(req, res, next){
-    if(getCurrentUser(req)) {
-        // the user is logged in=> continue
+// API authentication - for AJAX requests
+function requireAuthAPI(req, res, next) {
+    if (getCurrentUser(req)) {
         next();
-    }
-    else{
-        // the user isn't logged in=> return 401 for API calls
+    } else {
         res.status(401).json({ error: 'Authentication required', redirect: '/login.html' });
     }
 }
 
-// Note: getCurrentUser is already defined above, removing duplicate
+// rate limiting
+const requestCounts = {};
+const RATE_LIMIT = 100;
+const TIME_WINDOW = 60000;
 
+function rateLimiter(req, res, next) {
+    const ip = req.ip;
+    const now = Date.now();
 
-// more helper functions- rate limiting functions
-const requestCounts= {};
-const RATE_LIMIT= 100; //max requests
-const TIME_WINDOW= 60000;
-
-function rateLimiter(req, res, next){
-    const ip= req.ip;
-    const now= Date.now();
-
-    //init/clear old entries
-    if(!requestCounts[ip]){
-        requestCounts[ip]= [];
+    if (!requestCounts[ip]) {
+        requestCounts[ip] = [];
     }
 
-    // remove requests which are older than TIME_WINDOW
-    requestCounts[ip]= requestCounts[ip].filter(time=> now-time<TIME_WINDOW);
+    requestCounts[ip] = requestCounts[ip].filter(time => now - time < TIME_WINDOW);
 
-    // check rate limit (429=too many)
-    if(requestCounts[ip].length>=RATE_LIMIT){
+    if (requestCounts[ip].length >= RATE_LIMIT) {
         return res.status(429).json({ error: 'Too many requests' });
     }
 
-    // add the current request & continue
     requestCounts[ip].push(now);
     return next();
 }
 
-// more middleware
 app.use(rateLimiter);
 
+// ========== ROUTES ==========
 
-// routes
-
-// basic routes (later i'll move some of them to modules)
-app.get('/', (req, res)=> {
-    // (home page is /store.html - users can browse without login)
-    res.redirect('/store.html');
+// Home redirect
+app.get('/', (req, res) => {
+    try {
+        res.redirect('/store.html');
+    } catch (error) {
+        console.error('Error redirecting to store:', error);
+        res.status(500).send('Failed to load page');
+    }
 });
 
-
-// auth routes (login, logout, register)
+// Auth routes
 app.post('/login', loginServer.handleLogin);
-
-
 app.post('/logout', loginServer.handleLogout);
-
-
 app.post('/register', registerServer.handleRegister);
 
-
-
-// public pages (no auth required)
-app.get('/store.html', (req, res)=> {
-    res.sendFile(path.join(__dirname, 'public', 'store.html'));
+// HTML page routes
+app.get('/store.html', (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, 'public', 'store.html'));
+    } catch (error) {
+        console.error('Error serving store.html:', error);
+        res.status(500).send('Failed to load page');
+    }
 });
 
-
-app.get('/cart.html', requireAuth, (req, res)=> {
-    res.sendFile(path.join(__dirname, 'public', 'cart.html'));
+app.get('/cart.html', requireAuth, (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, 'public', 'cart.html'));
+    } catch (error) {
+        console.error('Error serving cart.html:', error);
+        res.status(500).send('Failed to load page');
+    }
 });
 
-
-app.get('/admin.html', requireAuth, (req, res)=> {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+app.get('/admin.html', requireAuth, (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+    } catch (error) {
+        console.error('Error serving admin.html:', error);
+        res.status(500).send('Failed to load page');
+    }
 });
 
-
-app.get('/profile.html', requireAuth, (req, res)=> {
-    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+app.get('/profile.html', requireAuth, (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+    } catch (error) {
+        console.error('Error serving profile.html:', error);
+        res.status(500).send('Failed to load page');
+    }
 });
 
-app.get('/checkout.html', requireAuth, (req, res)=> {
-    res.sendFile(path.join(__dirname, 'public', 'checkout.html'));
+app.get('/checkout.html', requireAuth, (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, 'public', 'checkout.html'));
+    } catch (error) {
+        console.error('Error serving checkout.html:', error);
+        res.status(500).send('Failed to load page');
+    }
 });
 
-app.get('/my-items.html', requireAuth, (req, res)=> {
-    res.sendFile(path.join(__dirname, 'public', 'my-items.html'));
+app.get('/my-items.html', requireAuth, (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, 'public', 'my-items.html'));
+    } catch (error) {
+        console.error('Error serving my-items.html:', error);
+        res.status(500).send('Failed to load page');
+    }
 });
 
+// ========== API ROUTES ==========
 
-
-
-// API routes (AJAX)
-// Public API - no auth required for browsing products
+// Store/Products API (public)
 app.get('/api/products', storeServer.getProducts);
-
-// add item to cart
-// Cart endpoints
-app.post('/api/cart', requireAuthAPI, cartServer.addToCart);
-app.get('/api/cart', requireAuthAPI, cartServer.getCart);
-
-// Remove item from cart - multiple endpoints for compatibility
-app.delete('/api/cart/:productId', requireAuthAPI, cartServer.removeFromCart);
-app.post('/api/cart/remove', requireAuthAPI, (req, res) => cartServer.removeFromCart(req, res));
-
-
-// update cart quantity (also for when clearing cart after purchase- resetting quanitity to 0)
-app.put('/api/cart/update', requireAuthAPI, cartServer.updateCart);
-
-
-// clear whole cart (like after purchase)
-app.delete('/api/cart/clear', requireAuthAPI, cartServer.clearCart);
-
-
-// update cart item customization
-app.put('/api/cart/update-customization', requireAuthAPI, cartServer.updateCustomization);
-
-
-// search a product in store - public API
 app.get('/api/products/search', storeServer.searchProducts);
 
+// Cart API
+app.post('/api/cart', requireAuthAPI, cartServer.addToCart);
+app.get('/api/cart', requireAuthAPI, cartServer.getCart);
+app.delete('/api/cart/:productId', requireAuthAPI, cartServer.removeFromCart);
+app.post('/api/cart/remove', requireAuthAPI, (req, res) => cartServer.removeFromCart(req, res));
+app.put('/api/cart/update', requireAuthAPI, cartServer.updateCart);
+app.delete('/api/cart/clear', requireAuthAPI, cartServer.clearCart);
+app.put('/api/cart/update-customization', requireAuthAPI, cartServer.updateCustomization);
 
-// Admin activity routes
+// Admin API
 app.get('/api/admin/users', requireAuthAPI, adminServer.getUsers);
 app.get('/api/admin/activity', requireAuthAPI, adminServer.getActivities);
 app.get('/api/admin/activities', requireAuthAPI, adminServer.getActivities);
 app.get('/api/admin/activities/filter', requireAuthAPI, adminServer.getActivities);
-
-
 app.post('/api/admin/products', requireAuthAPI, adminServer.addProduct);
-app.post('/api/admin/product', requireAuthAPI, adminServer.addProduct); // Singular version for compatibility
-
+app.post('/api/admin/product', requireAuthAPI, adminServer.addProduct);
 app.delete('/api/admin/products/:id', requireAuthAPI, adminServer.removeProduct);
-app.delete('/api/admin/product/:id', requireAuthAPI, adminServer.removeProduct); // Singular version for compatibility
-
-
-
-// Checkout endpoint - process an order
-app.post('/api/checkout', requireAuthAPI, checkoutServer.processCheckout);
-
-// Alternative checkout endpoint for compatibility
-app.post('/api/orders', requireAuthAPI, checkoutServer.processCheckout);
-
-
-
-app.get('/api/purchases', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        const purchases = await persist.getPurchases(username);
-        res.json(purchases);
-    }
-    catch(error){
-        console.error('Error loading purchases:', error);
-        res.status(500).json({ error: 'Failed to load purchases' });
-    }
-});
-
-
-// get sales data for admin dashboard
-app.get('/api/admin/sales', requireAuthAPI, async(req, res)=> {
-    try{
-        const allPurchases= await persist.loadData('purchases.json', {});
+app.delete('/api/admin/product/:id', requireAuthAPI, adminServer.removeProduct);
+app.get('/api/admin/sales', requireAuthAPI, async (req, res) => {
+    try {
+        const allPurchases = await persist.loadData('purchases.json', {});
 
         let totalSales = 0;
         let totalOrders = 0;
 
-        // calculate total sales across all users
         Object.values(allPurchases).forEach(userPurchases => {
-            if(Array.isArray(userPurchases)){
+            if (Array.isArray(userPurchases)) {
                 userPurchases.forEach(purchase => {
                     totalSales += purchase.total || 0;
                     totalOrders++;
@@ -234,203 +189,33 @@ app.get('/api/admin/sales', requireAuthAPI, async(req, res)=> {
             totalOrders,
             currency: '₪'
         });
-    }
-    catch(error){
+    } catch (error) {
         console.error('Error loading sales data:', error);
         res.status(500).json({ error: 'Failed to load sales data' });
     }
 });
 
+// Checkout API
+app.post('/api/checkout', requireAuthAPI, checkoutServer.processCheckout);
+app.post('/api/orders', requireAuthAPI, checkoutServer.processCheckout);
 
-// get current user info for profile page
-app.get('/api/users/current', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        const users= persist.getUsers();
-        const user= users.find(u=> u.username === username);
+// My Items (Purchases) API
+app.get('/api/purchases', requireAuthAPI, myItemsServer.getPurchases);
 
-        if(user){
-            res.json(user);
-        } else {
-            res.status(404).json({ error: 'User not found' });
-        }
-    }
-    catch(error){
-        console.error('Error loading user info:', error);
-        res.status(500).json({ error: 'Failed to load user info' });
-    }
-});
+// Profile API
+app.get('/api/users/current', requireAuthAPI, profileServer.getCurrentUserInfo);
+app.put('/api/profile', requireAuthAPI, profileServer.updateProfile);
 
+// Contact API
+app.post('/api/contact', requireAuthAPI, contactServer.submitContact);
 
-// extra pages
+// Wishlist API
+app.get('/api/wishlist', requireAuthAPI, wishlistServer.getWishlist);
+app.post('/api/wishlist', requireAuthAPI, wishlistServer.addToWishlist);
+app.delete('/api/wishlist', requireAuthAPI, wishlistServer.removeFromWishlist);
+app.delete('/api/wishlist/remove', requireAuthAPI, wishlistServer.removeFromWishlist);
 
-app.post('/api/contact', requireAuthAPI, async(req, res)=> {
-    try{
-        const { name, email, message }= req.body;
-
-        await persist.addContact({
-            id: Date.now(),
-            name,
-            email,
-            message,
-            timestamp: new Date().toISOString(),
-            from: getCurrentUser(req)
-        });
-
-        res.json({ success: true, message: 'Message sent' });
-    }
-    catch(error){
-        console.error('Error sending message:', error);
-        res.status(500).json({ error: 'Failed to send message' });
-    }
-});
-
-app.put('/api/profile', requireAuthAPI, async(req, res)=> {
-    try {
-        const oldUsername = getCurrentUser(req);
-        const { newUsername, email } = req.body;
-
-        // migrate user data
-        const cart = await persist.loadCart(oldUsername);
-        const wishlist = await persist.loadData('wishlists.json', {});
-
-        await persist.saveCart(newUsername, cart);
-        if (wishlist[oldUsername]) {
-            wishlist[newUsername] = wishlist[oldUsername];
-            delete wishlist[oldUsername];
-            await persist.saveData('wishlists.json', wishlist);
-        }
-
-        // update users and set new cookie
-        const users = await persist.loadUsers();
-        const userIndex = users.findIndex(u => u.username === oldUsername);
-        users[userIndex] = {...users[userIndex], username: newUsername, email};
-        await persist.saveUsers(users);
-
-        res.cookie('userToken', newUsername, {maxAge: 12*24*60*60*1000});
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error updating profile:', error);
-        res.status(500).json({ error: 'Failed to update profile' });
-    }
-});
-
-app.get('/api/wishlist', requireAuthAPI, async(req, res)=> {
-    try{
-        const username= getCurrentUser(req);
-        const userWishlistIds = await persist.getUserWishlist(username);
-        const products = persist.getProducts();
-        const wishlistItems = products.filter(product => userWishlistIds.includes(product.id));
-
-        res.json(wishlistItems);
-    }
-    catch(error){
-        console.error('Error loading wishlist:', error);
-        res.status(500).json({ error: 'Failed to load wishlist' });
-    }
-});
-
-
-app.post('/api/wishlist', requireAuthAPI, async(req, res)=>{
-    try{
-        const username= getCurrentUser(req);
-        const { productId }= req.body;
-
-        const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
-
-        // Validate that the product exists
-        const products = await persist.getProducts();
-        const productExists = products.some(p => p.id === numProductId);
-
-        if (!productExists) {
-            return res.status(400).json({
-                success: false,
-                error: 'Product not found'
-            });
-        }
-
-        const wishlist = await persist.getUserWishlist(username);
-
-        if(!wishlist.includes(numProductId)){
-            wishlist.push(numProductId);
-            await persist.saveUserWishlist(username, wishlist);
-        }
-
-        res.json({ success: true });
-    }
-    catch(error){
-        console.error('Error adding to wishlist:', error);
-        res.status(500).json({ error: 'Failed to add to wishlist' });
-    }
-});
-
-app.delete('/api/wishlist', requireAuthAPI, async(req, res)=>{
-    try{
-        const username = getCurrentUser(req);
-        const productId = req.body.productId;
-
-        if (!productId) {
-            return res.status(400).json({ success: false, error: 'Product ID is required' });
-        }
-
-        // Get current wishlist
-        const userWishlist = await persist.getUserWishlist(username);
-
-        // Convert to number for consistent comparison
-        const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
-
-        // Remove the product from wishlist
-        const updatedWishlist = userWishlist.filter(id => {
-            const numId = typeof id === 'string' ? parseInt(id) : id;
-            return numId !== numProductId;
-        });
-
-        // Save the updated wishlist
-        await persist.saveUserWishlist(username, updatedWishlist);
-
-        return res.json({ success: true });
-    }
-    catch(error){
-        console.error('Error removing from wishlist:', error);
-        return res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
-    }
-});
-
-// Legacy endpoint for backward compatibility
-app.delete('/api/wishlist/remove', requireAuthAPI, async(req, res)=>{
-    try {
-        const username = getCurrentUser(req);
-        const productId = req.body.productId;
-
-        if (!productId) {
-            return res.status(400).json({ success: false, error: 'Product ID is required' });
-        }
-
-        // Get current wishlist
-        const userWishlist = await persist.getUserWishlist(username);
-
-        // Convert to number for consistent comparison
-        const numProductId = typeof productId === 'string' ? parseInt(productId) : productId;
-
-        // Remove the product from wishlist
-        const updatedWishlist = userWishlist.filter(id => {
-            const numId = typeof id === 'string' ? parseInt(id) : id;
-            return numId !== numProductId;
-        });
-
-        // Save the updated wishlist
-        await persist.saveUserWishlist(username, updatedWishlist);
-
-        return res.json({ success: true });
-    }
-    catch(error) {
-        console.error('Error removing from wishlist:', error);
-        return res.status(500).json({ success: false, error: 'Failed to remove from wishlist' });
-    }
-});
-
-
-// Migration function to add createdAt to existing users
+// Migration function
 async function migrateUserData() {
     try {
         const users = await persist.loadUsers();
@@ -458,13 +243,22 @@ async function migrateUserData() {
     }
 }
 
-// start server
-app.listen(5000, async ()=> {
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err);
+    res.status(500).json({
+        error: 'Internal server error'
+    });
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+// Start server
+app.listen(5000, async () => {
     console.log('Express App running at http://127.0.0.1:5000/');
-
-    // Initialize persist module
     await persist.initialize();
-
-    // Run migration on startup
     await migrateUserData();
 });
