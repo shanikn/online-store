@@ -559,5 +559,95 @@
     "username": "admin",
     "activityType": "logout",
     "details": {}
+  },
+  {
+    "timestamp": "2025-10-22T15:22:10.696Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-10-22T15:22:10.715Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-22T15:22:10.726Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-22T15:22:10.752Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-22T15:22:10.760Z",
+    "username": "admin",
+    "activityType": "purchase",
+    "details": {
+      "total": "129.99",
+      "itemCount": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-22T15:22:10.803Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-10-27T05:44:25.609Z",
+    "username": "admin",
+    "activityType": "login",
+    "details": {}
+  },
+  {
+    "timestamp": "2025-10-27T05:44:25.635Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-27T05:44:25.645Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-27T05:44:25.677Z",
+    "username": "admin",
+    "activityType": "add-to-cart",
+    "details": {
+      "productId": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-27T05:44:25.688Z",
+    "username": "admin",
+    "activityType": "purchase",
+    "details": {
+      "total": "199.99",
+      "itemCount": 1
+    }
+  },
+  {
+    "timestamp": "2025-10-27T05:44:25.728Z",
+    "username": "admin",
+    "activityType": "logout",
+    "details": {}
   }
 ]
