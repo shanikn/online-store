@@ -1,22 +1,28 @@
 {
   "mcpServers": {
     "sequential-thinking": {
-      "command": "npx",
+      "command": "cmd",
       "args": [
+        "/c",
+        "npx",
         "-y",
         "@modelcontextprotocol/server-sequential-thinking"
       ]
     },
     "memory": {
-      "command": "npx",
+      "command": "cmd",
       "args": [
+        "/c",
+        "npx",
         "-y",
         "@modelcontextprotocol/server-memory"
       ]
     },
     "github-mcp": {
-      "command": "npx",
+      "command": "cmd",
       "args": [
+        "/c",
+        "npx",
         "-y",
         "@modelcontextprotocol/server-github"
       ]

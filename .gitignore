@@ -4,3 +4,11 @@ node_modules/
 .DS_Store
 package-lock.json
 $CACHE
+
+# Windows/Google Drive system files
+desktop.ini
+Thumbs.db
+.tmp.driveupload/
+
+# Uploaded product images
+uploads/

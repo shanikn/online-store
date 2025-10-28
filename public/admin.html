@@ -99,9 +99,16 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="productImage">Image URL</label>
-                        <input type="url" id="productImage" placeholder="https://example.com/image.jpg">
+                        <label for="productImageFile">Upload Image</label>
+                        <input type="file" id="productImageFile" accept="image/jpeg,image/jpg,image/png" onchange="handleImageFileChange()">
+                        <small style="display: block; color: #666; margin-top: 0.5rem;">Supported formats: JPG, PNG</small>
                     </div>
+                    <div class="form-group">
+                        <label for="productImage">Or Image URL</label>
+                        <input type="url" id="productImage" placeholder="https://example.com/image.jpg">
+                        <small style="display: block; color: #666; margin-top: 0.5rem;">Leave empty if uploading a file above</small>
+                    </div>
+                    <div id="imagePreview" style="margin-top: 1rem;"></div>
                     <div class="form-group">
                         <label>
                             <input type="checkbox" id="productCustomizable">
@@ -362,25 +369,65 @@
             `;
         }
 
+        function handleImageFileChange() {
+            const fileInput = document.getElementById('productImageFile');
+            const preview = document.getElementById('imagePreview');
+            const urlInput = document.getElementById('productImage');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+
+                // Disable URL input when file is selected
+                urlInput.disabled = true;
+                urlInput.value = '';
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <div style="border: 2px solid #b8977c; border-radius: 8px; padding: 1rem; background: #f5f0ed;">
+                            <p style="margin: 0 0 0.5rem 0; font-weight: bold;">Image Preview:</p>
+                            <img src="${e.target.result}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #666;">${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Re-enable URL input when no file is selected
+                urlInput.disabled = false;
+                preview.innerHTML = '';
+            }
+        }
+
         document.getElementById('addProductForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const productData = {
-                name: document.getElementById('productName').value,
-                description: document.getElementById('productDescription').value,
-                price: parseFloat(document.getElementById('productPrice').value),
-                category: document.getElementById('productCategory').value,
-                image: document.getElementById('productImage').value || null,
-                customizable: document.getElementById('productCustomizable').checked
-            };
+            const fileInput = document.getElementById('productImageFile');
+            const formData = new FormData();
+
+            // Add form fields to FormData
+            formData.append('name', document.getElementById('productName').value);
+            formData.append('description', document.getElementById('productDescription').value);
+            formData.append('price', document.getElementById('productPrice').value);
+            formData.append('category', document.getElementById('productCategory').value);
+            formData.append('customizable', document.getElementById('productCustomizable').checked);
+
+            // Add either file or URL
+            if (fileInput.files && fileInput.files[0]) {
+                formData.append('productImage', fileInput.files[0]);
+            } else {
+                const imageUrl = document.getElementById('productImage').value;
+                if (imageUrl) {
+                    formData.append('image', imageUrl);
+                }
+            }
 
             try {
                 const response = await fetch('/api/admin/products', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(productData)
+                    body: formData
+                    // Note: Don't set Content-Type header when using FormData - browser sets it automatically with boundary
                 });
 
                 const data = await response.json();
@@ -388,13 +435,15 @@
                 if (data.success) {
                     showSuccess('Product added successfully!');
                     document.getElementById('addProductForm').reset();
+                    document.getElementById('productImage').disabled = false; // Re-enable URL input
+                    document.getElementById('imagePreview').innerHTML = ''; // Clear preview
                     await loadProducts();
                 } else {
-                    showError('Failed to add product');
+                    showError(data.error || 'Failed to add product');
                 }
             } catch (error) {
                 console.error('Error adding product:', error);
-                showError('Failed to add product');
+                showError('Failed to add product: ' + error.message);
             }
         });
 

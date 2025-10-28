@@ -7,45 +7,51 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="/styles/theme.css">
     <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        h1, h2 {
-            font-family: 'Fraunces', serif;
-        }
-        
-        h1 {
+        /* Page-specific content styling */
+        .page-frame h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--color-primary);
         }
-        
-        h2 {
+
+        .page-frame h2 {
             font-size: 1.8rem;
             margin-top: 2rem;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--color-border);
         }
-        
-        p, li {
+
+        .page-frame p,
+        .page-frame li {
             line-height: 1.6;
+        }
+
+        .page-frame ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        .page-frame li {
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
     <div class="header-shell">
+        <div class="announcement-bar">
+            <span class="announcement-pill"><i class="fa-solid fa-robot"></i> AI Documentation</span>
+            <span>Learn how AI assisted in the development of this project.</span>
+            <button type="button" class="announcement-action" onclick="window.location.href='/readme.html'">View README <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
         <div class="header">
-            <a href="/" class="brand">
+            <button class="menu" id="menu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+            <div class="brand">
                 <h1>ShanikJewels</h1>
                 <span class="brand-tagline">Handcrafted Jewelry</span>
-            </a>
+            </div>
             <div class="header-actions">
-                <a href="/store.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
-                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">
+                <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
                     <span id="themeIcon">🌙</span>
                     <span id="themeText">OFF</span>
                 </button>
@@ -53,7 +59,10 @@
         </div>
     </div>
 
-    <main class="container">
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu"></nav>
+
+    <main class="page-frame">
         <h1>AI-Assisted Code Documentation</h1>
 
         <p>This document describes how I used Claude by Anthropic to help review, test, and debug my code for the ShanikJewels online store project.</p>
@@ -86,27 +95,11 @@
     </main>
 
     <script>
-        // Include theme toggle functionality
-        function toggleTheme() {
-            const body = document.body;
-            const isDarkMode = body.classList.toggle('dark-mode');
-            
-            // Update icon and text
-            document.getElementById('themeIcon').textContent = isDarkMode ? '☀️' : '🌙';
-            document.getElementById('themeText').textContent = isDarkMode ? 'ON' : 'OFF';
-            
-            // Save preference
-            localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-        }
-        
-        // Load theme preference
-        document.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeIcon').textContent = '☀️';
-                document.getElementById('themeText').textContent = 'ON';
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBaseLayout();
         });
     </script>
+
+    <script src="/scripts/layout.js"></script>
 </body>
 </html>

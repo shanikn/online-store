@@ -49,10 +49,6 @@
                     <span id="currentUsername">Loading...</span>
                 </div>
                 <div class="info-item">
-                    <label>Email:</label>
-                    <span id="currentEmail">Loading...</span>
-                </div>
-                <div class="info-item">
                     <label>Role:</label>
                     <span id="currentRole">Loading...</span>
                 </div>
@@ -70,10 +66,6 @@
                     <div class="form-group">
                         <label for="newUsername">New Username:</label>
                         <input type="text" id="newUsername" name="newUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="newEmail">Email Address:</label>
-                        <input type="email" id="newEmail" name="newEmail" required>
                     </div>
                 </div>
                 <button type="submit" class="btn">Update Profile</button>
@@ -143,7 +135,6 @@
                 document.getElementById('welcomeTitle').textContent = `Welcome, ${userData.username}!`;
 
                 document.getElementById('currentUsername').textContent = userData.username;
-                document.getElementById('currentEmail').textContent = userData.email || 'Not set';
                 document.getElementById('currentRole').textContent = userData.role || 'user';
                 document.getElementById('memberSince').textContent = userData.createdAt
                     ? new Date(userData.createdAt).toLocaleDateString('he-IL', {
@@ -154,7 +145,6 @@
                     : 'Not available';
 
                 document.getElementById('newUsername').value = userData.username;
-                document.getElementById('newEmail').value = userData.email || '';
                 
                 // Load shopping summary
                 await loadShoppingSummary();
@@ -213,7 +203,6 @@
         function resetForm() {
             if (profileCurrentUser) {
                 document.getElementById('newUsername').value = profileCurrentUser.username;
-                document.getElementById('newEmail').value = profileCurrentUser.email || '';
             }
         }
 
@@ -256,7 +245,6 @@
             e.preventDefault();
 
             const newUsername = document.getElementById('newUsername').value;
-            const newEmail = document.getElementById('newEmail').value;
 
             try {
                 const response = await fetch('/api/profile', {
@@ -265,8 +253,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        newUsername: newUsername,
-                        email: newEmail
+                        newUsername: newUsername
                     })
                 });
 

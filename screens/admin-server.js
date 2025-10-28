@@ -1,6 +1,42 @@
 const persist = require('../persist_module');
+const multer = require('multer');
+const path = require('path');
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/products/');
+    },
+    filename: function (req, file, cb) {
+        // Create unique filename: timestamp-randomnumber-originalname
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+// File filter to only accept images
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+
+    if (mimetype && extname) {
+        return cb(null, true);
+    } else {
+        cb(new Error('Only image files are allowed (jpeg, jpg, png)'));
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
+});
 
 module.exports = {
+    upload, // Export upload middleware for use in routes
     async getActivities(req, res) {
         try {
             // Get filter parameters from query string (usernamePrefix is for legacy compatibility)
@@ -103,13 +139,20 @@ module.exports = {
                 });
             }
 
+            // Handle image - either from file upload or URL
+            let imageUrl = image || null;
+            if (req.file) {
+                // File was uploaded - use the path relative to public root
+                imageUrl = '/uploads/products/' + req.file.filename;
+            }
+
             const newProduct = {
                 id: Date.now(),
                 name,
                 description,
                 price: numPrice,
                 type: category,
-                image: image || null,
+                image: imageUrl,
                 customizable: !!customizable,
                 addedBy: username,
                 createdAt: new Date().toISOString()

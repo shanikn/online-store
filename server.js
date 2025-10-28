@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
+app.use('/uploads', express.static('uploads')); // Serve uploaded files
 
 // authentication middleware
 function requireAuth(req, res, next) {
@@ -164,8 +165,8 @@ app.get('/api/admin/users', requireAuthAPI, adminServer.getUsers);
 app.get('/api/admin/activity', requireAuthAPI, adminServer.getActivities);
 app.get('/api/admin/activities', requireAuthAPI, adminServer.getActivities);
 app.get('/api/admin/activities/filter', requireAuthAPI, adminServer.getActivities);
-app.post('/api/admin/products', requireAuthAPI, adminServer.addProduct);
-app.post('/api/admin/product', requireAuthAPI, adminServer.addProduct);
+app.post('/api/admin/products', requireAuthAPI, adminServer.upload.single('productImage'), adminServer.addProduct);
+app.post('/api/admin/product', requireAuthAPI, adminServer.upload.single('productImage'), adminServer.addProduct);
 app.delete('/api/admin/products/:id', requireAuthAPI, adminServer.removeProduct);
 app.delete('/api/admin/product/:id', requireAuthAPI, adminServer.removeProduct);
 app.get('/api/admin/sales', requireAuthAPI, async (req, res) => {

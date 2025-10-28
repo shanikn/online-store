@@ -26,11 +26,11 @@ async function getCurrentUserInfo(req, res) {
 async function updateProfile(req, res) {
     try {
         const oldUsername = getCurrentUser(req);
-        const { newUsername, email } = req.body;
+        const { newUsername } = req.body;
 
         // Validate required fields
-        if (!newUsername || !email) {
-            return res.status(400).json({ error: 'Username and email are required' });
+        if (!newUsername) {
+            return res.status(400).json({ error: 'Username is required' });
         }
 
         // Migrate user data
@@ -47,7 +47,7 @@ async function updateProfile(req, res) {
         // Update users and set new cookie
         const users = await persist.loadUsers();
         const userIndex = users.findIndex(u => u.username === oldUsername);
-        users[userIndex] = { ...users[userIndex], username: newUsername, email };
+        users[userIndex] = { ...users[userIndex], username: newUsername };
         await persist.saveUsers(users);
 
         res.cookie('userToken', newUsername, { maxAge: 12 * 24 * 60 * 60 * 1000 });

@@ -1,13 +1,19 @@
 {
-    "terminal.integrated.enableVisualBell": true,
-    "terminal.integrated.suggest.enabled": true,
-    "terminal.integrated.tabs.defaultColor": "terminal.ansiCyan",
-    "task.quickOpen.showAll": true,
-    "task.quickOpen.skip": true,
-    "workbench.editor.autoLockGroups": {
-        "workbench.editorinputs.searchEditorInput": true,
-        "workbench.editor.processExplorer": false
-    },
-    "python.analysis.autoImportCompletions": true,
-    "todo-tree.tree.scanMode": "workspace only"
+  "terminal.integrated.enableVisualBell": true,
+  "terminal.integrated.suggest.enabled": true,
+  "terminal.integrated.tabs.defaultColor": "terminal.ansiCyan",
+  "task.quickOpen.showAll": true,
+  "task.quickOpen.skip": true,
+  "workbench.editor.autoLockGroups": {
+    "workbench.editorinputs.searchEditorInput": true,
+    "workbench.editor.processExplorer": false
+  },
+  "python.analysis.autoImportCompletions": true,
+  "todo-tree.tree.scanMode": "workspace only",
+  "chat.mcp.discovery.enabled": {
+    "claude-desktop": true
+  },
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

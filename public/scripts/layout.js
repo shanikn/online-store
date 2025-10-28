@@ -95,6 +95,7 @@ function updateNavigation(){
             createMenuLink('/about.html', 'fa-solid fa-info-circle', 'About') +
             createMenuLink('/contact.html', 'fa-solid fa-envelope', 'Contact') +
             createMenuLink('/readme.html', 'fa-solid fa-book', 'README') +
+            createMenuLink('/llm.html', 'fa-solid fa-robot', 'AI Documentation') +
             createMenuLink('/profile.html', 'fa-solid fa-user', 'Profile');
 
         // Only add Admin link if user is admin
@@ -124,6 +125,7 @@ function updateNavigation(){
             createMenuLink('/about.html', 'fa-solid fa-info-circle', 'About') +
             createMenuLink('/contact.html', 'fa-solid fa-envelope', 'Contact') +
             createMenuLink('/readme.html', 'fa-solid fa-book', 'README') +
+            createMenuLink('/llm.html', 'fa-solid fa-robot', 'AI Documentation') +
             createMenuLink('/login.html', 'fa-solid fa-sign-in-alt', 'Login') +
             createMenuLink('/register.html', 'fa-solid fa-user-plus', 'Register');
     }

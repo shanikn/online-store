@@ -130,7 +130,6 @@ package-lock.json       - Not needed (auto-generated)
 coverage/               - Test reports
 fullstack final project.pdf
 debug-menu.html, force-close-menu.html
-eslint.config.js, jest.config.js
 ccstatusline.*, reset-session.ps1
 .mcp.json
 $CACHE
@@ -142,9 +141,9 @@ $CACHE
 
 - [x]Run through all HTML/JS files - remove `// TODO:`, `// FIXME:`, personal comments
 - [x] Check readme.html - answers all 7 required points?
-- [ ] Check llm.html - documents AI assistance honestly?
-- [ ] NO node_modules folder in zip
-- [ ] persist_module.js is exact name
+- [x] Check llm.html - documents AI assistance honestly?
+- [x] NO node_modules folder in zip
+- [x] persist_module.js is exact name
 - [x] Test: `npm install` works
 - [x] Test: `npm start` runs server on port 5000
 - [x] Test: `npm test` passes 27/28 tests
